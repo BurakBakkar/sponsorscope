@@ -11,13 +11,19 @@ dependencies = [
   "pycountry>=24.6",
   "typer>=0.12",
   "pyyaml>=6.0",
+  "python-calamine>=0.2",
 ]
 
 [project.scripts]
 sponsorscope = "sponsorscope.cli:app"
 
 [dependency-groups]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21"]
+dev = [
+    "openpyxl>=3.1",
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "respx>=0.21",
+]
 
 [build-system]
 requires = ["hatchling"]
