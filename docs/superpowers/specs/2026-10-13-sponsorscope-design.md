@@ -11,7 +11,7 @@ visa sponsorship, for people who need a sponsored work visa to move abroad.
 It joins two kinds of public data:
 
 1. **Official government sponsor data**: registers of employers licensed to
-   sponsor, and records of employers that have sponsored before.
+   sponsor, and records of employers that have filed for or received sponsorship.
 2. **Live job postings** from public applicant-tracking-system (ATS) APIs.
 
 Each posting is labelled for **sponsorship** (yes / no / unknown) and
