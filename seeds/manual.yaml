@@ -1,0 +1,9 @@
+# Known job boards to crawl until discovery (Plan 3) exists.
+# Lever slugs are case-sensitive.
+- {ats: greenhouse, slug: airbnb, name: Airbnb}
+- {ats: greenhouse, slug: stripe, name: Stripe}
+- {ats: greenhouse, slug: gitlab, name: GitLab}
+- {ats: greenhouse, slug: monzo, name: Monzo Bank}
+- {ats: greenhouse, slug: deliveroo, name: Deliveroo}
+- {ats: lever, slug: palantir, name: Palantir Technologies}
+- {ats: lever, slug: spotify, name: Spotify}

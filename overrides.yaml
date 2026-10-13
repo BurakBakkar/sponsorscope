@@ -1,0 +1,8 @@
+# Manual overrides for matching ATS companies to register entries.
+# Names are normalised the same way as the matcher (suffixes like Ltd/B.V. stripped).
+# match:  force a link the matcher misses (e.g. trading name ≠ legal name)
+# forbid: block a wrong automatic link (e.g. a small "Apple Ltd" ≠ Apple Inc)
+match: []
+#  - {company: Deliveroo, sponsor: Roofoods Ltd}
+forbid: []
+#  - {company: Apple, sponsor: Apple Ltd}
