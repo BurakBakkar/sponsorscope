@@ -1,0 +1,20 @@
+from __future__ import annotations
+
+from typing import Protocol
+
+from sponsorscope.http import Http
+from sponsorscope.models import SponsorRecord
+
+
+class RegisterFormatError(Exception):
+    """The upstream file or page no longer looks like what the parser expects."""
+
+
+class Register(Protocol):
+    name: str  # ISO-2 lowercase, also the `source` column value
+
+    async def latest(self, http: Http) -> str:
+        """Cheap version signal (URL, date, etc.). Unchanged version → skip fetch."""
+        ...
+
+    async def fetch(self, http: Http, version: str) -> list[SponsorRecord]: ...
