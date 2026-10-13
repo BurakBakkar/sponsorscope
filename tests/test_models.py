@@ -30,3 +30,8 @@ def test_html_to_text_keeps_inline_words_together_and_breaks_blocks():
 def test_html_to_text_handles_empty():
     assert html_to_text(None) == ""
     assert html_to_text("") == ""
+
+
+def test_html_to_text_normalises_non_breaking_spaces():
+    # "visa&nbsp;sponsorship" must still match the classifier's "visa sponsorship" rules
+    assert html_to_text("<p>We offer visa&nbsp;sponsorship&#xa0;now</p>") == "We offer visa sponsorship now"

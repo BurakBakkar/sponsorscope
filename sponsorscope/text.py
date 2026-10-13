@@ -15,6 +15,6 @@ def html_to_text(markup: str | None) -> str:
     if root is None:
         return ""
     text = root.text(separator="")
-    text = re.sub(r"[ \t\r\f\v]+", " ", text)
+    text = re.sub(r"[ \t\r\f\v\xa0]+", " ", text)
     text = re.sub(r"\s*\n\s*", "\n", text)
     return text.strip()
