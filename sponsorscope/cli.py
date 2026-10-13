@@ -15,7 +15,13 @@ from sponsorscope.classify.rules import RulesClassifier
 from sponsorscope.export.shards import export_site
 from sponsorscope.http import Http
 from sponsorscope.matching.names import Overrides
+from sponsorscope.registers.ca import CaRegister
+from sponsorscope.registers.dk import DkRegister
+from sponsorscope.registers.fi import FiRegister
 from sponsorscope.registers.gb import UkRegister
+from sponsorscope.registers.ie import IeRegister
+from sponsorscope.registers.nl import NlRegister
+from sponsorscope.registers.us import UsRegister
 from sponsorscope.report import RunReport
 from sponsorscope.store.db import connect
 
@@ -32,7 +38,7 @@ def _now() -> str:
 
 
 def _registers():
-    return [UkRegister()]
+    return [UkRegister(), NlRegister(), DkRegister(), FiRegister(), UsRegister(), CaRegister(), IeRegister()]
 
 
 def _adapters():

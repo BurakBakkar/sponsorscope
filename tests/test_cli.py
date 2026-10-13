@@ -24,3 +24,8 @@ def test_seed_loads_boards(tmp_path):
     seeds.write_text("- {ats: lever, slug: acme, name: Acme}\n")
     result = runner.invoke(app, ["seed", "--db", str(tmp_path / "x.db"), "--seeds", str(seeds)])
     assert result.exit_code == 0 and "1 boards" in result.output
+
+
+def test_all_registers_wired():
+    from sponsorscope import cli
+    assert [r.name for r in cli._registers()] == ["gb", "nl", "dk", "fi", "us", "ca", "ie"]

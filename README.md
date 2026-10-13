@@ -2,8 +2,8 @@
 
 A nightly-updated, filterable list of job postings that may offer **visa sponsorship**.
 
-- **Sponsor data:** official government registers. v1 has the UK Register of
-  licensed sponsors; more countries are coming, see the design spec.
+- **Sponsor data:** UK, NL, DK and FI licence registers, plus US (H-1B LCA), CA (positive LMIA) and IE
+  (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs (Greenhouse and Lever in v1).
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
@@ -40,4 +40,6 @@ python3 -m http.server -d site 8000
 
 - UK register: contains public sector information licensed under the Open
   Government Licence v3.0.
+- Canada LMIA list: Open Government Licence – Canada. NL, DK, FI, US and IE sources state no licence;
+  only derived badges and company names are published.
 - City data: [GeoNames](https://www.geonames.org/), CC BY 4.0.
