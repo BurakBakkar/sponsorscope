@@ -233,9 +233,15 @@ def replace_matches(conn: sqlite3.Connection, matches: Iterable[tuple[int, int, 
     )
 
 
-def active_posting_ids(conn: sqlite3.Connection, ats: str, slug: str) -> frozenset[str]:
+def active_posting_ids(conn: sqlite3.Connection, ats: str, slug: str, classifier_version: str) -> frozenset[str]:
+    """Active postings that need no re-fetch: labelled for their current hash by this classifier, or non-English."""
     return frozenset(r[0] for r in conn.execute(
-        "SELECT id FROM postings WHERE ats = ? AND slug = ? AND active = 1", (ats, slug)))
+        """
+        SELECT p.id FROM postings p
+        WHERE p.ats = ? AND p.slug = ? AND p.active = 1
+          AND (p.lang != 'en' OR EXISTS (SELECT 1 FROM labels l WHERE l.posting_id = p.id
+               AND l.content_hash = p.content_hash AND l.classifier_version = ?))
+        """, (ats, slug, classifier_version)))
 
 
 def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, country: str | None, now: str) -> None:

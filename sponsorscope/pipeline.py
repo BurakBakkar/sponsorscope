@@ -116,7 +116,7 @@ async def run_crawl(conn: sqlite3.Connection, http: Http, adapters: Mapping[str,
 
         async def fetch(board: sqlite3.Row, adapter: ATS = adapter):
             try:
-                known = db.active_posting_ids(conn, ats_name, board["slug"])
+                known = db.active_posting_ids(conn, ats_name, board["slug"], classifier.version)
                 return board, "ok", await adapter.fetch(http, board["slug"], known_ids=known)
             except BoardNotFound:
                 return board, "not_found", None

@@ -299,3 +299,17 @@ async def test_known_posting_without_description_keeps_label(conn, http):
     row = conn.execute("SELECT active, last_seen, lang, content_hash FROM postings").fetchone()
     assert (row["active"], row["last_seen"], row["lang"]) == (1, T[1], "en") and row["content_hash"]
     assert conn.execute("SELECT sponsorship FROM labels").fetchone()[0] == "yes"
+
+
+async def test_classifier_version_bump_relabels_known_detail_postings(conn, http):
+    class Rules2(RulesClassifier):
+        version = "rules-next"
+
+    cid = db.get_or_create_company(conn, "Acme Widgets")
+    db.upsert_board(conn, "fakeats", "acme", cid, status="hit", origin="seed", now=T[0])
+    ats = DetailOnceATS()
+    await pipeline.run_crawl(conn, http, {"fakeats": ats}, RulesClassifier(), RunReport(started_at=T[0]), T[0], CITIES)
+    await pipeline.run_crawl(conn, http, {"fakeats": ats}, Rules2(), RunReport(started_at=T[1]), T[1], CITIES)
+    assert ats.seen_known[1] == frozenset()  # not "known" for the new classifier → detail re-fetched
+    versions = {r[0] for r in conn.execute("SELECT classifier_version FROM labels")}
+    assert versions == {RulesClassifier.version, "rules-next"}
