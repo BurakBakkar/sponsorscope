@@ -110,3 +110,13 @@ async def test_missed_sponsor_waits_for_backoff(conn):
     assert gh.probed == []
     await run_discovery(conn, None, {"greenhouse": gh}, seeds=[], now=T2, budget=100)
     assert gh.probed == ["monzobank", "monzo-bank", "monzo"]
+
+
+async def test_slug_named_and_unconfirmed_companies_are_unverified(conn):
+    gh = FakeATS("greenhouse", True, {"airbnb": "Airbnb"})
+    lever = FakeATS("lever", False, {"15five": None, "northwindtrading": None})
+    sponsors(conn, "Northwind Trading Ltd")
+    await run_discovery(conn, None, {"greenhouse": gh, "lever": lever},
+                        seeds=[Seed("greenhouse", "airbnb", None), Seed("lever", "15five", None)], now=T1, budget=100)
+    verified = {r[0]: r[1] for r in conn.execute("SELECT display_name, name_verified FROM companies")}
+    assert verified == {"Airbnb": 1, "15Five": 0, "Northwind Trading": 0}

@@ -87,7 +87,7 @@ function renderRow(r) {
     ? el("a", { href, target: "_blank", rel: "noopener noreferrer", text: r.title })
     : el("span", { text: r.title });
   const chips = el("div", { class: "chips" });
-  for (const [type, text] of r.badges) chips.append(el("span", { class: `badge ${type}`, text }));
+  for (const [type, text, weak] of r.badges) chips.append(el("span", { class: `badge ${type}${weak ? " weak" : ""}`, text }));
   chips.append(el("span", { class: `label ${r.sponsorship}`, text: SPONSORSHIP_TEXT[r.sponsorship] }));
   if (r.mixed) chips.append(el("span", { class: "label mixed", text: "Mixed signals" }));
   for (const lang of r.langs) chips.append(el("span", { class: "lang", text: `Requires ${LANG_LABELS[lang] ?? lang}` }));

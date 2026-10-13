@@ -91,7 +91,7 @@ async def test_end_to_end_exports_badged_postings(conn, http, tmp_path, seeds):
     rows = {r[0]: r for r in shard(tmp_path, "gb")}
     assert set(rows) == {"greenhouse:acme:1", "greenhouse:acme:2"}  # Dutch posting dropped
     yes, no = rows["greenhouse:acme:1"], rows["greenhouse:acme:2"]
-    assert yes[8] == "yes" and yes[12] == [["licence", "Licensed sponsor (UK)"]]
+    assert yes[8] == "yes" and yes[12] == [["licence", "Licensed sponsor (UK)", False]]
     assert no[8] == "no"
     assert report.sources["gb"]["status"] == "ok" and report.sources["gb"]["rows"] == 10
     assert report.ats["greenhouse"]["ok"] == 1
@@ -313,3 +313,14 @@ async def test_classifier_version_bump_relabels_known_detail_postings(conn, http
     assert ats.seen_known[1] == frozenset()  # not "known" for the new classifier → detail re-fetched
     versions = {r[0] for r in conn.execute("SELECT classifier_version FROM labels")}
     assert versions == {RulesClassifier.version, "rules-next"}
+
+
+def test_unverified_company_matches_are_marked(conn):
+    from sponsorscope.models import SponsorRecord
+
+    db.upsert_sponsors(conn, "gb", [SponsorRecord("GB", "gb", "licence", n) for n in ("Alpha Ltd", "Monzo Bank Ltd")], "v1", T[0])
+    alpha = db.get_or_create_company(conn, "Alpha", verified=False)
+    monzo = db.get_or_create_company(conn, "Monzo Bank")
+    pipeline.run_match(conn, Overrides())
+    methods = {r["company_id"]: r["method"] for r in conn.execute("SELECT * FROM sponsor_matches")}
+    assert methods == {alpha: "unverified", monzo: "exact"}

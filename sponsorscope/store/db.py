@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS source_versions (
   source TEXT PRIMARY KEY, version TEXT NOT NULL, fetched_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS companies (
-  id INTEGER PRIMARY KEY, display_name TEXT NOT NULL, norm_name TEXT NOT NULL UNIQUE
+  id INTEGER PRIMARY KEY, display_name TEXT NOT NULL, norm_name TEXT NOT NULL UNIQUE,
+  name_verified INTEGER NOT NULL DEFAULT 1  -- 0: name came from a slug or an unconfirmed guess
 );
 CREATE TABLE IF NOT EXISTS boards (
   ats TEXT NOT NULL, slug TEXT NOT NULL, company_id INTEGER,
@@ -66,10 +67,19 @@ CREATE TABLE IF NOT EXISTS discovery_progress (
 """
 
 
+_MIGRATIONS = [  # (table, column, DDL) for columns added after the first deploy
+    ("companies", "name_verified", "ALTER TABLE companies ADD COLUMN name_verified INTEGER NOT NULL DEFAULT 1"),
+]
+
+
 def connect(path: Path | str) -> sqlite3.Connection:
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    for table, column, ddl in _MIGRATIONS:
+        if column not in {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}:
+            conn.execute(ddl)
+    conn.commit()
     return conn
 
 
@@ -132,11 +142,15 @@ def active_sponsor_count(conn: sqlite3.Connection, source: str) -> int:
     ).fetchone()[0]
 
 
-def get_or_create_company(conn: sqlite3.Connection, display_name: str) -> int:
+def get_or_create_company(conn: sqlite3.Connection, display_name: str, verified: bool = True) -> int:
+    """verified=False: the name was derived from a slug or an unconfirmed guess (weaker badges)."""
     norm = normalize(display_name) or display_name.strip().lower()
     conn.execute(
-        "INSERT INTO companies (display_name, norm_name) VALUES (?, ?) ON CONFLICT (norm_name) DO NOTHING",
-        (display_name.strip(), norm),
+        """
+        INSERT INTO companies (display_name, norm_name, name_verified) VALUES (?, ?, ?)
+        ON CONFLICT (norm_name) DO UPDATE SET name_verified = MAX(name_verified, excluded.name_verified)
+        """,
+        (display_name.strip(), norm, int(verified)),
     )
     return conn.execute("SELECT id FROM companies WHERE norm_name = ?", (norm,)).fetchone()[0]
 

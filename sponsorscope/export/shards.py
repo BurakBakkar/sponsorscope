@@ -31,7 +31,8 @@ WHERE p.active = 1 AND p.lang = 'en'
 ORDER BY COALESCE(p.posted_at, substr(p.first_seen, 1, 10)) DESC, p.id
 """
 _BADGES = """
-SELECT m.company_id, s.source, s.evidence, s.country, SUM(s.filings) AS filings, MAX(s.period) AS period
+SELECT m.company_id, s.source, s.evidence, s.country, SUM(s.filings) AS filings, MAX(s.period) AS period,
+       MIN(m.method = 'unverified') AS weak
 FROM sponsor_matches m
 JOIN sponsors s ON s.id = m.sponsor_id
 JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
@@ -48,8 +49,9 @@ def badge_text(source: str, evidence: str, country: str, filings: int | None, pe
 def _badges_by_company(conn: sqlite3.Connection) -> dict[int, dict[str, list[list[str]]]]:
     out: dict[int, dict[str, list[list[str]]]] = defaultdict(lambda: defaultdict(list))
     for r in conn.execute(_BADGES):
-        out[r["company_id"]][r["country"]].append(
-            [r["evidence"], badge_text(r["source"], r["evidence"], r["country"], r["filings"], r["period"])])
+        text = badge_text(r["source"], r["evidence"], r["country"], r["filings"], r["period"])
+        weak = bool(r["weak"])  # every supporting match is a name coincidence only
+        out[r["company_id"]][r["country"]].append([r["evidence"], f"Name match only: {text}" if weak else text, weak])
     return out
 
 

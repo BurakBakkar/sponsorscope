@@ -49,7 +49,8 @@ async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[
             continue
         company_id = None
         if result.exists and db.board_company(conn, ats, slug) is None:
-            company_id = db.get_or_create_company(conn, result.name or _slug_display(slug))
+            company_id = db.get_or_create_company(conn, result.name or _slug_display(slug),
+                                                  verified=result.name is not None)
         db.record_probe(conn, ats, slug, exists=result.exists, company_id=company_id, now=now)
         summary["boards_found" if result.exists else "boards_missed"] += 1
     conn.commit()
@@ -87,7 +88,8 @@ async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[
             if adapter.provides_name and (result.name is None or normalize(result.name) != norm):
                 summary["guesses_rejected"] += 1  # e.g. board "atlas" named "Atlas" ≠ "Atlas Care Homes"
                 continue
-            company_id = db.get_or_create_company(conn, result.name if adapter.provides_name else norm.title())
+            company_id = (db.get_or_create_company(conn, result.name) if adapter.provides_name
+                          else db.get_or_create_company(conn, norm.title(), verified=False))
             db.upsert_board(conn, ats, slug, company_id, status="hit", origin="guess", now=now)
             summary["guesses_found"] += 1
             found = True

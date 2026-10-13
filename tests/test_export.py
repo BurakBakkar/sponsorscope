@@ -57,7 +57,7 @@ def test_shards_badges_and_filters(conn, tmp_path):
     assert counts == {"GB": 2, "NL": 1, "XX": 1}
     assert not (site / "data" / "zz.json.gz").exists()
     gb = {r[0]: dict(zip(FIELDS, r)) for r in read_shard(site, "gb")}
-    assert gb["greenhouse:acme:1"]["badges"] == [["licence", "Licensed sponsor (UK)"]]
+    assert gb["greenhouse:acme:1"]["badges"] == [["licence", "Licensed sponsor (UK)", False]]
     assert gb["greenhouse:acme:1"]["sponsorship"] == "yes"
     assert gb["greenhouse:acme:1"]["evidence"] == ["We offer visa sponsorship"]
     assert gb["greenhouse:acme:5"]["sponsorship"] == "unknown"
@@ -88,3 +88,14 @@ def test_badge_text():
     assert badge_text("us", "history", "US", 37, "FY2026") == "Filed 37 certified H-1B LCAs (FY2026)"
     assert badge_text("ca", "history", "CA", 12, "2026 Q1") == "12 positive LMIAs (2026 Q1)"
     assert badge_text("ie", "history", "IE", 8, "2026") == "8 employment permits issued (2026)"
+
+
+def test_unverified_match_gives_weak_badge(conn, tmp_path):
+    alpha = db.get_or_create_company(conn, "Alpha", verified=False)
+    db.upsert_sponsors(conn, "gb", [SponsorRecord("GB", "gb", "licence", "Alpha Ltd")], "v1", T1)
+    sponsor_id = conn.execute("SELECT id FROM sponsors").fetchone()[0]
+    db.replace_matches(conn, [(sponsor_id, alpha, "unverified", 100.0)])
+    add_posting(conn, alpha, "1", "GB")
+    export_site(conn, tmp_path / "site", "rules-1", T1)
+    badges = dict(zip(FIELDS, read_shard(tmp_path / "site", "gb")[0]))["badges"]
+    assert badges == [["licence", "Name match only: Licensed sponsor (UK)", True]]

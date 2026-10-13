@@ -159,3 +159,21 @@ def test_due_boards_interleave_ats_so_one_host_cannot_eat_the_budget(conn):
     due = [(r["ats"], r["slug"]) for r in db.due_boards(conn, T1, 6)]
     assert sorted({a for a, _ in due}) == ["ashby", "greenhouse", "lever"]
     assert [a for a, _ in due] == ["ashby", "greenhouse", "lever"] * 2
+
+
+def test_company_name_verification_only_upgrades(conn, tmp_path):
+    cid = db.get_or_create_company(conn, "Alpha", verified=False)
+    assert conn.execute("SELECT name_verified FROM companies WHERE id = ?", (cid,)).fetchone()[0] == 0
+    assert db.get_or_create_company(conn, "Alpha", verified=True) == cid
+    db.get_or_create_company(conn, "Alpha", verified=False)
+    assert conn.execute("SELECT name_verified FROM companies WHERE id = ?", (cid,)).fetchone()[0] == 1
+
+
+def test_connect_migrates_old_companies_table(tmp_path):
+    import sqlite3
+    old = sqlite3.connect(tmp_path / "old.db")
+    old.execute("CREATE TABLE companies (id INTEGER PRIMARY KEY, display_name TEXT NOT NULL, norm_name TEXT NOT NULL UNIQUE)")
+    old.execute("INSERT INTO companies (display_name, norm_name) VALUES ('Acme', 'acme')")
+    old.commit(); old.close()
+    c = db.connect(tmp_path / "old.db")
+    assert c.execute("SELECT name_verified FROM companies").fetchone()[0] == 1

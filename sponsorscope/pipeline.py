@@ -69,12 +69,13 @@ async def run_registers(conn: sqlite3.Connection, http: Http, registers: Sequenc
 def run_match(conn: sqlite3.Connection, overrides: Overrides) -> int:
     index = SponsorIndex.build((r["id"], r["norm_name"]) for r in conn.execute("SELECT id, norm_name FROM sponsors"))
     matches: list[tuple[int, int, str, float]] = []
-    for company in conn.execute("SELECT id, norm_name FROM companies").fetchall():
+    for company in conn.execute("SELECT id, norm_name, name_verified FROM companies").fetchall():
         norm = company["norm_name"]
         found = []
         hit = find_match(norm, index)
         if hit and (norm, hit[0]) not in overrides.forbid:
-            found.append(hit)
+            # a slug-derived name ("alpha") matching "Alpha Ltd" is only a name coincidence until confirmed
+            found.append(hit if company["name_verified"] else (hit[0], "unverified", hit[2]))
         found += [(sponsor, "manual", 100.0) for c, sponsor in overrides.force if c == norm]
         for sponsor_norm, method, score in found:
             matches += [(sid, company["id"], method, score) for sid in index.by_norm.get(sponsor_norm, [])]
