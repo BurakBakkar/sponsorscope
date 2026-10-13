@@ -63,3 +63,15 @@ GB_HEAVY = {**CITIES, "cambridge": "GB", "manchester": "GB", "birmingham": "GB",
 )
 def test_state_and_province_codes(location, expected):
     assert resolve_country(location, cities=GB_HEAVY) == expected
+
+
+from sponsorscope.geo.country import country_code
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [("ro", "RO"), ("NL", "NL"), ("United States", "US"), ("Netherlands", "NL"), ("GBR", "GB"),
+     ("United Kingdom", "GB"), ("Georgia", "GE"), ("European Union", None), ("", None), (None, None)],
+)
+def test_country_code(value, expected):
+    assert country_code(value) == expected

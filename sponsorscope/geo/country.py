@@ -25,7 +25,7 @@ _CA_PROVINCES = [
     "nova scotia", "ontario", "prince edward island", "quebec", "québec", "saskatchewan",
     "northwest territories", "nunavut", "yukon",
 ]
-_EXTRA = {
+_ALIASES = {
     "uk": "GB", "u.k.": "GB", "england": "GB", "scotland": "GB", "wales": "GB",
     "northern ireland": "GB", "great britain": "GB", "britain": "GB",
     "us": "US", "usa": "US", "u.s.": "US", "u.s.a.": "US", "united states of america": "US",
@@ -33,9 +33,9 @@ _EXTRA = {
     "czech republic": "CZ", "south korea": "KR", "korea": "KR", "russia": "RU", "vietnam": "VN",
     "turkey": "TR", "türkiye": "TR", "uae": "AE", "taiwan": "TW", "iran": "IR", "bolivia": "BO",
     "venezuela": "VE", "tanzania": "TZ", "syria": "SY", "laos": "LA", "moldova": "MD",
-    **{s: "US" for s in _US_STATES},  # overrides the country Georgia on purpose
-    **{p: "CA" for p in _CA_PROVINCES},
 }
+# State/province names: in free-text locations these override the country Georgia on purpose.
+_REGIONS = {**{s: "US" for s in _US_STATES}, **{p: "CA" for p in _CA_PROVINCES}}
 
 _US_STATE_CODES = frozenset(
     "AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY "
@@ -47,15 +47,21 @@ _SPLIT = re.compile(r"[,/|;()\n]+|\s[-–]\s")
 
 
 @lru_cache(maxsize=1)
-def _country_names() -> dict[str, str]:
+def _country_only_names() -> dict[str, str]:
     names: dict[str, str] = {}
     for c in pycountry.countries:
         for attr in ("name", "official_name", "common_name"):
             value = getattr(c, attr, None)
             if value:
                 names[value.lower()] = c.alpha_2
-    names.update(_EXTRA)
+    names.update(_ALIASES)
     return names
+
+
+@lru_cache(maxsize=1)
+def _country_names() -> dict[str, str]:
+    """Names usable in free-text locations: countries plus US states / CA provinces."""
+    return {**_country_only_names(), **_REGIONS}
 
 
 @lru_cache(maxsize=1)
@@ -71,6 +77,19 @@ def load_cities(path: Path = CITIES_PATH) -> dict[str, str]:
         return {}
     with path.open(encoding="utf-8", newline="") as f:
         return {row[0]: row[1] for row in csv.reader(f, delimiter="\t") if len(row) == 2}
+
+
+def country_code(value: str | None) -> str | None:
+    """ISO-2 for a structured country field: 'ro', 'NL', 'GBR', 'United States'."""
+    if not value or not value.strip():
+        return None
+    v = value.strip()
+    alpha2, alpha3 = _codes()
+    if len(v) == 2 and v.upper() in alpha2:
+        return v.upper()
+    if len(v) == 3 and v.upper() in alpha3:
+        return alpha3[v.upper()]
+    return _country_only_names().get(v.lower())
 
 
 def resolve_country(location_raw: str | None, structured: str | None = None,
