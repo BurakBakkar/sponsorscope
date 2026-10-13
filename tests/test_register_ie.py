@@ -52,8 +52,9 @@ async def test_latest_and_fetch(http, respx_mock):
     respx_mock.get(year_url).mock(return_value=httpx.Response(200, text=YEAR_HTML))
     respx_mock.get(file_url).mock(return_value=httpx.Response(200, content=make_xlsx(PERMITS)))
     reg = IeRegister(today=lambda: date(2026, 10, 13))
-    assert await reg.latest(http) == file_url
-    assert {r.period for r in await reg.fetch(http, file_url)} == {"2025"}
+    version = await reg.latest(http)
+    assert version.startswith(file_url + "#")
+    assert {r.period for r in await reg.fetch(http, version)} == {"2025"}
 
 
 def test_parse_permits_2025_layout_blank_header_and_grand_total_row():
@@ -63,3 +64,19 @@ def test_parse_permits_2025_layout_blank_header_and_grand_total_row():
             ["Zyntrica Technologies Limited", "", 1.0, 1.0]]
     records = {r.legal_name: r.filings for r in parse_permits(make_xlsx(rows), "2025")}
     assert records == {"IQVIA RDS IRELAND LTD": 2, "Zyntrica Technologies Limited": 1}
+
+
+async def test_version_changes_when_same_url_file_is_republished(http, respx_mock):
+    year_url = "https://enterprise.gov.ie/en/publications/employment-permit-statistics-2025.html"
+    file_url = "https://enterprise.gov.ie/en/publications/publication-files/employment-permits-issued-to-companies-2025.xlsx"
+    respx_mock.get(STATS_PAGE).mock(return_value=httpx.Response(200, text=STATS_HTML))
+    respx_mock.get(year_url).mock(return_value=httpx.Response(200, text=YEAR_HTML))
+    file_route = respx_mock.get(file_url).mock(side_effect=[
+        httpx.Response(200, content=make_xlsx(PERMITS)),
+        httpx.Response(200, content=make_xlsx(PERMITS + [["December Hire Ltd", "", "", 1.0]]))])
+    reg = IeRegister(today=lambda: date(2026, 1, 2))
+    first = await reg.latest(http)
+    second = await reg.latest(http)
+    assert first != second and first.startswith(file_url) and second.startswith(file_url)
+    assert "December Hire Ltd" in {r.legal_name for r in await reg.fetch(http, second)}
+    assert file_route.call_count == 2  # fetch reuses the file downloaded by latest()

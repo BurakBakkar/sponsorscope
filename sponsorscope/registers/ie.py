@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import re
 from collections import Counter
 from collections.abc import Callable
@@ -11,7 +12,7 @@ from selectolax.lexbor import LexborHTMLParser
 from sponsorscope.http import Http
 from sponsorscope.matching.names import normalize
 from sponsorscope.models import SponsorRecord
-from sponsorscope.registers.base import RegisterFormatError
+from sponsorscope.registers.base import HISTORY_SHRINK_RATIO, RegisterFormatError
 from sponsorscope.registers.xlsx import cell_int, cell_str, sheet_rows
 
 STATS_PAGE = "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/statistics/"
@@ -70,12 +71,18 @@ def parse_permits(data: bytes, period: str) -> list[SponsorRecord]:
 
 
 class IeRegister:
-    """DETE employment permits issued to companies (last complete calendar year)."""
+    """DETE employment permits issued to companies (last complete calendar year).
+
+    The file URL is stable per year and DETE republishes it in place (e.g. adding December in
+    January), so the version is URL + content hash. The file is small (~0.5 MB).
+    """
 
     name = "ie"
+    shrink_ratio = HISTORY_SHRINK_RATIO
 
     def __init__(self, today: Callable[[], date] = date.today) -> None:
         self._today = today
+        self._cache: tuple[str, bytes] | None = None
 
     async def latest(self, http: Http) -> str:
         stats = await http.get(STATS_PAGE)
@@ -83,10 +90,19 @@ class IeRegister:
         page_url, _year = pick_year_page(stats.text, self._today())
         page = await http.get(page_url)
         page.raise_for_status()
-        return find_file(page.text, page_url)
+        file_url = find_file(page.text, page_url)
+        data = await self._download(http, file_url)
+        version = f"{file_url}#{hashlib.sha256(data).hexdigest()[:16]}"
+        self._cache = (version, data)
+        return version
 
     async def fetch(self, http: Http, version: str) -> list[SponsorRecord]:
-        resp = await http.get(version)
+        file_url = version.split("#", 1)[0]
+        data = self._cache[1] if self._cache and self._cache[0] == version else await self._download(http, file_url)
+        match = _FILE_YEAR.search(file_url)
+        return parse_permits(data, match.group(1) if match else "latest year")
+
+    async def _download(self, http: Http, url: str) -> bytes:
+        resp = await http.get(url)
         resp.raise_for_status()
-        match = _FILE_YEAR.search(version)
-        return parse_permits(resp.content, match.group(1) if match else "latest year")
+        return resp.content
