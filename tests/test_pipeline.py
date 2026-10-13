@@ -183,3 +183,25 @@ def test_run_match_respects_overrides(conn):
     assert pipeline.run_match(conn, o) == 1
     pairs = {(r["company_id"], r["method"]) for r in conn.execute("SELECT * FROM sponsor_matches")}
     assert pairs == {(stripe, "manual")} and apple not in {c for c, _ in pairs}
+
+
+class ExplodingClassifier(RulesClassifier):
+    def classify(self, text):
+        if "boom" in text:
+            raise RuntimeError("classifier exploded")
+        return super().classify(text)
+
+
+async def test_posting_processing_error_fails_only_that_board(conn, http, tmp_path):
+    seeds = tmp_path / "seeds.yaml"
+    seeds.write_text("- {ats: greenhouse, slug: acme, name: Acme Widgets}\n- {ats: greenhouse, slug: beta, name: Beta Co}\n")
+    bad = gh_job(9, "Engineer", "London, UK", "boom" + LONG)
+    with sources(boards={"acme": ok([JOB_YES]), "beta": ok([JOB_NO, bad])}):
+        report = await pipeline.nightly(conn, http, registers=[UkRegister()], adapters={"greenhouse": Greenhouse()},
+                                        classifier=ExplodingClassifier(), seeds_path=seeds, overrides=Overrides(),
+                                        site_dir=tmp_path / "site", now=T[0], cities=CITIES)
+    summary = report.ats["greenhouse"]
+    assert summary["ok"] == 1 and summary["failed"] == 1
+    assert any("classifier exploded" in e for e in summary["errors"])
+    assert active_ids(conn) == {"greenhouse:acme:1"}  # beta's partial writes rolled back
+    assert (tmp_path / "site" / "data" / "gb.json.gz").exists()  # the night still exported

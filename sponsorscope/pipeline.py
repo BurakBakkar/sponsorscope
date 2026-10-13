@@ -119,13 +119,18 @@ async def run_crawl(conn: sqlite3.Connection, http: Http, adapters: Mapping[str,
         postings = 0
         for next_done in asyncio.as_completed([fetch(b) for b in boards]):
             board, outcome, result = await next_done
+            if outcome == "ok":
+                try:
+                    for p in result:
+                        _process_posting(conn, p, board["company_id"], classifier, now, cities, detect)
+                    conn.commit()
+                except Exception as exc:  # a bad posting fails its board, not the night
+                    conn.rollback()
+                    outcome, result = "failed", exc
             outcomes[outcome] += 1
             if outcome == "ok":
                 seen[board["slug"]] = {p.id for p in result}
-                for p in result:
-                    _process_posting(conn, p, board["company_id"], classifier, now, cities, detect)
                 postings += len(result)
-                conn.commit()
             elif outcome == "not_found":
                 not_found.append(board["slug"])
             else:
