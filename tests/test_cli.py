@@ -29,3 +29,23 @@ def test_seed_loads_boards(tmp_path):
 def test_all_registers_wired():
     from sponsorscope import cli
     assert [r.name for r in cli._registers()] == ["gb", "nl", "dk", "fi", "us", "ca", "ie"]
+
+
+from sponsorscope import cli
+
+
+def test_smoke_boards_cover_every_adapter():
+    assert set(cli.SMOKE_BOARDS) == set(cli._adapters())
+
+
+def test_discover_without_remote_seeds_on_empty_db(tmp_path, monkeypatch):
+    async def no_registers(conn, http, registers, report, now):
+        return None
+
+    monkeypatch.setattr(cli.pipeline, "run_registers", no_registers)
+    seeds = tmp_path / "s.yaml"
+    seeds.write_text("")
+    result = runner.invoke(app, ["discover", "--db", str(tmp_path / "x.db"), "--seeds", str(seeds),
+                                 "--no-remote-seeds", "--budget", "10"])
+    assert result.exit_code == 0, result.output
+    assert "discovery:" in result.output

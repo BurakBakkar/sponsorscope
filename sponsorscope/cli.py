@@ -17,9 +17,12 @@ from sponsorscope.ats.recruitee import Recruitee
 from sponsorscope.ats.smartrecruiters import SmartRecruiters
 from sponsorscope.ats.workable import Workable
 from sponsorscope.classify.rules import RulesClassifier
+from sponsorscope.discovery.probe import run_discovery
+from sponsorscope.discovery.seeds import fetch_remote_seeds, load_manual
 from sponsorscope.export.shards import export_site
 from sponsorscope.http import Http
 from sponsorscope.matching.names import Overrides
+from sponsorscope.registers.base import RegisterBlocked
 from sponsorscope.registers.ca import CaRegister
 from sponsorscope.registers.dk import DkRegister
 from sponsorscope.registers.fi import FiRegister
@@ -120,6 +123,66 @@ def nightly(db: Db = Path("sponsorscope.db"), site: Site = Path("site"),
     _print_warnings(report)
     total = sum(info["postings"] for info in report.ats.values())
     typer.echo(f"done: {total} postings crawled, {len(report.warnings())} warnings")
+
+
+SMOKE_BOARDS = {"greenhouse": "airbnb", "lever": "palantir", "ashby": "notion", "workable": "huggingface",
+                "smartrecruiters": "Ubisoft2", "recruitee": "bunq", "personio": "tado"}
+
+
+@app.command()
+def discover(db: Db = Path("sponsorscope.db"), seeds: Seeds = Path("seeds/manual.yaml"),
+             overrides: OverridesPath = Path("overrides.yaml"),
+             budget: Annotated[int, typer.Option(help="Max probes this run")] = 50_000,
+             remote_seeds: Annotated[bool, typer.Option(help="Fetch public seed lists")] = True) -> None:
+    """Weekly: refresh registers, probe seed/known boards, guess slugs for unmatched sponsors."""
+    conn, now = connect(db), _now()
+    report = RunReport(started_at=now)
+    adapters = _adapters()
+
+    async def run(http):
+        await pipeline.run_registers(conn, http, _registers(), report, now)
+        pipeline.run_match(conn, Overrides.load(overrides))
+        all_seeds = load_manual(seeds)
+        errors: list[str] = []
+        if remote_seeds:
+            remote, errors = await fetch_remote_seeds(http, set(adapters))
+            all_seeds += remote
+        summary = await run_discovery(conn, http, adapters, seeds=all_seeds, now=now, budget=budget)
+        pipeline.run_match(conn, Overrides.load(overrides))
+        return summary, errors
+
+    summary, errors = _run_with_http(run)
+    _print_warnings(report)
+    for error in errors:
+        typer.echo(f"::warning::seed source failed: {error}")
+    typer.echo("discovery: " + ", ".join(f"{k}={v}" for k, v in sorted(summary.items())))
+
+
+@app.command()
+def smoke() -> None:
+    """Live check: one real board per ATS and the version signal of each register."""
+    async def run(http):
+        failures = []
+        for ats, adapter in _adapters().items():
+            slug = SMOKE_BOARDS[ats]
+            try:
+                postings = await adapter.fetch(http, slug)
+                typer.echo(f"ok      {ats}:{slug} → {len(postings)} postings")
+            except Exception as exc:
+                failures.append(ats)
+                typer.echo(f"FAIL    {ats}:{slug} → {type(exc).__name__}: {exc}")
+        for reg in _registers():
+            try:
+                typer.echo(f"ok      {reg.name} → {await reg.latest(http)}")
+            except RegisterBlocked as exc:
+                typer.echo(f"blocked {reg.name} → {exc}")
+            except Exception as exc:
+                failures.append(reg.name)
+                typer.echo(f"FAIL    {reg.name} → {type(exc).__name__}: {exc}")
+        return failures
+
+    if _run_with_http(run):
+        raise typer.Exit(1)
 
 
 @app.command("check-db")

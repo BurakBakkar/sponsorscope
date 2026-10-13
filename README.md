@@ -4,7 +4,8 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
 
 - **Sponsor data:** UK, NL, DK and FI licence registers, plus US (H-1B LCA), CA (positive LMIA) and IE
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
-- **Postings:** public ATS job-board APIs (Greenhouse and Lever in v1).
+- **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
+  SmartRecruiters, Recruitee and Personio.
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
   Every label shows the phrases that triggered it.
@@ -20,6 +21,18 @@ nightly on GitHub Actions:
 - The SQLite database is kept as an asset on the `db-latest` release.
 - The page in `site/` is deployed to GitHub Pages.
 - Design: `docs/superpowers/specs/2026-10-13-sponsorscope-design.md`
+- `weekly-discover` finds new boards. It probes public slug lists
+  ([Feashliaa/job-board-aggregator](https://github.com/Feashliaa/job-board-aggregator)
+  and [ConorsCode/open-jobs-data](https://github.com/ConorsCode/open-jobs-data),
+  both MIT) and guesses slugs from sponsor names. Misses back off from 1 week
+  to 4 weeks to 12 weeks.
+- `smoke` (run manually) hits one real board per ATS, to catch upstream API
+  changes.
+
+## One-time setup
+
+Set **Settings → Pages → Source** to "GitHub Actions" before the first nightly
+run.
 
 ## Development
 
