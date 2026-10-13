@@ -32,7 +32,7 @@ jobs:
         run: uv sync --frozen
 
       - name: Download previous database
-        run: gh release download db-latest -p sponsorscope.db -D . || echo "No previous database; starting fresh."
+        run: scripts/fetch_db.sh
 
       - name: Run pipeline
         run: uv run sponsorscope nightly --db sponsorscope.db --site site
