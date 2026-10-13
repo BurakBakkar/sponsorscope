@@ -40,7 +40,14 @@ Evidence comes in two kinds, and the page shows them as different badges:
 - **licence**: the employer is currently licensed or recognised to sponsor.
   Badge: **"Licensed sponsor"**.
 - **history**: the employer has filed for or received sponsorship before.
-  Badge: **"Has sponsored before"**, with a count where available.
+  The badge states the source-specific measure and period, never a summary
+  claim:
+  - US: *"Filed 37 certified H-1B LCAs (FY2026)"*
+  - CA: *"12 positive LMIAs (2026 Q1)"*
+  - IE: *"8 employment permits issued (2026)"*
+
+  A certified LCA is a step before the visa petition, not an approval, so
+  "has sponsored" would overstate what the US data shows.
 
 | Plugin | Source | Evidence | Format / access | Cadence | Notes |
 |---|---|---|---|---|---|
@@ -197,6 +204,7 @@ postings (
 labels (
   posting_id TEXT, content_hash TEXT, classifier_version TEXT,
   sponsorship TEXT,               -- 'yes' | 'no' | 'unknown'
+  mixed INTEGER DEFAULT 0,        -- 1 when yes- and no-rules both matched
   languages_required TEXT,        -- JSON list of ISO-639-1 codes
   evidence TEXT,                  -- JSON list of matched phrases
   PRIMARY KEY (posting_id, content_hash, classifier_version)
@@ -304,8 +312,10 @@ family is a named rule in `rules.py`:
 - `yes` — "visa sponsorship (is )?(available|offered|provided)", "we (can|will|
   are able to) sponsor", "relocation and visa support", "skilled worker visa
   sponsorship", "highly skilled migrant (visa|permit)", "kennismigrant".
-- If both match, `no` wins (explicit restrictions are usually more specific).
-  Both sets of evidence are recorded.
+- If both match → `unknown` with `mixed = true`, and both sets of evidence are
+  recorded. The page shows a "mixed signals" chip. Reason: the default view
+  hides `no`, so a false `no` hides a real opportunity. A conflict (e.g. "we
+  sponsor senior roles but not internships") is left for a person to read.
 - If neither matches → `unknown`.
 
 **Language requirements:** detect "(fluent|fluency in|native|proficient|
@@ -385,13 +395,14 @@ context each), and the page shows them.
   countries" loads every shard.
 - Shard records are compact arrays (field order in `index.json`):
   `id, title, company, url, country, remote, posted_at, first_seen,
-  sponsorship, langs, evidence, badges, ats`.
+  sponsorship, mixed, langs, evidence, badges, ats`.
 
 **Filters:**
 
 - Country (multi-select)
 - Sponsorship: yes / unknown / no (default: yes + unknown)
-- Badges: licensed sponsor / has sponsored before
+- Badges: licensed sponsor / sponsorship history (any count)
+- Show only / hide "mixed signals" postings
 - Hide postings that require a language (multi-select of languages)
 - Free-text search over title and company
 - Company
@@ -448,7 +459,8 @@ Parquet + DuckDB-WASM).
 - **Classifier:** a labelled corpus `tests/fixtures/labels.yaml` with ≥ 60
   real English snippets covering yes/no/unknown and language requirements.
   The test computes precision/recall per class and fails below the thresholds:
-  precision ≥ 0.95 for `yes` and `no`, recall ≥ 0.80. This corpus is also the
+  `no` precision ≥ 0.98 (it's the label hidden by default, so false
+  positives cost the most), `yes` precision ≥ 0.95, recall ≥ 0.80 for both. This corpus is also the
   evaluation set for any future LLM classifier.
 
 **Integration test:** a full `registers → match → crawl → classify → export`
