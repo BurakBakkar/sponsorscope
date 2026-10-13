@@ -37,6 +37,12 @@ _EXTRA = {
     **{p: "CA" for p in _CA_PROVINCES},
 }
 
+_US_STATE_CODES = frozenset(
+    "AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY "
+    "NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC".split()
+)
+_CA_PROVINCE_CODES = frozenset("AB BC MB NB NL NS NT NU ON PE QC SK YT".split())
+
 _SPLIT = re.compile(r"[,/|;()\n]+|\s[-–]\s")
 
 
@@ -82,6 +88,7 @@ def resolve_country(location_raw: str | None, structured: str | None = None,
     cities = load_cities() if cities is None else cities
     names = _country_names()
     tiers: list[set[str]] = [set(), set(), set()]
+    region_codes: list[str] = []
     for segment in _SPLIT.split(location_raw):
         token = segment.strip()
         if not token:
@@ -91,10 +98,21 @@ def resolve_country(location_raw: str | None, structured: str | None = None,
             tiers[0].add(names[low])
         elif low in cities:
             tiers[1].add(cities[low])
+        elif token in _US_STATE_CODES or token in _CA_PROVINCE_CODES:
+            region_codes.append(token)
         elif token.isupper() and token in alpha2:
             tiers[2].add(token)
         elif token.isupper() and token in alpha3:
             tiers[2].add(alpha3[token])
+    # "Cambridge, MA": a state/province code beats the city's country. If the code is the
+    # city's own country code ("Berlin, DE", "Mumbai, IN") it is a country code instead.
+    for code in region_codes:
+        if code in tiers[1]:
+            tiers[0].add(code)
+        elif not tiers[1] and code in alpha2:
+            tiers[2].add(code)  # no city to disambiguate: keep the old weak country-code reading
+        else:
+            tiers[0].add("US" if code in _US_STATE_CODES else "CA")
     for tier in tiers:
         if len(tier) == 1:
             return next(iter(tier))

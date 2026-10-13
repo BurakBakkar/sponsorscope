@@ -42,3 +42,24 @@ def test_bundled_city_table_resolves_major_cities():
     cities = load_cities()
     assert cities["london"] == "GB" and cities["amsterdam"] == "NL"
     assert resolve_country("Dublin") == "IE"
+
+
+GB_HEAVY = {**CITIES, "cambridge": "GB", "manchester": "GB", "birmingham": "GB", "mumbai": "IN", "rabat": "MA"}
+
+
+@pytest.mark.parametrize(
+    "location, expected",
+    [
+        ("Cambridge, MA", "US"),  # state code beats a same-named UK city
+        ("London, ON", "CA"),  # province code
+        ("Manchester, NH", "US"),
+        ("Birmingham, AL", "US"),
+        ("Paris, TX", "US"),
+        ("Berlin, DE", "DE"),  # DE is also Delaware, but agrees with the city → country code
+        ("Mumbai, IN", "IN"),  # IN is also Indiana
+        ("Rabat, MA", "MA"),  # MA is also Massachusetts
+        ("Amsterdam, NL", "NL"),  # NL is also Newfoundland
+    ],
+)
+def test_state_and_province_codes(location, expected):
+    assert resolve_country(location, cities=GB_HEAVY) == expected
