@@ -205,3 +205,26 @@ async def test_posting_processing_error_fails_only_that_board(conn, http, tmp_pa
     assert any("classifier exploded" in e for e in summary["errors"])
     assert active_ids(conn) == {"greenhouse:acme:1"}  # beta's partial writes rolled back
     assert (tmp_path / "site" / "data" / "gb.json.gz").exists()  # the night still exported
+
+
+from sponsorscope.registers.base import RegisterBlocked
+
+
+class BlockedRegister:
+    name = "fi"
+
+    async def latest(self, http):
+        raise RegisterBlocked("bot challenge (HTTP 403)")
+
+    async def fetch(self, http, version):
+        raise AssertionError("never called")
+
+
+async def test_blocked_register_is_reported_and_others_still_run(conn, http, tmp_path, seeds):
+    with sources():
+        report = await pipeline.nightly(conn, http, registers=[BlockedRegister(), UkRegister()],
+                                        adapters={"greenhouse": Greenhouse()}, classifier=RulesClassifier(),
+                                        seeds_path=seeds, overrides=Overrides(), site_dir=tmp_path / "site",
+                                        now=T[0], cities=CITIES)
+    assert report.sources["fi"]["status"] == "blocked" and "challenge" in report.sources["fi"]["error"]
+    assert report.sources["gb"]["status"] == "ok"

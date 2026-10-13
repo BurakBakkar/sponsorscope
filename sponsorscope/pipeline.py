@@ -17,7 +17,7 @@ from sponsorscope.geo.country import resolve_country
 from sponsorscope.http import Http
 from sponsorscope.matching.names import Overrides, SponsorIndex, find_match
 from sponsorscope.models import RawPosting, content_hash
-from sponsorscope.registers.base import Register
+from sponsorscope.registers.base import Register, RegisterBlocked
 from sponsorscope.report import RunReport
 from sponsorscope.store import db
 
@@ -55,6 +55,9 @@ async def run_registers(conn: sqlite3.Connection, http: Http, registers: Sequenc
             db.upsert_sponsors(conn, reg.name, records, version, now)
             conn.commit()
             report.source(reg.name, "ok", version=version, rows=rows)
+        except RegisterBlocked as exc:
+            conn.rollback()
+            report.source(reg.name, "blocked", error=str(exc)[:300])
         except Exception as exc:  # one broken source must never stop the run
             conn.rollback()
             report.source(reg.name, "failed", error=f"{type(exc).__name__}: {exc}"[:300])
