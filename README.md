@@ -2,6 +2,8 @@
 
 A nightly-updated, filterable list of job postings that may offer **visa sponsorship**.
 
+**👉 Browse it here: [burakbakkar.github.io/sponsorscope](https://burakbakkar.github.io/sponsorscope/)**
+
 - **Sponsor data:** UK, NL, DK and FI licence registers, plus US (H-1B LCA), CA (positive LMIA) and IE
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
