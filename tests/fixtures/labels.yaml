@@ -40,6 +40,14 @@
 - {text: "Right to work in the EU is required; we do not provide sponsorship.", sponsorship: "no"}
 - {text: "Please note we can’t offer visa sponsorship.", sponsorship: "no"}
 - {text: "Must have existing right to work in Denmark.", sponsorship: "no"}
+- {text: "We do not currently sponsor visas.", sponsorship: "no"}
+- {text: "We are not currently able to sponsor visas.", sponsorship: "no"}
+- {text: "We are not offering visa sponsorship.", sponsorship: "no"}
+- {text: "No relocation or visa sponsorship.", sponsorship: "no"}
+- {text: "Sponsorship is unavailable.", sponsorship: "no"}
+- {text: "Applicants must not require sponsorship now or in the future.", sponsorship: "no"}
+- {text: "Candidates must be authorized to work in the US and will not require sponsorship.", sponsorship: "no"}
+- {text: "Whether or not you require sponsorship, we welcome your application.", sponsorship: "unknown"}
 # --- unknown
 - {text: "We are a fast-growing fintech based in London.", sponsorship: "unknown"}
 - {text: "Competitive salary, 25 days holiday and a pension scheme.", sponsorship: "unknown"}

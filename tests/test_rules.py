@@ -64,4 +64,4 @@ def test_mixed_records_both_sides():
 
 
 def test_version_constant():
-    assert CLF.version == VERSION == "rules-1"
+    assert CLF.version == VERSION == "rules-2"

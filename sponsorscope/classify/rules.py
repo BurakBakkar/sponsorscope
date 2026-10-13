@@ -4,7 +4,7 @@ import re
 
 from sponsorscope.models import Label
 
-VERSION = "rules-1"  # bump whenever rules change: the next run re-labels every posting
+VERSION = "rules-2"  # bump whenever rules change: the next run re-labels every posting
 EVIDENCE_WIDTH = 160
 NEGATION_WINDOW = 30
 
@@ -13,10 +13,13 @@ _F = re.IGNORECASE
 NO_RULES = {
     "unable_to_offer": r"\b(?:unable|not able) to (?:offer|provide|support) (?:any )?(?:visa |work permit )?sponsorship\b",
     "not_offer": r"\b(?:does not|doesn't|do not|don't|will not|won't|can't|cannot|can not) (?:offer|provide|support) (?:visa |work permit )?sponsorship\b",
-    "no_sponsorship": r"\bno (?:visa |work permit )?sponsorship\b",
+    "no_sponsorship": r"\bno (?:relocation (?:or|and|/) )?(?:visa |work permit )?sponsorship\b",
     "right_to_work": r"\bmust (?:already )?(?:have|hold) (?:the |an existing |existing |full |the full )?right to work\b",
     "not_available": r"\b(?:visa )?sponsorship (?:is |will )?not (?:be )?(?:available|offered|provided|possible)\b",
-    "cannot_sponsor": r"\b(?:cannot|can ?not|can't|do not|don't|does not|doesn't|will not|won't|unable to|not able to|won't be able to|will not be able to) sponsor\b",
+    "cannot_sponsor": r"\b(?:cannot|can ?not|can't|do not|don't|does not|doesn't|will not|won't|unable to|not (?:currently )?able to|won't be able to|will not be able to)(?: currently)? sponsor\b",
+    "not_offering": r"\b(?:not|aren't|isn't) (?:currently )?(?:offering|providing) (?:visa |work permit )?sponsorship\b",
+    "unavailable": r"\b(?:visa )?sponsorship (?:is |will be )?unavailable\b",
+    "not_require": r"\b(?:not|never) (?:now or in the future )?(?:require|need) (?:visa |employer |immigration )?sponsorship\b",
     "without_sponsorship": r"\bwithout (?:the need for |requiring |needing )?(?:visa |employer )?sponsorship\b",
     "not_eligible": r"\bnot eligible for (?:visa |work permit )?sponsorship\b",
     "not_in_position": r"\bnot (?:currently )?in a position to (?:offer|provide) (?:visa )?sponsorship\b",
