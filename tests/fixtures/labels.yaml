@@ -1,0 +1,72 @@
+# Labelled English snippets for the rules classifier (and any future LLM classifier).
+# sponsorship: yes | no | unknown;  mixed: true when both yes- and no-signals appear;  langs: ISO-639-1
+# --- yes
+- {text: "We offer visa sponsorship for this role.", sponsorship: "yes"}
+- {text: "Visa sponsorship is available for candidates who need it.", sponsorship: "yes"}
+- {text: "We can sponsor Skilled Worker visas.", sponsorship: "yes"}
+- {text: "We are able to sponsor visas for this position.", sponsorship: "yes"}
+- {text: "Relocation and visa support provided.", sponsorship: "yes"}
+- {text: "We provide visa and relocation assistance to international hires.", sponsorship: "yes"}
+- {text: "This role is eligible for the Dutch highly skilled migrant scheme.", sponsorship: "yes"}
+- {text: "As a recognised sponsor we can apply for your kennismigrant permit.", sponsorship: "yes"}
+- {text: "Our benefits include visa sponsorship and a relocation budget.", sponsorship: "yes"}
+- {text: "We will sponsor your work visa if required.", sponsorship: "yes"}
+- {text: "We are open to sponsoring candidates from outside the EU.", sponsorship: "yes"}
+- {text: "Full visa sponsorship offered.", sponsorship: "yes"}
+- {text: "The company will sponsor the work permit for the successful candidate.", sponsorship: "yes"}
+- {text: "We happily sponsor visas for engineers relocating to London.", sponsorship: "yes"}
+- {text: "Visa sponsorship provided where needed.", sponsorship: "yes"}
+- {text: "We're offering visa sponsorship and help with housing.", sponsorship: "yes"}
+- {text: "Sponsorship is available for the Skilled Worker route.", sponsorship: "yes"}
+- {text: "Providing work permit sponsorship for non-EU applicants.", sponsorship: "yes"}
+# --- no
+- {text: "Unfortunately we are unable to offer visa sponsorship.", sponsorship: "no"}
+- {text: "We cannot sponsor visas for this role.", sponsorship: "no"}
+- {text: "Candidates must have the right to work in the UK.", sponsorship: "no"}
+- {text: "You must already have the right to work in the Netherlands.", sponsorship: "no"}
+- {text: "No visa sponsorship is available for this position.", sponsorship: "no"}
+- {text: "Visa sponsorship is not available.", sponsorship: "no"}
+- {text: "We do not sponsor work visas.", sponsorship: "no"}
+- {text: "This role does not offer sponsorship.", sponsorship: "no"}
+- {text: "Applicants must hold the right to work in Ireland.", sponsorship: "no"}
+- {text: "We are not able to provide sponsorship.", sponsorship: "no"}
+- {text: "Sponsorship will not be provided.", sponsorship: "no"}
+- {text: "You must be eligible to work in the US without sponsorship.", sponsorship: "no"}
+- {text: "Unable to sponsor at this time.", sponsorship: "no"}
+- {text: "We won't be able to sponsor visas.", sponsorship: "no"}
+- {text: "No sponsorship available.", sponsorship: "no"}
+- {text: "This position is not eligible for visa sponsorship.", sponsorship: "no"}
+- {text: "We're not in a position to offer visa sponsorship.", sponsorship: "no"}
+- {text: "Right to work in the EU is required; we do not provide sponsorship.", sponsorship: "no"}
+- {text: "Please note we can’t offer visa sponsorship.", sponsorship: "no"}
+- {text: "Must have existing right to work in Denmark.", sponsorship: "no"}
+# --- unknown
+- {text: "We are a fast-growing fintech based in London.", sponsorship: "unknown"}
+- {text: "Competitive salary, 25 days holiday and a pension scheme.", sponsorship: "unknown"}
+- {text: "You will work closely with our data team.", sponsorship: "unknown"}
+- {text: "We are a licensed sponsor under the UK points-based system.", sponsorship: "unknown"}
+- {text: "Our clients include visa processing agencies.", sponsorship: "unknown"}
+- {text: "Sponsor relationships with key partners.", sponsorship: "unknown"}
+- {text: "Strong communication skills are required.", sponsorship: "unknown"}
+- {text: "The role is based in Amsterdam with hybrid working.", sponsorship: "unknown"}
+- {text: "Experience with immigration law is a plus.", sponsorship: "unknown"}
+- {text: "Our mission is to make travel accessible.", sponsorship: "unknown"}
+# --- mixed (yes and no both present → unknown + mixed)
+- {text: "We can sponsor visas for senior engineers but are unable to sponsor for internships.", sponsorship: "unknown", mixed: true}
+- {text: "Visa sponsorship is available for permanent roles; we cannot sponsor contractors.", sponsorship: "unknown", mixed: true}
+- {text: "We offer visa sponsorship for experienced hires. Graduates must already have the right to work in the UK.", sponsorship: "unknown", mixed: true}
+- {text: "Relocation and visa support is provided, but sponsorship is not available for part-time roles.", sponsorship: "unknown", mixed: true}
+# --- language requirements
+- {text: "Fluent Dutch is required.", sponsorship: "unknown", langs: [nl]}
+- {text: "You speak fluent German and English.", sponsorship: "unknown", langs: [de]}
+- {text: "Fluency in French is essential.", sponsorship: "unknown", langs: [fr]}
+- {text: "German (C1) required.", sponsorship: "unknown", langs: [de]}
+- {text: "Dutch language skills are mandatory.", sponsorship: "unknown", langs: [nl]}
+- {text: "Native-level Danish is a must.", sponsorship: "unknown", langs: [da]}
+- {text: "Fluent English; Dutch is a plus.", sponsorship: "unknown"}
+- {text: "Speaking Spanish would be nice to have.", sponsorship: "unknown"}
+- {text: "Proficiency in Japanese and Mandarin is required.", sponsorship: "unknown", langs: [ja, zh]}
+- {text: "Fluent English and German a plus.", sponsorship: "unknown"}
+- {text: "B2 level Polish or higher.", sponsorship: "unknown", langs: [pl]}
+- {text: "Professional working proficiency in Swedish.", sponsorship: "unknown", langs: [sv]}
+- {text: "We offer visa sponsorship. Fluent Dutch required.", sponsorship: "yes", langs: [nl]}
