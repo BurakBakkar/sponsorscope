@@ -31,6 +31,7 @@ Db = Annotated[Path, typer.Option("--db", help="SQLite database path")]
 Site = Annotated[Path, typer.Option("--site", help="Static site directory")]
 Seeds = Annotated[Path, typer.Option("--seeds", help="Seed boards YAML")]
 OverridesPath = Annotated[Path, typer.Option("--overrides", help="Match overrides YAML")]
+AcceptShrink = Annotated[list[str], typer.Option("--accept-shrink", help="Skip the shrink guard for SOURCE this run")]
 
 
 def _now() -> str:
@@ -69,10 +70,11 @@ def seed(db: Db = Path("sponsorscope.db"), seeds: Seeds = Path("seeds/manual.yam
 
 
 @app.command("registers")
-def registers_cmd(db: Db = Path("sponsorscope.db")) -> None:
+def registers_cmd(db: Db = Path("sponsorscope.db"), accept_shrink: AcceptShrink = []) -> None:
     """Refresh every sponsor register whose version changed."""
     conn, report = connect(db), RunReport(started_at=_now())
-    _run_with_http(lambda http: pipeline.run_registers(conn, http, _registers(), report, report.started_at))
+    _run_with_http(lambda http: pipeline.run_registers(conn, http, _registers(), report, report.started_at,
+                                                       accept_shrink=frozenset(accept_shrink)))
     for name, info in report.sources.items():
         typer.echo(f"{name}: {info}")
     _print_warnings(report)

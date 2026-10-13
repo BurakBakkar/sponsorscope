@@ -10,7 +10,7 @@ from selectolax.lexbor import LexborHTMLParser
 from sponsorscope.http import Http
 from sponsorscope.matching.names import normalize
 from sponsorscope.models import SponsorRecord
-from sponsorscope.registers.base import RegisterFormatError
+from sponsorscope.registers.base import HISTORY_SHRINK_RATIO, RegisterFormatError
 from sponsorscope.registers.xlsx import cell_str, sheet_rows
 
 PAGE = "https://www.dol.gov/agencies/eta/foreign-labor/performance"
@@ -88,6 +88,7 @@ class UsRegister:
     """DOL OFLC LCA disclosure data: certified H-1B LCAs per employer over the last complete fiscal year."""
 
     name = "us"
+    shrink_ratio = HISTORY_SHRINK_RATIO
 
     async def latest(self, http: Http) -> str:
         resp = await http.get(PAGE)

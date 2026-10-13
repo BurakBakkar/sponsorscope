@@ -40,7 +40,8 @@ def seed_boards(conn: sqlite3.Connection, path: Path, now: str) -> int:
 
 
 async def run_registers(conn: sqlite3.Connection, http: Http, registers: Sequence[Register],
-                        report: RunReport, now: str) -> None:
+                        report: RunReport, now: str, accept_shrink: frozenset[str] = frozenset()) -> None:
+    """accept_shrink: source names whose shrink guard is skipped for this run (manual override)."""
     for reg in registers:
         try:
             version = await reg.latest(http)
@@ -50,8 +51,10 @@ async def run_registers(conn: sqlite3.Connection, http: Http, registers: Sequenc
             records = await reg.fetch(http, version)
             previous = db.active_sponsor_count(conn, reg.name)
             rows = db.count_sponsor_keys(records)
-            if previous and rows < previous * SHRINK_GUARD:
-                raise ShrinkGuardError(f"shrink guard: {rows} rows vs {previous} previously")
+            ratio = getattr(reg, "shrink_ratio", SHRINK_GUARD)
+            if previous and rows < previous * ratio and reg.name not in accept_shrink:
+                raise ShrinkGuardError(f"shrink guard: {rows} rows vs {previous} previously "
+                                       f"(override with --accept-shrink {reg.name})")
             db.upsert_sponsors(conn, reg.name, records, version, now)
             conn.commit()
             report.source(reg.name, "ok", version=version, rows=rows)

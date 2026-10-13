@@ -12,6 +12,7 @@ from sponsorscope.ats.greenhouse import Greenhouse
 from sponsorscope.classify.rules import RulesClassifier
 from sponsorscope.matching.names import Overrides
 from sponsorscope.registers.gb import CONTENT_API, UkRegister
+from sponsorscope.report import RunReport
 from sponsorscope.store import db
 
 T = ["2026-10-13T03:00:00+00:00", "2026-10-14T03:00:00+00:00", "2026-10-15T03:00:00+00:00"]
@@ -228,3 +229,38 @@ async def test_blocked_register_is_reported_and_others_still_run(conn, http, tmp
                                         now=T[0], cities=CITIES)
     assert report.sources["fi"]["status"] == "blocked" and "challenge" in report.sources["fi"]["error"]
     assert report.sources["gb"]["status"] == "ok"
+
+
+class ShrinkingHistory:
+    """A quarterly history source: version and rows vary per call."""
+
+    name = "ca"
+    shrink_ratio = 0.5
+
+    def __init__(self, sizes):
+        self.sizes = list(sizes)
+
+    async def latest(self, http):
+        return f"v{len(self.sizes)}"
+
+    async def fetch(self, http, version):
+        from sponsorscope.models import SponsorRecord
+        return [SponsorRecord("CA", "ca", "history", f"Employer {i} Inc", filings=1) for i in range(self.sizes.pop(0))]
+
+
+async def test_history_source_uses_its_own_looser_shrink_ratio(conn, http):
+    reg = ShrinkingHistory([10, 6, 4])  # 60% passes a 0.5 guard; 4/6 = 67% passes too
+    for now in T:
+        report = RunReport(started_at=now)
+        await pipeline.run_registers(conn, http, [reg], report, now)
+        assert report.sources["ca"]["status"] == "ok", report.sources
+    assert db.active_sponsor_count(conn, "ca") == 4
+
+
+async def test_accept_shrink_overrides_the_guard_once(conn, http):
+    reg = ShrinkingHistory([10, 2, 1])
+    for now, accept, expected in [(T[0], set(), "ok"), (T[1], set(), "failed"), (T[2], {"ca"}, "ok")]:
+        report = RunReport(started_at=now)
+        await pipeline.run_registers(conn, http, [reg], report, now, accept_shrink=frozenset(accept))
+        assert report.sources["ca"]["status"] == expected
+    assert db.active_sponsor_count(conn, "ca") == 1

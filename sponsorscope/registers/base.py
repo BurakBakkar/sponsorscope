@@ -8,6 +8,11 @@ from sponsorscope.http import Http
 from sponsorscope.models import SponsorRecord
 
 
+# History data (filings per period) legitimately swings between periods more than licence
+# registers do; a looser guard still catches truncated files. Registers may set shrink_ratio.
+HISTORY_SHRINK_RATIO = 0.5
+
+
 class RegisterFormatError(Exception):
     """The upstream file or page no longer looks like what the parser expects."""
 

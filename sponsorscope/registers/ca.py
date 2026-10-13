@@ -6,7 +6,7 @@ from collections import Counter
 from sponsorscope.http import Http
 from sponsorscope.matching.names import normalize
 from sponsorscope.models import SponsorRecord
-from sponsorscope.registers.base import RegisterFormatError
+from sponsorscope.registers.base import HISTORY_SHRINK_RATIO, RegisterFormatError
 from sponsorscope.registers.xlsx import cell_int, cell_str, sheet_rows
 
 PACKAGE_API = "https://open.canada.ca/data/api/action/package_show?id=90fed587-1364-4f33-a9ee-208181dc0b97"
@@ -69,6 +69,7 @@ class CaRegister:
     """ESDC positive LMIA employers list (newest quarter; quarters are not cumulative)."""
 
     name = "ca"
+    shrink_ratio = HISTORY_SHRINK_RATIO
 
     async def latest(self, http: Http) -> str:
         resp = await http.get(PACKAGE_API)
