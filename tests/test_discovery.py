@@ -120,3 +120,14 @@ async def test_slug_named_and_unconfirmed_companies_are_unverified(conn):
                         seeds=[Seed("greenhouse", "airbnb", None), Seed("lever", "15five", None)], now=T1, budget=100)
     verified = {r[0]: r[1] for r in conn.execute("SELECT display_name, name_verified FROM companies")}
     assert verified == {"Airbnb": 1, "15Five": 0, "Northwind Trading": 0}
+
+
+async def test_a_broken_ats_does_not_stall_guessing(conn):
+    sponsors(conn, "Northwind Trading Ltd", "Southwind Trading Ltd")
+    broken = FakeATS("workable", True, {}, errors={"northwindtrading", "northwind-trading", "northwind",
+                                                   "southwindtrading", "southwind-trading", "southwind"})
+    lever = FakeATS("lever", False, {})
+    summary = await run_discovery(conn, None, {"workable": broken, "lever": lever}, seeds=[], now=T1, budget=100)
+    assert summary["broken_ats"] == 1
+    progress = {r[0] for r in conn.execute("SELECT sponsor_norm FROM discovery_progress")}
+    assert progress == {"northwind trading", "southwind trading"}  # lever answered, so the sponsors move on

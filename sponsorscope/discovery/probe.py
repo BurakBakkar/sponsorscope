@@ -6,6 +6,9 @@ import sqlite3
 from collections import Counter
 from collections.abc import Iterable, Mapping
 
+BROKEN_ERROR_RATIO = 0.5  # an ATS erroring on more than half its probes this run is treated as down
+BROKEN_MIN_PROBES = 3
+
 from sponsorscope.ats.base import ATS, ProbeResult
 from sponsorscope.discovery.seeds import Seed
 from sponsorscope.discovery.slugs import candidates
@@ -73,14 +76,19 @@ async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[
 
     results = await _probe_many(http, adapters, [t for _, ts in planned for t in ts])
     summary["probes"] += len(results)
+    tried: Counter[str] = Counter(ats for ats, _ in results)
+    failed: Counter[str] = Counter(ats for (ats, _), r in results.items() if isinstance(r, Exception))
+    broken = {ats for ats in tried if tried[ats] >= BROKEN_MIN_PROBES and failed[ats] / tried[ats] > BROKEN_ERROR_RATIO}
+    summary["broken_ats"] = len(broken)
     for norm, targets in planned:
-        found = errored = False
+        found = errored = answered = False
         for ats, slug in targets:
             result: ProbeResult | Exception = results[(ats, slug)]
             if isinstance(result, Exception):
                 summary["probe_errors"] += 1
-                errored = True
+                errored = errored or ats not in broken  # a down ATS must not stall every sponsor forever
                 continue
+            answered = True
             summary["guesses_probed"] += 1
             if not result.exists:
                 continue
@@ -93,7 +101,7 @@ async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[
             db.upsert_board(conn, ats, slug, company_id, status="hit", origin="guess", now=now)
             summary["guesses_found"] += 1
             found = True
-        if found or not errored:
+        if found or (answered and not errored):
             db.record_guess_attempt(conn, norm, found=found, now=now)
     conn.commit()
     return dict(summary)
