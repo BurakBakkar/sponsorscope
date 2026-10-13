@@ -264,3 +264,38 @@ async def test_accept_shrink_overrides_the_guard_once(conn, http):
         await pipeline.run_registers(conn, http, [reg], report, now, accept_shrink=frozenset(accept))
         assert report.sources["ca"]["status"] == expected
     assert db.active_sponsor_count(conn, "ca") == 1
+
+
+from sponsorscope.models import RawPosting
+
+
+class DetailOnceATS:
+    """Mimics SmartRecruiters: description only for ids not in known_ids."""
+
+    name = "fakeats"
+    provides_name = False
+
+    def __init__(self):
+        self.seen_known = []
+
+    async def fetch(self, http, slug, known_ids=frozenset()):
+        self.seen_known.append(known_ids)
+        pid = f"fakeats:{slug}:1"
+        return [RawPosting(ats="fakeats", slug=slug, job_id="1", title="Backend Engineer", url="https://x/1",
+                           description=None if pid in known_ids else "We offer visa sponsorship for this role." + LONG,
+                           location_raw="London, UK", country=None, remote=None, posted_at="2026-10-01")]
+
+    async def probe(self, http, slug):
+        raise NotImplementedError
+
+
+async def test_known_posting_without_description_keeps_label(conn, http):
+    cid = db.get_or_create_company(conn, "Acme Widgets")
+    db.upsert_board(conn, "fakeats", "acme", cid, status="hit", origin="seed", now=T[0])
+    ats = DetailOnceATS()
+    for now in T[:2]:
+        await pipeline.run_crawl(conn, http, {"fakeats": ats}, RulesClassifier(), RunReport(started_at=now), now, CITIES)
+    assert ats.seen_known == [frozenset(), frozenset({"fakeats:acme:1"})]
+    row = conn.execute("SELECT active, last_seen, lang, content_hash FROM postings").fetchone()
+    assert (row["active"], row["last_seen"], row["lang"]) == (1, T[1], "en") and row["content_hash"]
+    assert conn.execute("SELECT sponsorship FROM labels").fetchone()[0] == "yes"

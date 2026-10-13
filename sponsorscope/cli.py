@@ -9,8 +9,13 @@ from typing import Annotated
 import typer
 
 from sponsorscope import pipeline
+from sponsorscope.ats.ashby import Ashby
 from sponsorscope.ats.greenhouse import Greenhouse
 from sponsorscope.ats.lever import Lever
+from sponsorscope.ats.personio import Personio
+from sponsorscope.ats.recruitee import Recruitee
+from sponsorscope.ats.smartrecruiters import SmartRecruiters
+from sponsorscope.ats.workable import Workable
 from sponsorscope.classify.rules import RulesClassifier
 from sponsorscope.export.shards import export_site
 from sponsorscope.http import Http
@@ -43,7 +48,8 @@ def _registers():
 
 
 def _adapters():
-    return {"greenhouse": Greenhouse(), "lever": Lever()}
+    adapters = [Greenhouse(), Lever(), Ashby(), Workable(), SmartRecruiters(), Recruitee(), Personio()]
+    return {a.name: a for a in adapters}
 
 
 def _run_with_http(make_coro):

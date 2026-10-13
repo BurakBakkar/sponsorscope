@@ -227,3 +227,20 @@ def replace_matches(conn: sqlite3.Connection, matches: Iterable[tuple[int, int, 
         "INSERT OR REPLACE INTO sponsor_matches (sponsor_id, company_id, method, score) VALUES (?, ?, ?, ?)",
         list(matches),
     )
+
+
+def active_posting_ids(conn: sqlite3.Connection, ats: str, slug: str) -> frozenset[str]:
+    return frozenset(r[0] for r in conn.execute(
+        "SELECT id FROM postings WHERE ats = ? AND slug = ? AND active = 1", (ats, slug)))
+
+
+def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, country: str | None, now: str) -> None:
+    """Known posting seen again without its description: refresh metadata, keep hash/lang/label."""
+    conn.execute(
+        """
+        UPDATE postings SET company_id = ?, title = ?, url = ?, location_raw = ?, country = ?, remote = ?,
+          posted_at = ?, last_seen = ?, active = 1
+        WHERE id = ?
+        """,
+        (company_id, p.title, p.url, p.location_raw, country, p.remote, p.posted_at, now, p.id),
+    )

@@ -85,6 +85,10 @@ def run_match(conn: sqlite3.Connection, overrides: Overrides) -> int:
 
 def _process_posting(conn: sqlite3.Connection, p: RawPosting, company_id: int, classifier: Classifier,
                      now: str, cities: Mapping[str, str] | None, detect: Callable[[str], bool]) -> None:
+    if p.description is None:  # adapter skipped the detail call for a known posting
+        db.touch_posting(conn, p, company_id=company_id,
+                         country=resolve_country(p.location_raw, p.country, cities), now=now)
+        return
     text = f"{p.title}\n{p.description}"
     chash = content_hash(text)
     previous = db.get_posting_meta(conn, p.id)
@@ -112,7 +116,8 @@ async def run_crawl(conn: sqlite3.Connection, http: Http, adapters: Mapping[str,
 
         async def fetch(board: sqlite3.Row, adapter: ATS = adapter):
             try:
-                return board, "ok", await adapter.fetch(http, board["slug"])
+                known = db.active_posting_ids(conn, ats_name, board["slug"])
+                return board, "ok", await adapter.fetch(http, board["slug"], known_ids=known)
             except BoardNotFound:
                 return board, "not_found", None
             except Exception as exc:
