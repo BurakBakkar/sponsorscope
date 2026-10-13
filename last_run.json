@@ -1,0 +1,60 @@
+{
+  "started_at": "2026-10-13T16:08:46+00:00",
+  "finished_at": "2026-10-13T16:10:12+00:00",
+  "sources": {
+    "gb": {
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6acdecb2a57ddfe32196ab6b/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-13.csv",
+      "rows": 141081
+    },
+    "nl": {
+      "status": "ok",
+      "version": "5 October 2026",
+      "rows": 12821
+    },
+    "dk": {
+      "status": "ok",
+      "version": "12-10-2026",
+      "rows": 985
+    },
+    "fi": {
+      "status": "blocked",
+      "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
+    },
+    "us": {
+      "status": "ok",
+      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx",
+      "rows": 60475
+    },
+    "ca": {
+      "status": "ok",
+      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/4ee7a4e0-ffc3-47af-94e7-30929d1eeb67/download/tfwp_2026q1_pos_en.xlsx",
+      "rows": 7878
+    },
+    "ie": {
+      "status": "ok",
+      "version": "https://enterprise.gov.ie/en/publications/publication-files/permits-issued-to-companies-2025.xlsx#e44867719bd3bf9a",
+      "rows": 8256
+    }
+  },
+  "ats": {
+    "greenhouse": {
+      "boards": 5,
+      "ok": 5,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 1299,
+      "outage": false,
+      "errors": []
+    },
+    "lever": {
+      "boards": 2,
+      "ok": 2,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 394,
+      "outage": false,
+      "errors": []
+    }
+  }
+}
