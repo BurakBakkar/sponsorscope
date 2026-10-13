@@ -103,3 +103,50 @@ def test_replace_matches(conn):
     db.replace_matches(conn, [(1, 1, "exact", 100.0), (2, 1, "normalised", 97.0)])
     db.replace_matches(conn, [(3, 2, "manual", 100.0)])
     assert [tuple(r) for r in conn.execute("SELECT sponsor_id, company_id FROM sponsor_matches")] == [(3, 2)]
+
+
+def test_backoff_schedule():
+    assert db.backoff_until(T1, 1) == "2026-10-20T03:00:00+00:00"
+    assert db.backoff_until(T1, 2) == "2026-11-10T03:00:00+00:00"
+    assert db.backoff_until(T1, 3) == db.backoff_until(T1, 9) == "2027-01-05T03:00:00+00:00"
+
+
+def test_seed_boards_are_pending_until_probed(conn):
+    assert db.add_seed_board(conn, "ashby", "notion", None, T1) is True
+    assert db.add_seed_board(conn, "ashby", "notion", None, T1) is False
+    assert [r["slug"] for r in db.due_boards(conn, T1, 10)] == ["notion"]
+    assert db.boards_to_crawl(conn) == []
+    cid = db.get_or_create_company(conn, "Notion")
+    db.record_probe(conn, "ashby", "notion", exists=True, company_id=cid, now=T1)
+    assert [tuple(r) for r in db.boards_to_crawl(conn)] == [("ashby", "notion", cid)]
+    assert db.board_company(conn, "ashby", "notion") == cid and db.due_boards(conn, T2, 10) == []
+
+
+def test_probe_miss_backs_off(conn):
+    db.add_seed_board(conn, "lever", "ghost", None, T1)
+    db.record_probe(conn, "lever", "ghost", exists=False, company_id=None, now=T1)
+    assert db.due_boards(conn, T2, 10) == []  # next probe in 7 days
+    assert len(db.due_boards(conn, "2026-10-21T00:00:00+00:00", 10)) == 1
+    db.record_probe(conn, "lever", "ghost", exists=False, company_id=None, now="2026-10-21T00:00:00+00:00")
+    row = conn.execute("SELECT status, consecutive_failures, next_probe_at FROM boards").fetchone()
+    assert tuple(row) == ("miss", 2, "2026-11-18T00:00:00+00:00")
+
+
+def test_gone_boards_are_due_for_reprobe(conn):
+    cid = db.get_or_create_company(conn, "Acme")
+    db.upsert_board(conn, "greenhouse", "acme", cid, status="hit", origin="seed", now=T1)
+    for _ in range(db.GONE_AFTER):
+        db.record_board_result(conn, "greenhouse", "acme", "not_found")
+    assert [r["status"] for r in db.due_boards(conn, T1, 10)] == ["gone"]
+
+
+def test_sponsors_to_guess_priority_and_exclusions(conn):
+    db.upsert_sponsors(conn, "gb", [rec("Uk Only Widgets Ltd"), rec("Matched Co Ltd")], "v1", T1)
+    db.upsert_sponsors(conn, "us", [SponsorRecord("US", "us", "history", "Big Filer Inc", filings=500),
+                                    SponsorRecord("US", "us", "history", "Small Filer Inc", filings=3)], "v1", T1)
+    matched = conn.execute("SELECT id FROM sponsors WHERE norm_name = 'matched'").fetchone()[0]
+    db.replace_matches(conn, [(matched, db.get_or_create_company(conn, "Matched"), "exact", 100.0)])
+    assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T1, 10)] == ["big filer", "small filer", "uk only widgets"]
+    db.record_guess_attempt(conn, "big filer", found=False, now=T1)
+    assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T2, 10)] == ["small filer", "uk only widgets"]
+    assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T2, 1)] == ["small filer"]

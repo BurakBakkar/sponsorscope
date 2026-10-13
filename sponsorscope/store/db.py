@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from datetime import datetime, timedelta
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -58,6 +59,9 @@ CREATE TABLE IF NOT EXISTS labels (
   sponsorship TEXT NOT NULL, mixed INTEGER NOT NULL DEFAULT 0,
   languages_required TEXT NOT NULL, evidence TEXT NOT NULL,
   PRIMARY KEY (posting_id, content_hash, classifier_version)
+);
+CREATE TABLE IF NOT EXISTS discovery_progress (
+  sponsor_norm TEXT PRIMARY KEY, attempts INTEGER NOT NULL DEFAULT 0, next_try_at TEXT
 );
 """
 
@@ -243,4 +247,94 @@ def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, c
         WHERE id = ?
         """,
         (company_id, p.title, p.url, p.location_raw, country, p.remote, p.posted_at, now, p.id),
+    )
+
+
+BACKOFF_DAYS = (7, 28, 84)  # spec §6.2: misses back off 1w → 4w → 12w
+
+
+def backoff_until(now: str, attempts: int) -> str:
+    days = BACKOFF_DAYS[min(max(attempts, 1), len(BACKOFF_DAYS)) - 1]
+    return (datetime.fromisoformat(now) + timedelta(days=days)).isoformat(timespec="seconds")
+
+
+def add_seed_board(conn: sqlite3.Connection, ats: str, slug: str, company_id: int | None, now: str) -> bool:
+    cur = conn.execute(
+        "INSERT OR IGNORE INTO boards (ats, slug, company_id, status, origin, next_probe_at) "
+        "VALUES (?, ?, ?, 'pending', 'seed', ?)",
+        (ats, slug, company_id, now),
+    )
+    return cur.rowcount == 1
+
+
+def board_exists(conn: sqlite3.Connection, ats: str, slug: str) -> bool:
+    return conn.execute("SELECT 1 FROM boards WHERE ats = ? AND slug = ?", (ats, slug)).fetchone() is not None
+
+
+def board_company(conn: sqlite3.Connection, ats: str, slug: str) -> int | None:
+    row = conn.execute("SELECT company_id FROM boards WHERE ats = ? AND slug = ?", (ats, slug)).fetchone()
+    return row["company_id"] if row else None
+
+
+def due_boards(conn: sqlite3.Connection, now: str, limit: int) -> list[sqlite3.Row]:
+    return conn.execute(
+        """
+        SELECT ats, slug, company_id, status FROM boards
+        WHERE status IN ('pending', 'miss', 'gone') AND (next_probe_at IS NULL OR next_probe_at <= ?)
+        ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'gone' THEN 1 ELSE 2 END, next_probe_at, ats, slug
+        LIMIT ?
+        """,
+        (now, limit),
+    ).fetchall()
+
+
+def record_probe(conn: sqlite3.Connection, ats: str, slug: str, *, exists: bool, company_id: int | None,
+                 now: str) -> None:
+    if exists:
+        conn.execute(
+            """
+            UPDATE boards SET status = 'hit', consecutive_failures = 0, company_id = COALESCE(?, company_id),
+              last_probed = ?, next_probe_at = NULL
+            WHERE ats = ? AND slug = ?
+            """,
+            (company_id, now, ats, slug),
+        )
+        return
+    failures = conn.execute(
+        "SELECT consecutive_failures FROM boards WHERE ats = ? AND slug = ?", (ats, slug)).fetchone()[0] + 1
+    conn.execute(
+        "UPDATE boards SET status = 'miss', consecutive_failures = ?, last_probed = ?, next_probe_at = ? "
+        "WHERE ats = ? AND slug = ?",
+        (failures, now, backoff_until(now, failures), ats, slug),
+    )
+
+
+def sponsors_to_guess(conn: sqlite3.Connection, now: str, limit: int) -> list[sqlite3.Row]:
+    """Active, unmatched sponsor names due for slug guessing; heavy sponsors first, UK-only last."""
+    return conn.execute(
+        """
+        SELECT s.norm_name, MAX(COALESCE(s.filings, 0)) AS weight, MIN(s.source = 'gb') AS uk_only
+        FROM sponsors s
+        JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
+        LEFT JOIN discovery_progress d ON d.sponsor_norm = s.norm_name
+        WHERE (d.next_try_at IS NULL OR d.next_try_at <= ?)
+          AND NOT EXISTS (SELECT 1 FROM sponsor_matches m WHERE m.sponsor_id = s.id)
+        GROUP BY s.norm_name
+        ORDER BY weight DESC, uk_only ASC, s.norm_name
+        LIMIT ?
+        """,
+        (now, limit),
+    ).fetchall()
+
+
+def record_guess_attempt(conn: sqlite3.Connection, norm: str, *, found: bool, now: str) -> None:
+    row = conn.execute("SELECT attempts FROM discovery_progress WHERE sponsor_norm = ?", (norm,)).fetchone()
+    attempts = (row["attempts"] if row else 0) + 1
+    next_try = backoff_until(now, len(BACKOFF_DAYS) if found else attempts)
+    conn.execute(
+        """
+        INSERT INTO discovery_progress (sponsor_norm, attempts, next_try_at) VALUES (?, ?, ?)
+        ON CONFLICT (sponsor_norm) DO UPDATE SET attempts = excluded.attempts, next_try_at = excluded.next_try_at
+        """,
+        (norm, attempts, next_try),
     )
