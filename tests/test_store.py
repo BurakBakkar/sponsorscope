@@ -150,3 +150,12 @@ def test_sponsors_to_guess_priority_and_exclusions(conn):
     db.record_guess_attempt(conn, "big filer", found=False, now=T1)
     assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T2, 10)] == ["small filer", "uk only widgets"]
     assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T2, 1)] == ["small filer"]
+
+
+def test_due_boards_interleave_ats_so_one_host_cannot_eat_the_budget(conn):
+    for ats in ("ashby", "greenhouse", "lever"):
+        for slug in ("a", "b", "c"):
+            db.add_seed_board(conn, ats, slug, None, T1)
+    due = [(r["ats"], r["slug"]) for r in db.due_boards(conn, T1, 6)]
+    assert sorted({a for a, _ in due}) == ["ashby", "greenhouse", "lever"]
+    assert [a for a, _ in due] == ["ashby", "greenhouse", "lever"] * 2

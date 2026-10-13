@@ -279,9 +279,16 @@ def board_company(conn: sqlite3.Connection, ats: str, slug: str) -> int | None:
 def due_boards(conn: sqlite3.Connection, now: str, limit: int) -> list[sqlite3.Row]:
     return conn.execute(
         """
-        SELECT ats, slug, company_id, status FROM boards
-        WHERE status IN ('pending', 'miss', 'gone') AND (next_probe_at IS NULL OR next_probe_at <= ?)
-        ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'gone' THEN 1 ELSE 2 END, next_probe_at, ats, slug
+        SELECT ats, slug, company_id, status FROM (
+          SELECT ats, slug, company_id, status,
+                 ROW_NUMBER() OVER (
+                   PARTITION BY ats
+                   ORDER BY CASE status WHEN 'pending' THEN 0 WHEN 'gone' THEN 1 ELSE 2 END, next_probe_at, slug
+                 ) AS turn
+          FROM boards
+          WHERE status IN ('pending', 'miss', 'gone') AND (next_probe_at IS NULL OR next_probe_at <= ?)
+        )
+        ORDER BY turn, ats  -- round-robin across ATSes: each host has its own rate limit
         LIMIT ?
         """,
         (now, limit),
