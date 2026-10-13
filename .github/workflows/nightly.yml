@@ -1,0 +1,61 @@
+name: nightly
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sponsorscope-db
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install
+        run: uv sync --frozen
+
+      - name: Download previous database
+        run: gh release download db-latest -p sponsorscope.db -D . || echo "No previous database; starting fresh."
+
+      - name: Run pipeline
+        run: uv run sponsorscope nightly --db sponsorscope.db --site site
+
+      - name: Publish database
+        run: scripts/publish_db.sh sponsorscope.db
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy page
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      # Keep-alive: GitHub disables scheduled workflows after 60 days without a commit.
+      - name: Commit run report
+        run: |
+          cp site/data/last_run.json last_run.json
+          git config user.name "sponsorscope-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add last_run.json
+          git commit -m "chore: nightly run report" || exit 0
+          git push

@@ -1,0 +1,43 @@
+# sponsorscope
+
+A nightly-updated, filterable list of job postings that may offer **visa sponsorship**.
+
+- **Sponsor data:** official government registers. v1 has the UK Register of
+  licensed sponsors; more countries are coming, see the design spec.
+- **Postings:** public ATS job-board APIs (Greenhouse and Lever in v1).
+- **Labels:** each English posting is labelled by text rules for sponsorship
+  (yes / no / unknown, plus "mixed signals") and for required languages.
+  Every label shows the phrases that triggered it.
+
+**Not legal advice.** A sponsor licence does not guarantee that a given role is
+sponsored.
+
+## How it works
+
+`seed → registers → match → crawl (geo, English filter, classify) → export` runs
+nightly on GitHub Actions:
+
+- The SQLite database is kept as an asset on the `db-latest` release.
+- The page in `site/` is deployed to GitHub Pages.
+- Design: `docs/superpowers/specs/2026-10-13-sponsorscope-design.md`
+
+## Development
+
+```bash
+uv sync
+uv run pytest                    # Python tests
+node --test 'site/*.test.js'     # page filter tests
+uv run sponsorscope nightly --db dev.db --site site
+python3 -m http.server -d site 8000
+```
+
+- **Add a board:** add it to `seeds/manual.yaml`.
+- **Fix a wrong company match:** add an entry to `overrides.yaml`.
+- **Change the rules:** after editing `sponsorscope/classify/rules.py`, bump
+  `VERSION` and add cases to `tests/fixtures/labels.yaml`.
+
+## Data licences
+
+- UK register: contains public sector information licensed under the Open
+  Government Licence v3.0.
+- City data: [GeoNames](https://www.geonames.org/), CC BY 4.0.
