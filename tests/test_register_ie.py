@@ -54,3 +54,12 @@ async def test_latest_and_fetch(http, respx_mock):
     reg = IeRegister(today=lambda: date(2026, 10, 13))
     assert await reg.latest(http) == file_url
     assert {r.period for r in await reg.fetch(http, file_url)} == {"2025"}
+
+
+def test_parse_permits_2025_layout_blank_header_and_grand_total_row():
+    rows = [["", "January", "February", "Grand Total"],
+            ["Grand Total", 3798.0, 2994.0, 31044.0],
+            [" IQVIA RDS IRELAND LTD", "", 2.0, 2.0],
+            ["Zyntrica Technologies Limited", "", 1.0, 1.0]]
+    records = {r.legal_name: r.filings for r in parse_permits(make_xlsx(rows), "2025")}
+    assert records == {"IQVIA RDS IRELAND LTD": 2, "Zyntrica Technologies Limited": 1}

@@ -46,14 +46,16 @@ def find_file(html: str, page_url: str) -> str:
 def parse_permits(data: bytes, period: str) -> list[SponsorRecord]:
     rows = sheet_rows(data)
     header = [cell_str(h) for h in next(rows, [])]
-    if not header or header[0] != "Employer Name" or not header[-1].endswith("Grand Total"):
+    # 2026 files: "Employer Name" … "Permits Issued Grand Total", "Total" footer row;
+    # 2025 files: blank first header, full month names, "Grand Total" row first.
+    if not header or header[0] not in ("Employer Name", "") or not header[-1].endswith("Grand Total"):
         raise RegisterFormatError(f"IE permits: unexpected header {header[:2]}…")
     total_i = len(header) - 1
     filings: Counter[str] = Counter()
     spellings: dict[str, Counter[str]] = {}
     for row in rows:
         raw = cell_str(row[0]) if row else ""
-        if raw in ("", "Total") or len(row) <= total_i:
+        if raw in ("", "Total", "Grand Total") or len(row) <= total_i:
             continue
         norm = normalize(raw)
         if not norm:
