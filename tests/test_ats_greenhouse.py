@@ -50,3 +50,19 @@ def test_infer_remote():
     assert infer_remote("London - Hybrid") == "hybrid"
     assert infer_remote("London") is None
     assert infer_remote(None) is None
+
+
+async def test_probe_reports_board_name(http, respx_mock):
+    respx_mock.get("https://boards-api.greenhouse.io/v1/boards/acme").mock(
+        return_value=httpx.Response(200, json={"name": "Acme Widgets", "content": ""}))
+    respx_mock.get("https://boards-api.greenhouse.io/v1/boards/nope").mock(return_value=httpx.Response(404))
+    gh = Greenhouse()
+    assert gh.provides_name is True
+    assert (await gh.probe(http, "acme")).name == "Acme Widgets"
+    assert (await gh.probe(http, "nope")).exists is False
+
+
+async def test_probe_server_error_raises(http, respx_mock):
+    respx_mock.get("https://boards-api.greenhouse.io/v1/boards/acme").mock(return_value=httpx.Response(500))
+    with pytest.raises(httpx.HTTPStatusError):
+        await Greenhouse().probe(http, "acme")

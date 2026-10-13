@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import html
 
-from sponsorscope.ats.base import BoardNotFound, infer_remote
+from sponsorscope.ats.base import BoardNotFound, ProbeResult, infer_remote
 from sponsorscope.http import Http
 from sponsorscope.models import RawPosting
 from sponsorscope.text import html_to_text
@@ -12,8 +12,9 @@ BASE = "https://boards-api.greenhouse.io/v1/boards"
 
 class Greenhouse:
     name = "greenhouse"
+    provides_name = True
 
-    async def fetch(self, http: Http, slug: str) -> list[RawPosting]:
+    async def fetch(self, http: Http, slug: str, known_ids: frozenset[str] = frozenset()) -> list[RawPosting]:
         resp = await http.get(f"{BASE}/{slug}/jobs", params={"content": "true"})
         if resp.status_code == 404:
             raise BoardNotFound(f"greenhouse:{slug}")
@@ -35,3 +36,10 @@ class Greenhouse:
                 posted_at=published[:10] if published else None,
             ))
         return postings
+
+    async def probe(self, http: Http, slug: str) -> ProbeResult:
+        resp = await http.get(f"{BASE}/{slug}")
+        if resp.status_code == 404:
+            return ProbeResult(False)
+        resp.raise_for_status()
+        return ProbeResult(True, resp.json().get("name"))

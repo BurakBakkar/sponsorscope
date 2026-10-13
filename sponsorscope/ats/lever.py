@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sponsorscope.ats.base import BoardNotFound, infer_remote
+from sponsorscope.ats.base import BoardNotFound, ProbeResult, infer_remote
 from sponsorscope.http import Http
 from sponsorscope.models import RawPosting
 from sponsorscope.text import html_to_text
@@ -15,8 +15,9 @@ class Lever:
     """Lever postings API. Slugs are case-sensitive; EU accounts live on a separate host."""
 
     name = "lever"
+    provides_name = False
 
-    async def fetch(self, http: Http, slug: str) -> list[RawPosting]:
+    async def fetch(self, http: Http, slug: str, known_ids: frozenset[str] = frozenset()) -> list[RawPosting]:
         for host in HOSTS:
             resp = await http.get(f"{host}/v0/postings/{slug}", params={"mode": "json"})
             if resp.status_code == 404:
@@ -24,6 +25,15 @@ class Lever:
             resp.raise_for_status()
             return [self._parse(slug, p) for p in resp.json()]
         raise BoardNotFound(f"lever:{slug}")
+
+    async def probe(self, http: Http, slug: str) -> ProbeResult:
+        for host in HOSTS:
+            resp = await http.get(f"{host}/v0/postings/{slug}", params={"mode": "json", "limit": 1})
+            if resp.status_code == 404:
+                continue
+            resp.raise_for_status()
+            return ProbeResult(True)
+        return ProbeResult(False)
 
     def _parse(self, slug: str, p: dict) -> RawPosting:
         location = (p.get("categories") or {}).get("location")

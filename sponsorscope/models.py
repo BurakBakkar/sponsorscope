@@ -29,7 +29,7 @@ class RawPosting:
     job_id: str
     title: str
     url: str
-    description: str  # plain text
+    description: str | None  # plain text; None = known posting not re-fetched (keep stored label)
     location_raw: str | None
     country: str | None  # ISO-2 from structured ATS fields, if the ATS provides one
     remote: str | None  # "remote" | "hybrid" | "onsite" | None

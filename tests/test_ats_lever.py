@@ -47,3 +47,14 @@ async def test_null_country_and_unspecified_workplace(http, respx_mock):
     mock_host(respx_mock, "api.lever.co", "acme", httpx.Response(200, json=[posting]))
     [p] = await Lever().fetch(http, "acme")
     assert p.country is None and p.remote == "remote"
+
+
+async def test_probe_checks_both_hosts(http, respx_mock):
+    mock_host(respx_mock, "api.lever.co", "euco", httpx.Response(404))
+    mock_host(respx_mock, "api.eu.lever.co", "euco", httpx.Response(200, json=[]))
+    mock_host(respx_mock, "api.lever.co", "nope", httpx.Response(404))
+    mock_host(respx_mock, "api.eu.lever.co", "nope", httpx.Response(404))
+    lever = Lever()
+    assert lever.provides_name is False
+    assert (await lever.probe(http, "euco")).exists is True
+    assert (await lever.probe(http, "nope")).exists is False
