@@ -76,3 +76,18 @@ async def test_raises_after_persistent_transport_errors(http, respx_mock):
     respx_mock.get(URL).mock(side_effect=httpx.ConnectError("boom"))
     with pytest.raises(httpx.TransportError):
         await http.get(URL)
+
+
+from sponsorscope.http import rate_key
+
+
+def test_rate_key_groups_subdomains():
+    assert rate_key("bunq.recruitee.com") == rate_key("picnic.recruitee.com") == "recruitee.com"
+    assert rate_key("tado.jobs.personio.de") == "personio.de"
+    assert rate_key("api.eu.lever.co") == rate_key("api.lever.co") == "lever.co"
+    assert rate_key("localhost") == "localhost"
+
+
+async def test_subdomains_share_one_limiter(http):
+    assert http._limiter("a.recruitee.com") is http._limiter("b.recruitee.com")
+    assert http._limiter("a.recruitee.com") is not http._limiter("api.ashbyhq.com")

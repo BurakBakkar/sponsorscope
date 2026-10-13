@@ -17,6 +17,12 @@ MAX_RETRY_AFTER = 300.0
 Sleep = Callable[[float], Awaitable[None]]
 
 
+def rate_key(host: str) -> str:
+    """Hosts sharing a registrable domain share one limiter ({slug}.recruitee.com → recruitee.com)."""
+    parts = host.split(".")
+    return ".".join(parts[-2:]) if len(parts) > 2 else host
+
+
 class _HostLimiter:
     """Caps concurrent requests and spaces request starts for one host."""
 
@@ -61,9 +67,10 @@ class Http:
         self._limiters: dict[str, _HostLimiter] = {}
 
     def _limiter(self, host: str) -> _HostLimiter:
-        if host not in self._limiters:
-            self._limiters[host] = _HostLimiter(self._concurrency, self._rate, self._sleep)
-        return self._limiters[host]
+        key = rate_key(host)
+        if key not in self._limiters:
+            self._limiters[key] = _HostLimiter(self._concurrency, self._rate, self._sleep)
+        return self._limiters[key]
 
     async def get(self, url: str, **kwargs) -> httpx.Response:
         limiter = self._limiter(urlsplit(url).hostname or "")
