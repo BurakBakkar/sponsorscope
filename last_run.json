@@ -1,19 +1,20 @@
 {
-  "started_at": "2026-10-15T07:59:13+00:00",
-  "finished_at": "2026-10-15T07:59:26+00:00",
+  "started_at": "2026-10-16T07:53:20+00:00",
+  "finished_at": "2026-10-16T07:53:32+00:00",
   "sources": {
     "gb": {
       "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6acf5ba471dbe79328fd44d4/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-14.csv",
-      "rows": 141104
+      "version": "https://assets.publishing.service.gov.uk/media/6ad0885e2de3184ccf8b8183/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-15.csv",
+      "rows": 141099
     },
     "nl": {
       "status": "unchanged",
       "version": "5 October 2026"
     },
     "dk": {
-      "status": "unchanged",
-      "version": "12-10-2026"
+      "status": "ok",
+      "version": "15-10-2026",
+      "rows": 987
     },
     "fi": {
       "status": "blocked",
@@ -38,7 +39,7 @@
       "ok": 5,
       "not_found": 0,
       "failed": 0,
-      "postings": 1299,
+      "postings": 1309,
       "outage": false,
       "errors": []
     },
@@ -47,7 +48,7 @@
       "ok": 2,
       "not_found": 0,
       "failed": 0,
-      "postings": 396,
+      "postings": 391,
       "outage": false,
       "errors": []
     }
