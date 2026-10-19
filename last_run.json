@@ -1,10 +1,11 @@
 {
-  "started_at": "2026-10-18T07:46:12+00:00",
-  "finished_at": "2026-10-18T07:46:23+00:00",
+  "started_at": "2026-10-19T08:28:39+00:00",
+  "finished_at": "2026-10-19T09:47:51+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6ad1d58449ba86d6c953ca9d/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-16.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6ad5d304a89985bb9702682e/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-19.csv",
+      "rows": 141070
     },
     "nl": {
       "status": "unchanged",
@@ -32,21 +33,66 @@
     }
   },
   "ats": {
-    "greenhouse": {
-      "boards": 5,
-      "ok": 5,
-      "not_found": 0,
+    "ashby": {
+      "boards": 2418,
+      "ok": 2417,
+      "not_found": 1,
       "failed": 0,
-      "postings": 1334,
+      "postings": 44419,
+      "outage": false,
+      "errors": []
+    },
+    "greenhouse": {
+      "boards": 5153,
+      "ok": 5150,
+      "not_found": 3,
+      "failed": 0,
+      "postings": 134621,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 2,
-      "ok": 2,
+      "boards": 1922,
+      "ok": 1921,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 58480,
+      "outage": false,
+      "errors": []
+    },
+    "personio": {
+      "boards": 7,
+      "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 392,
+      "postings": 24,
+      "outage": false,
+      "errors": []
+    },
+    "recruitee": {
+      "boards": 9,
+      "ok": 9,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 85,
+      "outage": false,
+      "errors": []
+    },
+    "smartrecruiters": {
+      "boards": 456,
+      "ok": 456,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 3904,
+      "outage": false,
+      "errors": []
+    },
+    "workable": {
+      "boards": 38,
+      "ok": 38,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 55,
       "outage": false,
       "errors": []
     }
