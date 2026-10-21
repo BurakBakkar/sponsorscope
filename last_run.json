@@ -1,10 +1,11 @@
 {
-  "started_at": "2026-10-20T08:11:00+00:00",
-  "finished_at": "2026-10-20T08:54:57+00:00",
+  "started_at": "2026-10-21T08:16:14+00:00",
+  "finished_at": "2026-10-21T09:01:32+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6ad5d304a89985bb9702682e/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-19.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6ad71d3d67af5c09d047985e/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-20.csv",
+      "rows": 141073
     },
     "nl": {
       "status": "unchanged",
@@ -34,19 +35,19 @@
   "ats": {
     "ashby": {
       "boards": 2418,
-      "ok": 2416,
-      "not_found": 2,
+      "ok": 2415,
+      "not_found": 3,
       "failed": 0,
-      "postings": 44347,
+      "postings": 44333,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
       "boards": 5153,
-      "ok": 5144,
-      "not_found": 9,
+      "ok": 5141,
+      "not_found": 12,
       "failed": 0,
-      "postings": 134409,
+      "postings": 134575,
       "outage": false,
       "errors": []
     },
@@ -55,7 +56,7 @@
       "ok": 1920,
       "not_found": 2,
       "failed": 0,
-      "postings": 57926,
+      "postings": 57915,
       "outage": false,
       "errors": []
     },
@@ -64,7 +65,7 @@
       "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 25,
+      "postings": 24,
       "outage": false,
       "errors": []
     },
@@ -73,7 +74,7 @@
       "ok": 9,
       "not_found": 0,
       "failed": 0,
-      "postings": 84,
+      "postings": 81,
       "outage": false,
       "errors": []
     },
@@ -82,7 +83,7 @@
       "ok": 456,
       "not_found": 0,
       "failed": 0,
-      "postings": 3806,
+      "postings": 3882,
       "outage": false,
       "errors": []
     },
