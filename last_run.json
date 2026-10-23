@@ -1,32 +1,31 @@
 {
-  "started_at": "2026-10-22T08:18:10+00:00",
-  "finished_at": "2026-10-22T09:05:24+00:00",
+  "started_at": "2026-10-23T08:14:32+00:00",
+  "finished_at": "2026-10-23T09:01:48+00:00",
   "sources": {
     "gb": {
-      "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6ad9bef8b62d80a107bc5b43/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-22.csv",
-      "rows": 141103
+      "status": "unchanged",
+      "version": "https://assets.publishing.service.gov.uk/media/6ad9bef8b62d80a107bc5b43/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-22.csv"
     },
     "nl": {
       "status": "unchanged",
       "version": "5 October 2026"
     },
     "dk": {
-      "status": "failed",
-      "error": "ConnectTimeout: "
+      "status": "ok",
+      "version": "21-10-2026",
+      "rows": 989
     },
     "fi": {
-      "status": "ok",
-      "version": "ce75db375ee0e1ad",
-      "rows": 70
+      "status": "blocked",
+      "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
     },
     "us": {
       "status": "unchanged",
       "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx"
     },
     "ca": {
-      "status": "unchanged",
-      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/4ee7a4e0-ffc3-47af-94e7-30929d1eeb67/download/tfwp_2026q1_pos_en.xlsx"
+      "status": "failed",
+      "error": "ReadTimeout: "
     },
     "ie": {
       "status": "unchanged",
@@ -35,29 +34,29 @@
   },
   "ats": {
     "ashby": {
-      "boards": 2417,
-      "ok": 2414,
-      "not_found": 3,
+      "boards": 2416,
+      "ok": 2411,
+      "not_found": 5,
       "failed": 0,
-      "postings": 44392,
+      "postings": 44401,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5150,
-      "ok": 5135,
-      "not_found": 15,
+      "boards": 5144,
+      "ok": 5131,
+      "not_found": 13,
       "failed": 0,
-      "postings": 134621,
+      "postings": 134596,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 1921,
+      "boards": 1920,
       "ok": 1919,
-      "not_found": 2,
+      "not_found": 1,
       "failed": 0,
-      "postings": 58244,
+      "postings": 57996,
       "outage": false,
       "errors": []
     },
@@ -75,7 +74,7 @@
       "ok": 9,
       "not_found": 0,
       "failed": 0,
-      "postings": 81,
+      "postings": 86,
       "outage": false,
       "errors": []
     },
@@ -84,7 +83,7 @@
       "ok": 456,
       "not_found": 0,
       "failed": 0,
-      "postings": 3894,
+      "postings": 3909,
       "outage": false,
       "errors": []
     },
