@@ -2,7 +2,12 @@
 # Names are normalised the same way as the matcher (suffixes like Ltd/B.V. stripped).
 # match:  force a link the matcher misses (e.g. trading name ≠ legal name)
 # forbid: block a wrong automatic link (e.g. a small "Apple Ltd" ≠ Apple Inc)
-match: []
+match:
+  # university feeds (seeds/manual.yaml) whose register entry uses a legal, old or departmental name
+  - {company: "Royal Holloway, University of London", sponsor: Royal Holloway and Bedford New College}
+  - {company: University of Greater Manchester, sponsor: University of Bolton}  # renamed 2024
+  - {company: University of Leeds, sponsor: University of Leeds (Human Resources)}
+  - {company: University of West London, sponsor: The University of West London}
 #  - {company: Deliveroo, sponsor: Roofoods Ltd}
 forbid: []
 #  - {company: Apple, sponsor: Apple Ltd}

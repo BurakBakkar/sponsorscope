@@ -11,6 +11,7 @@ import yaml
 
 from sponsorscope.ats.base import ATS, BoardNotFound
 from sponsorscope.classify.base import Classifier
+from sponsorscope.classify.level import detect_level
 from sponsorscope.classify.lang_detect import is_english
 from sponsorscope.export.shards import export_site
 from sponsorscope.geo.country import resolve_country
@@ -86,9 +87,10 @@ def run_match(conn: sqlite3.Connection, overrides: Overrides) -> int:
 
 def _process_posting(conn: sqlite3.Connection, p: RawPosting, company_id: int, classifier: Classifier,
                      now: str, cities: Mapping[str, str] | None, detect: Callable[[str], bool]) -> None:
+    level = p.level or detect_level(p.title)
     if p.description is None:  # adapter skipped the detail call for a known posting
         db.touch_posting(conn, p, company_id=company_id,
-                         country=resolve_country(p.location_raw, p.country, cities), now=now)
+                         country=resolve_country(p.location_raw, p.country, cities), now=now, level=level)
         return
     text = f"{p.title}\n{p.description}"
     chash = content_hash(text)
@@ -98,7 +100,8 @@ def _process_posting(conn: sqlite3.Connection, p: RawPosting, company_id: int, c
     else:
         lang = "en" if detect(text) else "other"
     country = resolve_country(p.location_raw, p.country, cities)
-    db.upsert_posting(conn, p, company_id=company_id, country=country, lang=lang, content_hash=chash, now=now)
+    db.upsert_posting(conn, p, company_id=company_id, country=country, lang=lang, content_hash=chash, now=now,
+                      level=level)
     if lang == "en" and not db.has_label(conn, p.id, chash, classifier.version):
         db.save_label(conn, p.id, chash, classifier.version, classifier.classify(text))
 

@@ -7,3 +7,38 @@
 - {ats: greenhouse, slug: deliveroo, name: Deliveroo}
 - {ats: lever, slug: palantir, name: Palantir Technologies}
 - {ats: lever, slug: spotify, name: Spotify}
+
+# University vacancy RSS feeds (shared UK hiring platform, /rss/rss.aspx = all vacancies).
+# The rss adapter keeps only PhD/master's offers; slug = feed URL without https://.
+- {ats: rss, slug: jobs.aston.ac.uk/rss/rss.aspx, name: Aston University}
+- {ats: rss, slug: jobs.bcu.ac.uk/rss/rss.aspx, name: Birmingham City University}
+- {ats: rss, slug: jobs.cardiffmet.ac.uk/rss/rss.aspx, name: Cardiff Metropolitan University}
+- {ats: rss, slug: jobs.edgehill.ac.uk/rss/rss.aspx, name: Edge Hill University}
+- {ats: rss, slug: jobs.gold.ac.uk/rss/rss.aspx, name: "Goldsmiths, University of London"}
+- {ats: rss, slug: jobs.harper-adams.ac.uk/rss/rss.aspx, name: Harper Adams University}
+- {ats: rss, slug: jobs.lshtm.ac.uk/rss/rss.aspx, name: London School of Hygiene & Tropical Medicine}
+- {ats: rss, slug: jobs.mdx.ac.uk/rss/rss.aspx, name: Middlesex University}
+- {ats: rss, slug: jobs.rca.ac.uk/rss/rss.aspx, name: Royal College of Art}
+- {ats: rss, slug: jobs.royalholloway.ac.uk/rss/rss.aspx, name: "Royal Holloway, University of London"}
+- {ats: rss, slug: jobs.rvc.ac.uk/rss/rss.aspx, name: Royal Veterinary College}
+- {ats: rss, slug: www.bath.ac.uk/jobs/rss/rss.aspx, name: University of Bath}
+- {ats: rss, slug: jobs.bradford.ac.uk/rss/rss.aspx, name: University of Bradford}
+- {ats: rss, slug: jobs.brighton.ac.uk/rss/rss.aspx, name: University of Brighton}
+- {ats: rss, slug: jobs.chester.ac.uk/rss/rss.aspx, name: University of Chester}
+- {ats: rss, slug: jobs.cumbria.ac.uk/rss/rss.aspx, name: University of Cumbria}
+- {ats: rss, slug: jobs.derby.ac.uk/rss/rss.aspx, name: University of Derby}
+- {ats: rss, slug: jobs.uel.ac.uk/rss/rss.aspx, name: University of East London}
+- {ats: rss, slug: jobs.bolton.ac.uk/rss/rss.aspx, name: University of Greater Manchester}
+- {ats: rss, slug: jobs.gre.ac.uk/rss/rss.aspx, name: University of Greenwich}
+- {ats: rss, slug: jobs.kent.ac.uk/rss/rss.aspx, name: University of Kent}
+- {ats: rss, slug: jobs.uclan.ac.uk/rss/rss.aspx, name: University of Lancashire}
+- {ats: rss, slug: jobs.leeds.ac.uk/rss/rss.aspx, name: University of Leeds}
+- {ats: rss, slug: jobs.lincoln.ac.uk/rss/rss.aspx, name: University of Lincoln}
+- {ats: rss, slug: jobs.nottingham.ac.uk/rss/rss.aspx, name: University of Nottingham}
+- {ats: rss, slug: jobs.soton.ac.uk/rss/rss.aspx, name: University of Southampton}
+- {ats: rss, slug: jobs.staffs.ac.uk/rss/rss.aspx, name: University of Staffordshire}
+- {ats: rss, slug: jobs.sunderland.ac.uk/rss/rss.aspx, name: University of Sunderland}
+- {ats: rss, slug: jobs.surrey.ac.uk/rss/rss.aspx, name: University of Surrey}
+- {ats: rss, slug: jobs.uwl.ac.uk/rss/rss.aspx, name: University of West London}
+- {ats: rss, slug: jobs.wrexham.ac.uk/rss/rss.aspx, name: Wrexham University}
+- {ats: rss, slug: jobs.yorksj.ac.uk/rss/rss.aspx, name: York St John University}

@@ -52,7 +52,8 @@ CREATE TABLE IF NOT EXISTS postings (
   id TEXT PRIMARY KEY, ats TEXT NOT NULL, slug TEXT NOT NULL, company_id INTEGER,
   title TEXT, url TEXT, location_raw TEXT, country TEXT, remote TEXT, posted_at TEXT,
   content_hash TEXT, lang TEXT, first_seen TEXT NOT NULL, last_seen TEXT NOT NULL,
-  active INTEGER NOT NULL DEFAULT 1
+  active INTEGER NOT NULL DEFAULT 1,
+  level TEXT  -- "phd" | "masters" | NULL for an ordinary job
 );
 CREATE INDEX IF NOT EXISTS postings_board ON postings(ats, slug);
 CREATE TABLE IF NOT EXISTS labels (
@@ -69,6 +70,7 @@ CREATE TABLE IF NOT EXISTS discovery_progress (
 
 _MIGRATIONS = [  # (table, column, DDL) for columns added after the first deploy
     ("companies", "name_verified", "ALTER TABLE companies ADD COLUMN name_verified INTEGER NOT NULL DEFAULT 1"),
+    ("postings", "level", "ALTER TABLE postings ADD COLUMN level TEXT"),
 ]
 
 
@@ -194,20 +196,20 @@ def get_posting_meta(conn: sqlite3.Connection, posting_id: str) -> sqlite3.Row |
 
 
 def upsert_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, country: str | None,
-                   lang: str, content_hash: str, now: str) -> None:
+                   lang: str, content_hash: str, now: str, level: str | None = None) -> None:
     conn.execute(
         """
         INSERT INTO postings (id, ats, slug, company_id, title, url, location_raw, country, remote,
-                              posted_at, content_hash, lang, first_seen, last_seen, active)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                              posted_at, content_hash, lang, first_seen, last_seen, active, level)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
         ON CONFLICT (id) DO UPDATE SET
           company_id = excluded.company_id, title = excluded.title, url = excluded.url,
           location_raw = excluded.location_raw, country = excluded.country, remote = excluded.remote,
           posted_at = excluded.posted_at, content_hash = excluded.content_hash, lang = excluded.lang,
-          last_seen = excluded.last_seen, active = 1
+          last_seen = excluded.last_seen, active = 1, level = excluded.level
         """,
         (p.id, p.ats, p.slug, company_id, p.title, p.url, p.location_raw, country, p.remote,
-         p.posted_at, content_hash, lang, now, now),
+         p.posted_at, content_hash, lang, now, now, level),
     )
 
 
@@ -258,15 +260,16 @@ def active_posting_ids(conn: sqlite3.Connection, ats: str, slug: str, classifier
         """, (ats, slug, classifier_version)))
 
 
-def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, country: str | None, now: str) -> None:
+def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, country: str | None, now: str,
+                  level: str | None = None) -> None:
     """Known posting seen again without its description: refresh metadata, keep hash/lang/label."""
     conn.execute(
         """
         UPDATE postings SET company_id = ?, title = ?, url = ?, location_raw = ?, country = ?, remote = ?,
-          posted_at = ?, last_seen = ?, active = 1
+          posted_at = ?, last_seen = ?, active = 1, level = ?
         WHERE id = ?
         """,
-        (company_id, p.title, p.url, p.location_raw, country, p.remote, p.posted_at, now, p.id),
+        (company_id, p.title, p.url, p.location_raw, country, p.remote, p.posted_at, now, level, p.id),
     )
 
 

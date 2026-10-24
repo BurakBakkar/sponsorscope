@@ -16,7 +16,8 @@ fieldset label { display: block; }
 .meta { margin: .1rem 0 .4rem; font-size: .9rem; }
 .chips { display: flex; flex-wrap: wrap; gap: .35rem; }
 .chips span { font-size: .8rem; padding: .1rem .5rem; border-radius: 999px; border: 1px solid currentColor; }
-.badge { color: var(--badge); }
+.badge, .level { color: var(--badge); }
+.level { font-weight: 600; }
 .badge.weak { color: var(--muted); border-style: dashed; }
 .label.yes { color: var(--yes); } .label.no { color: var(--no); } .label.unknown, .label.mixed, .lang { color: var(--unknown); }
 details { margin-top: .4rem; font-size: .9rem; }

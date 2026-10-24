@@ -34,6 +34,7 @@ class RawPosting:
     country: str | None  # ISO-2 from structured ATS fields, if the ATS provides one
     remote: str | None  # "remote" | "hybrid" | "onsite" | None
     posted_at: str | None  # ISO date "YYYY-MM-DD"
+    level: str | None = None  # "phd" | "masters" when the source knows better than the title; see classify.level
 
     @property
     def id(self) -> str:

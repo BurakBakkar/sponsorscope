@@ -10,7 +10,7 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
-          "sponsorship", "mixed", "langs", "evidence", "badges", "ats"]
+          "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level"]
 UNKNOWN_COUNTRY = "XX"
 SHARD_WARN_BYTES = 5 * 1024 * 1024
 
@@ -23,7 +23,7 @@ HISTORY_TEMPLATES = {
 
 _POSTINGS = """
 SELECT p.id, p.title, c.display_name AS company, p.company_id, p.url, p.country, p.remote,
-       p.posted_at, p.first_seen, p.ats, l.sponsorship, l.mixed, l.languages_required, l.evidence
+       p.posted_at, p.first_seen, p.ats, p.level, l.sponsorship, l.mixed, l.languages_required, l.evidence
 FROM postings p
 JOIN companies c ON c.id = p.company_id
 LEFT JOIN labels l ON l.posting_id = p.id AND l.content_hash = p.content_hash AND l.classifier_version = ?
@@ -82,7 +82,7 @@ def export_site(conn: sqlite3.Connection, site_dir: Path, classifier_version: st
             r["id"], r["title"], r["company"], r["url"], country, r["remote"], r["posted_at"],
             r["first_seen"], r["sponsorship"] or "unknown", bool(r["mixed"]),
             json.loads(r["languages_required"] or "[]"), json.loads(r["evidence"] or "[]"),
-            row_badges, r["ats"],
+            row_badges, r["ats"], r["level"],
         ])
         companies.add(r["company"])
         ats_names.add(r["ats"])

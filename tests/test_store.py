@@ -177,3 +177,17 @@ def test_connect_migrates_old_companies_table(tmp_path):
     old.commit(); old.close()
     c = db.connect(tmp_path / "old.db")
     assert c.execute("SELECT name_verified FROM companies").fetchone()[0] == 1
+
+
+def test_connect_adds_level_to_old_postings_and_upsert_stores_it(tmp_path):
+    import sqlite3
+    old = sqlite3.connect(tmp_path / "old.db")
+    old.execute("CREATE TABLE postings (id TEXT PRIMARY KEY, ats TEXT NOT NULL, slug TEXT NOT NULL, company_id INTEGER,"
+                " title TEXT, url TEXT, location_raw TEXT, country TEXT, remote TEXT, posted_at TEXT, content_hash TEXT,"
+                " lang TEXT, first_seen TEXT NOT NULL, last_seen TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1)")
+    old.commit(); old.close()
+    c = db.connect(tmp_path / "old.db")
+    cid = db.get_or_create_company(c, "Acme")
+    db.upsert_posting(c, posting("1"), company_id=cid, country="GB", lang="en", content_hash="h", now=T1, level="phd")
+    db.touch_posting(c, posting("1"), company_id=cid, country="GB", now=T2, level="masters")
+    assert c.execute("SELECT level FROM postings").fetchone()[0] == "masters"

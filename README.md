@@ -8,6 +8,9 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
   SmartRecruiters, Recruitee and Personio.
+- **PhD and master's offers:** university vacancy RSS feeds listed in `seeds/manual.yaml`
+  (only the degree offers are kept), plus any ATS posting whose title reads like one
+  (studentship, doctoral candidate, master thesis, …). The site's *Position* filter picks them out.
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
   Every label shows the phrases that triggered it.

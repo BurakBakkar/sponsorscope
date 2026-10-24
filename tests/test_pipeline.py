@@ -324,3 +324,19 @@ def test_unverified_company_matches_are_marked(conn):
     pipeline.run_match(conn, Overrides())
     methods = {r["company_id"]: r["method"] for r in conn.execute("SELECT * FROM sponsor_matches")}
     assert methods == {alpha: "unverified", monzo: "exact"}
+
+
+async def test_degree_level_comes_from_source_or_title(conn, http):
+    class DegreeATS(DetailOnceATS):
+        async def fetch(self, http, slug, known_ids=frozenset()):
+            common = dict(ats="fakeats", slug=slug, url="https://x", description="Funded." + LONG,
+                          location_raw="London, UK", country=None, remote=None, posted_at="2026-10-01")
+            return [RawPosting(job_id="1", title="PhD Studentship in Soil Science", **common),
+                    RawPosting(job_id="2", title="Project 4: cover crops", level="phd", **common),
+                    RawPosting(job_id="3", title="Backend Engineer", **common)]
+
+    cid = db.get_or_create_company(conn, "Acme Widgets")
+    db.upsert_board(conn, "fakeats", "acme", cid, status="hit", origin="seed", now=T[0])
+    await pipeline.run_crawl(conn, http, {"fakeats": DegreeATS()}, RulesClassifier(), RunReport(started_at=T[0]), T[0], CITIES)
+    levels = dict(conn.execute("SELECT id, level FROM postings").fetchall())
+    assert levels == {"fakeats:acme:1": "phd", "fakeats:acme:2": "phd", "fakeats:acme:3": None}

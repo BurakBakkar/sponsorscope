@@ -14,6 +14,7 @@ from sponsorscope.ats.greenhouse import Greenhouse
 from sponsorscope.ats.lever import Lever
 from sponsorscope.ats.personio import Personio
 from sponsorscope.ats.recruitee import Recruitee
+from sponsorscope.ats.rss import UniversityRss
 from sponsorscope.ats.smartrecruiters import SmartRecruiters
 from sponsorscope.ats.workable import Workable
 from sponsorscope.classify.rules import RulesClassifier
@@ -53,6 +54,12 @@ def _registers():
 def _adapters():
     adapters = [Greenhouse(), Lever(), Ashby(), Workable(), SmartRecruiters(), Recruitee(), Personio()]
     return {a.name: a for a in adapters}
+
+
+def _crawl_adapters():
+    """Discovery adapters plus feed sources that are only ever seeded by hand (never slug-guessed)."""
+    rss = UniversityRss()
+    return {**_adapters(), rss.name: rss}
 
 
 def _run_with_http(make_coro):
@@ -99,7 +106,7 @@ def match(db: Db = Path("sponsorscope.db"), overrides: OverridesPath = Path("ove
 def crawl(db: Db = Path("sponsorscope.db")) -> None:
     """Fetch all known boards, resolve countries, filter English, classify."""
     conn, report = connect(db), RunReport(started_at=_now())
-    _run_with_http(lambda http: pipeline.run_crawl(conn, http, _adapters(), RulesClassifier(), report, report.started_at))
+    _run_with_http(lambda http: pipeline.run_crawl(conn, http, _crawl_adapters(), RulesClassifier(), report, report.started_at))
     for name, info in report.ats.items():
         typer.echo(f"{name}: {info}")
     _print_warnings(report)
@@ -118,7 +125,7 @@ def nightly(db: Db = Path("sponsorscope.db"), site: Site = Path("site"),
     """Full run: seed → registers → match → crawl → export."""
     conn = connect(db)
     report = _run_with_http(lambda http: pipeline.nightly(
-        conn, http, registers=_registers(), adapters=_adapters(), classifier=RulesClassifier(),
+        conn, http, registers=_registers(), adapters=_crawl_adapters(), classifier=RulesClassifier(),
         seeds_path=seeds, overrides=Overrides.load(overrides), site_dir=site, now=_now()))
     _print_warnings(report)
     total = sum(info["postings"] for info in report.ats.values())

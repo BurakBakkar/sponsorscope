@@ -2,9 +2,9 @@
 
 export const DEFAULT_STATE = {
   countries: [], sponsorship: ["yes", "unknown"], badges: [], langs: [],
-  q: "", company: "", remote: [], days: 0, ats: [], mixed: "any",
+  q: "", company: "", remote: [], days: 0, ats: [], mixed: "any", levels: [],
 };
-const LIST_KEYS = ["countries", "sponsorship", "badges", "langs", "remote", "ats"];
+const LIST_KEYS = ["countries", "sponsorship", "badges", "langs", "remote", "ats", "levels"];
 const MIXED_VALUES = ["any", "only", "hide"];
 const DAY_MS = 86_400_000;
 
@@ -19,6 +19,8 @@ export function countryName(cc) {
   if (!cc || cc === "XX") return "Unknown location";
   try { return REGION_NAMES.of(cc) ?? cc; } catch { return cc; } // malformed code: show it raw
 }
+
+export const LEVEL_LABELS = { phd: "PhD", masters: "Master's", job: "Job" };
 
 export const SOURCE_LABELS = {
   gb: "UK register", nl: "NL register", dk: "DK register", fi: "FI register",
@@ -63,6 +65,7 @@ export function filterRows(rows, state, now = new Date()) {
     if (state.sponsorship.length && !state.sponsorship.includes(r.sponsorship)) return false;
     if (state.badges.length && !state.badges.some((b) => r.badges.some(([type]) => type === b))) return false;
     if (state.langs.length && !r.langs.every((l) => state.langs.includes(l))) return false;
+    if (state.levels.length && !state.levels.includes(r.level ?? "job")) return false;
     if (state.company && r.company !== state.company) return false;
     if (state.remote.length && !state.remote.includes(r.remote ?? "unknown")) return false;
     if (state.ats.length && !state.ats.includes(r.ats)) return false;

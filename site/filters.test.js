@@ -5,12 +5,12 @@ import {
 } from "./filters.js";
 
 const FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
-  "sponsorship", "mixed", "langs", "evidence", "badges", "ats"];
+  "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level"];
 const ROWS = toObjects(FIELDS, [
-  ["greenhouse:a:1", "Backend Engineer", "Acme", "https://x/1", "GB", "remote", "2026-10-10", "2026-10-10T03:00:00+00:00", "yes", false, [], ["We offer visa sponsorship"], [["licence", "Licensed sponsor (UK)"]], "greenhouse"],
-  ["greenhouse:a:2", "Data Analyst", "Acme", "https://x/2", "GB", null, "2026-09-01", "2026-09-01T03:00:00+00:00", "no", false, [], [], [["licence", "Licensed sponsor (UK)"]], "greenhouse"],
-  ["lever:b:3", "Product Designer", "Beta", "https://x/3", "NL", "hybrid", null, "2026-10-12T03:00:00+00:00", "unknown", true, ["nl"], [], [], "lever"],
-  ["lever:b:4", "Support Agent", "Beta", "https://x/4", null, "onsite", "2026-10-11", "2026-10-11T03:00:00+00:00", "unknown", false, [], [], [], "lever"],
+  ["greenhouse:a:1", "Backend Engineer", "Acme", "https://x/1", "GB", "remote", "2026-10-10", "2026-10-10T03:00:00+00:00", "yes", false, [], ["We offer visa sponsorship"], [["licence", "Licensed sponsor (UK)"]], "greenhouse", "phd"],
+  ["greenhouse:a:2", "Data Analyst", "Acme", "https://x/2", "GB", null, "2026-09-01", "2026-09-01T03:00:00+00:00", "no", false, [], [], [["licence", "Licensed sponsor (UK)"]], "greenhouse", null],
+  ["lever:b:3", "Product Designer", "Beta", "https://x/3", "NL", "hybrid", null, "2026-10-12T03:00:00+00:00", "unknown", true, ["nl"], [], [], "lever", "masters"],
+  ["lever:b:4", "Support Agent", "Beta", "https://x/4", null, "onsite", "2026-10-11", "2026-10-11T03:00:00+00:00", "unknown", false, [], [], [], "lever", null],
 ]);
 const NOW = new Date("2026-10-13T12:00:00Z");
 const ids = (rows) => rows.map((r) => r.id);
@@ -75,4 +75,10 @@ test("countryName spells out ISO codes", () => {
   assert.equal(countryName("XX"), "Unknown location");
   assert.equal(countryName(null), "Unknown location");
   assert.equal(countryName("1"), "1");
+});
+
+test("position filter treats postings without a level as jobs", () => {
+  assert.deepEqual(run({ levels: ["phd"] }), ["greenhouse:a:1"]);
+  assert.deepEqual(run({ levels: ["phd", "masters"] }), ["greenhouse:a:1", "lever:b:3"]);
+  assert.deepEqual(run({ levels: ["job"] }), ["lever:b:4"]);
 });

@@ -48,6 +48,7 @@ def test_shards_badges_and_filters(conn, tmp_path):
     add_posting(conn, acme, "5", "GB", label=None)  # no label yet → exported as unknown
     conn.execute("UPDATE postings SET active = 0 WHERE id = 'greenhouse:acme:2'")
     add_posting(conn, acme, "6", "NL")
+    conn.execute("UPDATE postings SET level = 'phd' WHERE id = 'greenhouse:acme:6'")
 
     site = tmp_path / "site"
     (site / "data").mkdir(parents=True)
@@ -61,8 +62,9 @@ def test_shards_badges_and_filters(conn, tmp_path):
     assert gb["greenhouse:acme:1"]["sponsorship"] == "yes"
     assert gb["greenhouse:acme:1"]["evidence"] == ["We offer visa sponsorship"]
     assert gb["greenhouse:acme:5"]["sponsorship"] == "unknown"
+    assert gb["greenhouse:acme:1"]["level"] is None
     nl = [dict(zip(FIELDS, r)) for r in read_shard(site, "nl")]
-    assert nl[0]["badges"] == []
+    assert nl[0]["badges"] == [] and nl[0]["level"] == "phd"
     xx = [dict(zip(FIELDS, r)) for r in read_shard(site, "xx")]
     assert xx[0]["country"] is None and xx[0]["badges"] == []
 

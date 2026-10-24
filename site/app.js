@@ -1,5 +1,5 @@
 import {
-  LANG_LABELS, countryName, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
+  LANG_LABELS, LEVEL_LABELS, countryName, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
 } from "./filters.js";
 
 const PAGE_SIZE = 200;
@@ -73,6 +73,7 @@ function buildFilters() {
     search,
     select("Company", "company", [["", "Any company"], ...index.companies.map((c) => [c, c])]),
     checkboxGroup("Country", "countries", countries),
+    checkboxGroup("Position", "levels", Object.entries(LEVEL_LABELS)),
     checkboxGroup("Sponsorship", "sponsorship", Object.entries(SPONSORSHIP_TEXT)),
     checkboxGroup("Register", "badges", [["licence", "Licensed sponsor"], ["history", "Sponsorship history"]]),
     checkboxGroup("Languages I speak", "langs", Object.entries(LANG_LABELS)),
@@ -89,6 +90,7 @@ function renderRow(r) {
     ? el("a", { href, target: "_blank", rel: "noopener noreferrer", text: r.title })
     : el("span", { text: r.title });
   const chips = el("div", { class: "chips" });
+  if (r.level) chips.append(el("span", { class: "level", text: LEVEL_LABELS[r.level] ?? r.level }));
   for (const [type, text, weak] of r.badges) chips.append(el("span", { class: `badge ${type}${weak ? " weak" : ""}`, text }));
   chips.append(el("span", { class: `label ${r.sponsorship}`, text: SPONSORSHIP_TEXT[r.sponsorship] }));
   if (r.mixed) chips.append(el("span", { class: "label mixed", text: "Mixed signals" }));
