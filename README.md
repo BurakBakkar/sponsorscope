@@ -7,10 +7,13 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
 - **Sponsor data:** UK, NL, DK and FI licence registers, plus US (H-1B LCA), CA (positive LMIA) and IE
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
-  SmartRecruiters, Recruitee and Personio.
+  SmartRecruiters, Recruitee and Personio, plus hand-seeded Workday and Oracle Recruiting
+  Cloud career sites (Workday sites disallowed in their robots.txt are never fetched).
 - **PhD and master's offers:** university vacancy feeds (RSS 2.0 / 1.0) listed in `seeds/manual.yaml`
   (only the degree offers are kept; feeds on generic hosts like varbi.com take a `#country=XX` suffix), plus any ATS posting whose title reads like one
-  (studentship, doctoral candidate, master thesis, …). The site's *Position* filter picks them out.
+  (studentship, doctoral candidate, master thesis, …), plus doctoral and thesis ads from Sweden's
+  public employment service ([JobTech JobSearch](https://jobsearch.api.jobtechdev.se), CC0).
+  The site's *Position* filter picks them out.
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
   Every label shows the phrases that triggered it.

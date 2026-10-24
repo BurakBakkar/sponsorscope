@@ -191,3 +191,11 @@ def test_connect_adds_level_to_old_postings_and_upsert_stores_it(tmp_path):
     db.upsert_posting(c, posting("1"), company_id=cid, country="GB", lang="en", content_hash="h", now=T1, level="phd")
     db.touch_posting(c, posting("1"), company_id=cid, country="GB", now=T2, level="masters")
     assert c.execute("SELECT level FROM postings").fetchone()[0] == "masters"
+
+
+def test_touch_keeps_the_stored_posted_date_when_the_listing_has_none(conn):
+    cid = db.get_or_create_company(conn, "Acme")
+    db.upsert_posting(conn, posting("1"), company_id=cid, country="GB", lang="en", content_hash="h", now=T1)
+    from dataclasses import replace
+    db.touch_posting(conn, replace(posting("1"), posted_at=None), company_id=cid, country="GB", now=T2)
+    assert conn.execute("SELECT posted_at FROM postings").fetchone()[0] == "2026-10-01"

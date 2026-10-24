@@ -11,12 +11,15 @@ import typer
 from sponsorscope import pipeline
 from sponsorscope.ats.ashby import Ashby
 from sponsorscope.ats.greenhouse import Greenhouse
+from sponsorscope.ats.jobtech import JobTech
 from sponsorscope.ats.lever import Lever
+from sponsorscope.ats.oracle import OracleRecruiting
 from sponsorscope.ats.personio import Personio
 from sponsorscope.ats.recruitee import Recruitee
 from sponsorscope.ats.rss import UniversityRss
 from sponsorscope.ats.smartrecruiters import SmartRecruiters
 from sponsorscope.ats.workable import Workable
+from sponsorscope.ats.workday import Workday
 from sponsorscope.classify.rules import RulesClassifier
 from sponsorscope.discovery.probe import run_discovery
 from sponsorscope.discovery.seeds import fetch_remote_seeds, load_manual
@@ -57,9 +60,9 @@ def _adapters():
 
 
 def _crawl_adapters():
-    """Discovery adapters plus feed sources that are only ever seeded by hand (never slug-guessed)."""
-    rss = UniversityRss()
-    return {**_adapters(), rss.name: rss}
+    """Discovery adapters plus sources whose boards are only ever seeded by hand (never slug-guessed)."""
+    manual = [UniversityRss(), OracleRecruiting(), Workday(), JobTech()]
+    return {**_adapters(), **{a.name: a for a in manual}}
 
 
 def _run_with_http(make_coro):

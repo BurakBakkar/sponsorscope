@@ -35,6 +35,7 @@ class RawPosting:
     remote: str | None  # "remote" | "hybrid" | "onsite" | None
     posted_at: str | None  # ISO date "YYYY-MM-DD"
     level: str | None = None  # "phd" | "masters" when the source knows better than the title; see classify.level
+    employer: str | None = None  # aggregator feeds: the posting's own employer, overriding the board's company
 
     @property
     def id(self) -> str:

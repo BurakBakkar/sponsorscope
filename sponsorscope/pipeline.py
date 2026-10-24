@@ -88,6 +88,8 @@ def run_match(conn: sqlite3.Connection, overrides: Overrides) -> int:
 def _process_posting(conn: sqlite3.Connection, p: RawPosting, company_id: int, classifier: Classifier,
                      now: str, cities: Mapping[str, str] | None, detect: Callable[[str], bool]) -> None:
     level = p.level or detect_level(p.title)
+    if p.employer:
+        company_id = db.get_or_create_company(conn, p.employer)
     if p.description is None:  # adapter skipped the detail call for a known posting
         db.touch_posting(conn, p, company_id=company_id,
                          country=resolve_country(p.location_raw, p.country, cities), now=now, level=level)

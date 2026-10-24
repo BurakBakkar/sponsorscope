@@ -266,7 +266,7 @@ def touch_posting(conn: sqlite3.Connection, p: RawPosting, *, company_id: int, c
     conn.execute(
         """
         UPDATE postings SET company_id = ?, title = ?, url = ?, location_raw = ?, country = ?, remote = ?,
-          posted_at = ?, last_seen = ?, active = 1, level = ?
+          posted_at = COALESCE(?, posted_at), last_seen = ?, active = 1, level = ?
         WHERE id = ?
         """,
         (company_id, p.title, p.url, p.location_raw, country, p.remote, p.posted_at, now, level, p.id),

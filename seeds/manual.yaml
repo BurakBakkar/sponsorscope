@@ -82,3 +82,31 @@
 - {ats: rss, slug: jobs.helsinki.fi/jobs.xml, name: University of Helsinki}
 - {ats: rss, slug: "oulunyliopisto.varbi.com/en/what:rssfeed/#country=FI", name: University of Oulu}
 - {ats: rss, slug: "taiy.varbi.com/en/what:rssfeed/#country=FI", name: University of the Arts Helsinki}
+
+# Oracle Recruiting Cloud: slug = <pod host>/<site number>.
+- {ats: oracle, slug: efzu.fa.em2.oraclecloud.com/CX_1, name: Technical University of Denmark}
+- {ats: oracle, slug: fa-eosd-saasfaprod1.fa.ocs.oraclecloud.com/CX_1001, name: University of Southern Denmark}
+- {ats: oracle, slug: edzz.fa.em3.oraclecloud.com/CX_6001, name: University of Birmingham}
+- {ats: oracle, slug: iahmme.fa.ocs.oraclecloud.com/CX_1001, name: "City St George's, University of London"}
+# Workday: slug = <tenant>.wdN.myworkdayjobs.com/<site>. Sites disallowed in robots.txt (ASML, ABB, Thales) are left out
+# and would be refused by the adapter anyway.
+- {ats: workday, slug: aalto.wd3.myworkdayjobs.com/aalto, name: Aalto University}
+- {ats: workday, slug: constructoruniversity.wd103.myworkdayjobs.com/careers, name: Constructor University}
+- {ats: workday, slug: embl.wd103.myworkdayjobs.com/embl, name: EMBL}
+- {ats: workday, slug: crick.wd3.myworkdayjobs.com/external, name: Francis Crick Institute}
+- {ats: workday, slug: sanger.wd103.myworkdayjobs.com/wellcomesangerinstitute, name: Wellcome Sanger Institute}
+- {ats: workday, slug: wellcome.wd3.myworkdayjobs.com/wellcome, name: Wellcome Trust}
+- {ats: workday, slug: zeissgroup.wd3.myworkdayjobs.com/external, name: ZEISS Group}
+- {ats: workday, slug: ag.wd3.myworkdayjobs.com/airbus, name: Airbus}
+- {ats: workday, slug: alfalaval.wd3.myworkdayjobs.com/alfa_laval_jobs, name: Alfa Laval}
+- {ats: workday, slug: nxp.wd3.myworkdayjobs.com/careers, name: NXP Semiconductors}
+- {ats: workday, slug: accenture.wd103.myworkdayjobs.com/avanadecareers, name: Avanade}
+- {ats: workday, slug: philips.wd3.myworkdayjobs.com/jobs-and-careers, name: Philips}
+- {ats: workday, slug: shell.wd3.myworkdayjobs.com/shellcareers, name: Shell}
+- {ats: workday, slug: maersk.wd3.myworkdayjobs.com/maersk_careers, name: Maersk}
+- {ats: workday, slug: astrazeneca.wd3.myworkdayjobs.com/careers, name: AstraZeneca}
+- {ats: workday, slug: relx.wd3.myworkdayjobs.com/elsevierjobs, name: Elsevier}
+- {ats: workday, slug: rollsroyce.wd3.myworkdayjobs.com/intern_graduate, name: Rolls-Royce}
+# Sweden's public employment service (CC0): doctoral occupation group plus thesis/PhD searches, degree offers only;
+# each ad is credited to its own employer.
+- {ats: jobtech, slug: "occupation-group=NNK9_F1o_pK5|q=thesis|q=PhD", name: Arbetsförmedlingen (JobTech)}

@@ -340,3 +340,18 @@ async def test_degree_level_comes_from_source_or_title(conn, http):
     await pipeline.run_crawl(conn, http, {"fakeats": DegreeATS()}, RulesClassifier(), RunReport(started_at=T[0]), T[0], CITIES)
     levels = dict(conn.execute("SELECT id, level FROM postings").fetchall())
     assert levels == {"fakeats:acme:1": "phd", "fakeats:acme:2": "phd", "fakeats:acme:3": None}
+
+
+async def test_aggregator_postings_are_credited_to_their_own_employer(conn, http):
+    class AggregatorATS(DetailOnceATS):
+        async def fetch(self, http, slug, known_ids=frozenset()):
+            common = dict(ats="fakeats", slug=slug, url="https://x", description="Funded." + LONG,
+                          location_raw="London, UK", country=None, remote=None, posted_at="2026-10-01")
+            return [RawPosting(job_id="1", title="Doktorand i fysik", employer="Lunds universitet", **common),
+                    RawPosting(job_id="2", title="Engineer", **common)]
+
+    board_company = db.get_or_create_company(conn, "Arbetsförmedlingen", verified=False)
+    db.upsert_board(conn, "fakeats", "se", board_company, status="hit", origin="seed", now=T[0])
+    await pipeline.run_crawl(conn, http, {"fakeats": AggregatorATS()}, RulesClassifier(), RunReport(started_at=T[0]), T[0], CITIES)
+    rows = dict(conn.execute("SELECT p.id, c.display_name FROM postings p JOIN companies c ON c.id = p.company_id").fetchall())
+    assert rows == {"fakeats:se:1": "Lunds universitet", "fakeats:se:2": "Arbetsförmedlingen"}

@@ -73,6 +73,12 @@ class Http:
         return self._limiters[key]
 
     async def get(self, url: str, **kwargs) -> httpx.Response:
+        return await self._request("GET", url, **kwargs)
+
+    async def post(self, url: str, **kwargs) -> httpx.Response:
+        return await self._request("POST", url, **kwargs)
+
+    async def _request(self, method: str, url: str, **kwargs) -> httpx.Response:
         limiter = self._limiter(urlsplit(url).hostname or "")
         attempt = 0
         while True:
@@ -80,7 +86,7 @@ class Http:
             async with limiter.semaphore:
                 await limiter.wait_turn()
                 try:
-                    response = await self._client.get(url, **kwargs)
+                    response = await self._client.request(method, url, **kwargs)
                 except httpx.TransportError:
                     if attempt >= self._retries:
                         raise

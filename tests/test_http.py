@@ -91,3 +91,10 @@ def test_rate_key_groups_subdomains():
 async def test_subdomains_share_one_limiter(http):
     assert http._limiter("a.recruitee.com") is http._limiter("b.recruitee.com")
     assert http._limiter("a.recruitee.com") is not http._limiter("api.ashbyhq.com")
+
+
+async def test_post_sends_json_with_the_same_retry_policy(http, respx_mock):
+    route = respx_mock.post(URL).mock(side_effect=[httpx.Response(429), httpx.Response(200, json={"ok": 1})])
+    resp = await http.post(URL, json={"limit": 20})
+    assert resp.json() == {"ok": 1} and route.call_count == 2
+    assert route.calls.last.request.content == b'{"limit":20}'

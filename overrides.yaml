@@ -17,6 +17,11 @@ match:
   - {company: Radboud University, sponsor: Radboud Universiteit Nijmegen}
   - {company: University of Copenhagen, sponsor: Københavns Universitet}
   - {company: Aalborg University, sponsor: Aalborg Universitet}
+  - {company: Technical University of Denmark, sponsor: Danmarks Tekniske Universitet (DTU)}
+  - {company: University of Southern Denmark, sponsor: Syddansk Universitet (University of Southern Denmark)}
+  - {company: Francis Crick Institute, sponsor: The Francis Crick Institute Limited}
+  - {company: Wellcome Sanger Institute, sponsor: Genome Research Limited}  # Sanger's legal entity
+  - {company: Wellcome Trust, sponsor: The Wellcome Trust Limited (as Trustee of the Wellcome Trust)}
   # research hospitals and companies whose board name differs from the registered entity
   - {company: Leids Universitair Medisch Centrum, sponsor: Leids Universitair Medisch Centrum (LUMC)}
   - {company: Antoni van Leeuwenhoek, sponsor: Stichting Het Nederlands Kanker Instituut-Antoni van Leeuwenhoek Ziekenhuis}
