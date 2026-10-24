@@ -62,7 +62,7 @@ export function filterRows(rows, state, now = new Date()) {
     if (state.countries.length && !state.countries.includes(r.country ?? "XX")) return false;
     if (state.sponsorship.length && !state.sponsorship.includes(r.sponsorship)) return false;
     if (state.badges.length && !state.badges.some((b) => r.badges.some(([type]) => type === b))) return false;
-    if (state.langs.length && !r.langs.some((l) => state.langs.includes(l))) return false;
+    if (state.langs.length && !r.langs.every((l) => state.langs.includes(l))) return false;
     if (state.company && r.company !== state.company) return false;
     if (state.remote.length && !state.remote.includes(r.remote ?? "unknown")) return false;
     if (state.ats.length && !state.ats.includes(r.ats)) return false;
