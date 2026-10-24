@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  DEFAULT_STATE, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
+  DEFAULT_STATE, countryName, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
 } from "./filters.js";
 
 const FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
@@ -66,4 +66,12 @@ test("sourceLine shows staleness", () => {
   assert.equal(sourceLine("gb", { status: "ok", data_as_of: "2026-10-13T03:00:00+00:00" }), "UK register: data from 2026-10-13");
   assert.equal(sourceLine("nl", { status: "failed", data_as_of: "2026-10-05T03:00:00+00:00" }), "NL register: failed, showing data from 2026-10-05");
   assert.equal(sourceLine("fi", { status: "blocked", data_as_of: null }), "FI register: blocked, no data yet");
+});
+
+test("countryName spells out ISO codes", () => {
+  assert.equal(countryName("GB"), "United Kingdom");
+  assert.equal(countryName("NL"), "Netherlands");
+  assert.equal(countryName("XX"), "Unknown location");
+  assert.equal(countryName(null), "Unknown location");
+  assert.equal(countryName("1"), "1");
 });

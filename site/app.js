@@ -1,5 +1,5 @@
 import {
-  LANG_LABELS, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
+  LANG_LABELS, countryName, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
 } from "./filters.js";
 
 const PAGE_SIZE = 200;
@@ -66,7 +66,9 @@ function buildFilters() {
   search.value = state.q;
   search.addEventListener("input", () => { state.q = search.value; update(); });
   const countries = Object.entries(index.countries)
-    .map(([cc, n]) => [cc, `${cc === "XX" ? "Unknown location" : cc} (${n.toLocaleString()})`]);
+    .map(([cc, n]) => [cc, countryName(cc), n])
+    .sort(([a, x], [b, y]) => (a === "XX") - (b === "XX") || x.localeCompare(y)) // Unknown last
+    .map(([cc, name, n]) => [cc, `${name} (${n.toLocaleString()})`]);
   $("#filters").replaceChildren(
     search,
     select("Company", "company", [["", "Any company"], ...index.companies.map((c) => [c, c])]),
@@ -91,7 +93,7 @@ function renderRow(r) {
   chips.append(el("span", { class: `label ${r.sponsorship}`, text: SPONSORSHIP_TEXT[r.sponsorship] }));
   if (r.mixed) chips.append(el("span", { class: "label mixed", text: "Mixed signals" }));
   for (const lang of r.langs) chips.append(el("span", { class: "lang", text: `Requires ${LANG_LABELS[lang] ?? lang}` }));
-  const meta = [r.company, r.country ?? "Unknown location", r.remote, r.posted_at ?? r.first_seen.slice(0, 10)];
+  const meta = [r.company, countryName(r.country), r.remote, r.posted_at ?? r.first_seen.slice(0, 10)];
   const item = el("li", {}, el("h2", {}, title), el("p", { class: "meta", text: meta.filter(Boolean).join(" · ") }), chips);
   if (r.evidence.length) {
     item.append(el("details", {}, el("summary", { text: "Why this label?" }),

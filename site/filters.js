@@ -13,6 +13,13 @@ export const LANG_LABELS = {
   no: "Norwegian", es: "Spanish", it: "Italian", pt: "Portuguese", pl: "Polish",
   ja: "Japanese", zh: "Chinese",
 };
+const REGION_NAMES = new Intl.DisplayNames(["en"], { type: "region" });
+
+export function countryName(cc) {
+  if (!cc || cc === "XX") return "Unknown location";
+  try { return REGION_NAMES.of(cc) ?? cc; } catch { return cc; } // malformed code: show it raw
+}
+
 export const SOURCE_LABELS = {
   gb: "UK register", nl: "NL register", dk: "DK register", fi: "FI register",
   us: "US LCA data", ca: "Canada LMIA list", ie: "Ireland permits",
