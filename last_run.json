@@ -1,11 +1,10 @@
 {
-  "started_at": "2026-10-24T07:53:00+00:00",
-  "finished_at": "2026-10-24T08:36:33+00:00",
+  "started_at": "2026-10-24T16:47:05+00:00",
+  "finished_at": "2026-10-24T18:39:23+00:00",
   "sources": {
     "gb": {
-      "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6adb1b5ab62d80a107bc5c29/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-23.csv",
-      "rows": 141119
+      "status": "unchanged",
+      "version": "https://assets.publishing.service.gov.uk/media/6adb1b5ab62d80a107bc5c29/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-23.csv"
     },
     "nl": {
       "status": "unchanged",
@@ -34,29 +33,47 @@
   },
   "ats": {
     "ashby": {
-      "boards": 2415,
+      "boards": 2414,
       "ok": 2410,
-      "not_found": 5,
+      "not_found": 4,
       "failed": 0,
-      "postings": 44364,
+      "postings": 44373,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5141,
-      "ok": 5128,
-      "not_found": 13,
+      "boards": 5136,
+      "ok": 5127,
+      "not_found": 9,
       "failed": 0,
-      "postings": 134644,
+      "postings": 134630,
+      "outage": false,
+      "errors": []
+    },
+    "jobtech": {
+      "boards": 1,
+      "ok": 1,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 116,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 1920,
+      "boards": 1919,
       "ok": 1919,
-      "not_found": 1,
+      "not_found": 0,
       "failed": 0,
-      "postings": 57611,
+      "postings": 57603,
+      "outage": false,
+      "errors": []
+    },
+    "oracle": {
+      "boards": 4,
+      "ok": 4,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 333,
       "outage": false,
       "errors": []
     },
@@ -70,20 +87,29 @@
       "errors": []
     },
     "recruitee": {
-      "boards": 9,
-      "ok": 9,
+      "boards": 15,
+      "ok": 15,
       "not_found": 0,
       "failed": 0,
-      "postings": 86,
+      "postings": 455,
+      "outage": false,
+      "errors": []
+    },
+    "rss": {
+      "boards": 56,
+      "ok": 56,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 208,
       "outage": false,
       "errors": []
     },
     "smartrecruiters": {
-      "boards": 456,
-      "ok": 456,
+      "boards": 461,
+      "ok": 461,
       "not_found": 0,
       "failed": 0,
-      "postings": 3920,
+      "postings": 9694,
       "outage": false,
       "errors": []
     },
@@ -95,6 +121,17 @@
       "postings": 56,
       "outage": false,
       "errors": []
+    },
+    "workday": {
+      "boards": 17,
+      "ok": 16,
+      "not_found": 0,
+      "failed": 1,
+      "postings": 7354,
+      "outage": false,
+      "errors": [
+        "maersk.wd3.myworkdayjobs.com/maersk_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+      ]
     }
   }
 }
