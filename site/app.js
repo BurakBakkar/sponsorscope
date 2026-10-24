@@ -75,7 +75,7 @@ function buildFilters() {
     checkboxGroup("Country", "countries", countries),
     checkboxGroup("Sponsorship", "sponsorship", Object.entries(SPONSORSHIP_TEXT)),
     checkboxGroup("Register", "badges", [["licence", "Licensed sponsor"], ["history", "Sponsorship history"]]),
-    checkboxGroup("Hide if it requires", "hideLangs", Object.entries(LANG_LABELS)),
+    checkboxGroup("Mentions language", "langs", Object.entries(LANG_LABELS)),
     checkboxGroup("Work mode", "remote", [["remote", "Remote"], ["hybrid", "Hybrid"], ["onsite", "On-site"], ["unknown", "Not stated"]]),
     checkboxGroup("Job board", "ats", index.ats.map((a) => [a, a])),
     select("Posted within", "days", [[0, "Any time"], [1, "Last 24 hours"], [7, "Last 7 days"], [30, "Last 30 days"]], Number),

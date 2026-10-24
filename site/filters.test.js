@@ -23,8 +23,9 @@ test("default view hides 'no' postings", () => {
 test("unknown-location filter uses XX", () => {
   assert.deepEqual(run({ countries: ["XX"], sponsorship: [] }), ["lever:b:4"]);
 });
-test("hide postings requiring a language", () => {
-  assert.deepEqual(run({ hideLangs: ["nl"] }), ["greenhouse:a:1", "lever:b:4"]);
+test("language filter keeps postings mentioning a chosen language", () => {
+  assert.deepEqual(run({ langs: ["nl"] }), ["lever:b:3"]);
+  assert.deepEqual(run({ langs: ["de"] }), []);
 });
 test("badge filter", () => {
   assert.deepEqual(run({ badges: ["licence"], sponsorship: [] }), ["greenhouse:a:1", "greenhouse:a:2"]);

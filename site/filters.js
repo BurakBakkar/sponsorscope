@@ -1,10 +1,10 @@
 // Pure filtering/state helpers for the sponsorscope page (tested with node --test).
 
 export const DEFAULT_STATE = {
-  countries: [], sponsorship: ["yes", "unknown"], badges: [], hideLangs: [],
+  countries: [], sponsorship: ["yes", "unknown"], badges: [], langs: [],
   q: "", company: "", remote: [], days: 0, ats: [], mixed: "any",
 };
-const LIST_KEYS = ["countries", "sponsorship", "badges", "hideLangs", "remote", "ats"];
+const LIST_KEYS = ["countries", "sponsorship", "badges", "langs", "remote", "ats"];
 const MIXED_VALUES = ["any", "only", "hide"];
 const DAY_MS = 86_400_000;
 
@@ -62,7 +62,7 @@ export function filterRows(rows, state, now = new Date()) {
     if (state.countries.length && !state.countries.includes(r.country ?? "XX")) return false;
     if (state.sponsorship.length && !state.sponsorship.includes(r.sponsorship)) return false;
     if (state.badges.length && !state.badges.some((b) => r.badges.some(([type]) => type === b))) return false;
-    if (state.hideLangs.length && r.langs.some((l) => state.hideLangs.includes(l))) return false;
+    if (state.langs.length && !r.langs.some((l) => state.langs.includes(l))) return false;
     if (state.company && r.company !== state.company) return false;
     if (state.remote.length && !state.remote.includes(r.remote ?? "unknown")) return false;
     if (state.ats.length && !state.ats.includes(r.ats)) return false;
