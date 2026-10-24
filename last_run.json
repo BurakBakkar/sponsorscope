@@ -1,19 +1,19 @@
 {
-  "started_at": "2026-10-23T08:14:32+00:00",
-  "finished_at": "2026-10-23T09:01:48+00:00",
+  "started_at": "2026-10-24T07:53:00+00:00",
+  "finished_at": "2026-10-24T08:36:33+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6ad9bef8b62d80a107bc5b43/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-22.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6adb1b5ab62d80a107bc5c29/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-23.csv",
+      "rows": 141119
     },
     "nl": {
       "status": "unchanged",
       "version": "5 October 2026"
     },
     "dk": {
-      "status": "ok",
-      "version": "21-10-2026",
-      "rows": 989
+      "status": "unchanged",
+      "version": "21-10-2026"
     },
     "fi": {
       "status": "blocked",
@@ -24,8 +24,8 @@
       "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx"
     },
     "ca": {
-      "status": "failed",
-      "error": "ReadTimeout: "
+      "status": "unchanged",
+      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/4ee7a4e0-ffc3-47af-94e7-30929d1eeb67/download/tfwp_2026q1_pos_en.xlsx"
     },
     "ie": {
       "status": "unchanged",
@@ -34,20 +34,20 @@
   },
   "ats": {
     "ashby": {
-      "boards": 2416,
-      "ok": 2411,
+      "boards": 2415,
+      "ok": 2410,
       "not_found": 5,
       "failed": 0,
-      "postings": 44401,
+      "postings": 44364,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5144,
-      "ok": 5131,
+      "boards": 5141,
+      "ok": 5128,
       "not_found": 13,
       "failed": 0,
-      "postings": 134596,
+      "postings": 134644,
       "outage": false,
       "errors": []
     },
@@ -56,7 +56,7 @@
       "ok": 1919,
       "not_found": 1,
       "failed": 0,
-      "postings": 57996,
+      "postings": 57611,
       "outage": false,
       "errors": []
     },
@@ -83,7 +83,7 @@
       "ok": 456,
       "not_found": 0,
       "failed": 0,
-      "postings": 3909,
+      "postings": 3920,
       "outage": false,
       "errors": []
     },
@@ -92,7 +92,7 @@
       "ok": 38,
       "not_found": 0,
       "failed": 0,
-      "postings": 55,
+      "postings": 56,
       "outage": false,
       "errors": []
     }
