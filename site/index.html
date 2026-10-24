@@ -8,25 +8,29 @@
   <script type="module" src="app.js"></script>
 </head>
 <body>
-  <header>
-    <h1>sponsorscope</h1>
-    <p>Job postings joined with official visa-sponsor registers. Labels come from text rules. Always read the posting.</p>
+  <header class="hero">
+    <div class="wrap">
+      <h1>sponsorscope</h1>
+      <p>Jobs and PhD offers joined with official visa-sponsor registers. Labels come from text rules, so always read the posting.</p>
+      <input id="search" type="search" placeholder="Search role or employer…" aria-label="Search role or employer">
+    </div>
   </header>
-  <main>
-    <aside id="filters" aria-label="Filters"></aside>
-    <section aria-label="Results">
+  <nav id="filters" class="filters" aria-label="Filters"><div class="wrap" id="chips"></div></nav>
+  <main class="wrap">
+    <div class="results-bar">
       <p id="summary" aria-live="polite">Loading…</p>
-      <ol id="results"></ol>
-      <button id="more" type="button" hidden>Show more</button>
-    </section>
+      <div id="active" class="active" aria-label="Active filters"></div>
+    </div>
+    <ol id="results"></ol>
+    <button id="more" type="button" hidden>Show more</button>
   </main>
-  <footer>
+  <footer class="wrap">
     <ul id="sources"></ul>
     <p>Sponsor data: UK Home Office register of licensed sponsors (contains public sector information licensed under the
       <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v3.0</a>);
       IND public register of recognised sponsors (NL); SIRI certified companies (DK); Migri certified employers (FI);
       US DOL OFLC LCA disclosure data; ESDC positive LMIA employers (contains information licensed under the Open Government Licence – Canada);
-      DETE employment permits issued to companies (IE).
+      DETE employment permits issued to companies (IE). Swedish ads from Arbetsförmedlingen JobTech (CC0).
       Location data from <a href="https://www.geonames.org/">GeoNames</a> (CC BY 4.0).</p>
     <p><strong>Not legal advice.</strong> A sponsor licence does not guarantee a given role is sponsored.</p>
   </footer>

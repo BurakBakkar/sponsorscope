@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  DEFAULT_STATE, countryName, filterRows, parseState, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
+  DEFAULT_STATE, chipLabel, countryName, evidenceParts, filterRows, hueFor, initials, parseState, relativeDate, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
 } from "./filters.js";
 
 const FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
@@ -81,4 +81,43 @@ test("position filter treats postings without a level as jobs", () => {
   assert.deepEqual(run({ levels: ["phd"] }), ["greenhouse:a:1"]);
   assert.deepEqual(run({ levels: ["phd", "masters"] }), ["greenhouse:a:1", "lever:b:3"]);
   assert.deepEqual(run({ levels: ["job"] }), ["lever:b:4"]);
+});
+
+test("initials skip filler words and cap at two letters", () => {
+  assert.equal(initials("Delft University of Technology"), "DU");
+  assert.equal(initials("the Francis Crick Institute"), "FC");
+  assert.equal(initials("Bosch Group"), "BG");
+  assert.equal(initials("ZEISS"), "Z");
+  assert.equal(initials(""), "?");
+});
+
+test("hueFor is stable per name and within 0..359", () => {
+  assert.equal(hueFor("Bosch Group"), hueFor("Bosch Group"));
+  assert.notEqual(hueFor("Bosch Group"), hueFor("Airbus"));
+  for (const name of ["a", "Airbus", "Technical University of Denmark"]) {
+    const h = hueFor(name);
+    assert.ok(Number.isInteger(h) && h >= 0 && h < 360);
+  }
+});
+
+test("relativeDate", () => {
+  const now = new Date("2026-10-24T12:00:00Z");
+  assert.equal(relativeDate("2026-10-24", now), "today");
+  assert.equal(relativeDate("2026-10-23", now), "yesterday");
+  assert.equal(relativeDate("2026-10-19", now), "5 days ago");
+  assert.equal(relativeDate("2026-10-01", now), "3 weeks ago");
+  assert.equal(relativeDate("2026-07-01", now), "1 Jul 2026");
+  assert.equal(relativeDate(null, now), "");
+});
+
+test("evidenceParts trims to word edges and marks sponsorship words", () => {
+  const parts = evidenceParts("ng date. The University is unable to sponsor employment visas for this vac");
+  assert.equal(parts.map((p) => p.text).join(""), "…date. The University is unable to sponsor employment visas for this…");
+  assert.deepEqual(parts.filter((p) => p.strong).map((p) => p.text), ["sponsor", "visas"]);
+});
+
+test("chipLabel summarises the selection", () => {
+  assert.equal(chipLabel("Country", []), "Country");
+  assert.equal(chipLabel("Country", ["Netherlands"]), "Country: Netherlands");
+  assert.equal(chipLabel("Country", ["Netherlands", "Denmark", "Finland"]), "Country: Netherlands +2");
 });

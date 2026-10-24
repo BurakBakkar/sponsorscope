@@ -96,3 +96,53 @@ export function sourceLine(name, info) {
   if ((info.status === "ok" || info.status === "unchanged") && asOf) return `${label}: data from ${asOf}`;
   return asOf ? `${label}: ${info.status}, showing data from ${asOf}` : `${label}: ${info.status}, no data yet`;
 }
+
+// ---- display helpers ----
+
+const FILLER = new Set(["of", "the", "and", "for", "de", "der", "van", "&", "-", "–"]);
+
+export function initials(name) {
+  const words = (name || "").split(/\s+/).filter((w) => w && !FILLER.has(w.toLowerCase()));
+  return words.slice(0, 2).map((w) => w[0].toUpperCase()).join("") || "?";
+}
+
+export function hueFor(name) {
+  let h = 0;
+  for (const ch of name || "") h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  return h % 360;
+}
+
+export function relativeDate(iso, now = new Date()) {
+  if (!iso) return "";
+  const days = Math.round((Date.parse(now.toISOString().slice(0, 10)) - Date.parse(iso.slice(0, 10))) / DAY_MS);
+  if (days <= 0) return "today";
+  if (days === 1) return "yesterday";
+  if (days < 14) return `${days} days ago`;
+  if (days < 56) return `${Math.round(days / 7)} weeks ago`;
+  return new Date(iso.slice(0, 10)).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+}
+
+// Display-only highlight of the words the sponsorship rules key on; classification itself happens in Python.
+const HIGHLIGHT = /\b(?:visas?|sponsor\w*|work permits?|residence permits?|relocation|right to work|immigration)\b/gi;
+
+export function evidenceParts(snippet) {
+  // Evidence is a fixed-width window, so it usually starts and ends mid-word: trim to whole words.
+  let text = snippet.replace(/\s+/g, " ").trim();
+  const head = text.indexOf(" ");
+  const tail = text.lastIndexOf(" ");
+  if (head > 0 && tail > head) text = `…${text.slice(head + 1, tail)}…`;
+  const parts = [];
+  let last = 0;
+  for (const m of text.matchAll(HIGHLIGHT)) {
+    if (m.index > last) parts.push({ text: text.slice(last, m.index), strong: false });
+    parts.push({ text: m[0], strong: true });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push({ text: text.slice(last), strong: false });
+  return parts;
+}
+
+export function chipLabel(label, selected) {
+  if (!selected.length) return label;
+  return selected.length === 1 ? `${label}: ${selected[0]}` : `${label}: ${selected[0]} +${selected.length - 1}`;
+}

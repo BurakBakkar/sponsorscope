@@ -5,3 +5,4 @@ __pycache__/
 *.db
 site/data/
 node_modules/
+.superpowers/
