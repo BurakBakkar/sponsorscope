@@ -51,3 +51,48 @@ async def test_missing_feed_raises(http, respx_mock):
     with pytest.raises(BoardNotFound):
         await UniversityRss().fetch(http, SLUG)
     assert (await UniversityRss().probe(http, SLUG)).exists is False
+
+
+async def test_country_fragment_overrides_domain_and_is_not_sent(http, respx_mock):
+    route = respx_mock.get("https://uu.varbi.com/en/what:rssfeed/").mock(return_value=httpx.Response(200, content=feed(
+        f"""<item><title>Doktorand i datavetenskap</title><link>https://uu.varbi.com/en/what:job/jobID:1/</link>
+        <guid>https://uu.varbi.com/en/what:job/jobID:1/</guid><description>x</description></item>""")))
+    [p] = await UniversityRss().fetch(http, "uu.varbi.com/en/what:rssfeed/#country=SE")
+    assert p.country == "SE" and p.level == "phd" and route.called
+    assert UniversityRss.country_for("uu.varbi.com/en/what:rssfeed/#country=se") == "SE"
+
+
+async def test_successfactors_escaped_description_and_plain_guid(http, respx_mock):
+    respx_mock.get("https://careers.example.nl/jobs.xml").mock(return_value=httpx.Response(200, content=feed(
+        """<item><title>PhD Position Quantum Sensing (Delft, NL, 2628 CD)</title>
+        <description><![CDATA[&lt;p&gt;We &lt;strong&gt;welcome&lt;/strong&gt; you &amp;amp; your team.&lt;/p&gt;]]></description>
+        <link>https://careers.example.nl/job/Delft-PhD-Position-2628</link><guid>1374333157</guid></item>""")))
+    [p] = await UniversityRss().fetch(http, "careers.example.nl/jobs.xml")
+    assert p.job_id == "1374333157" and p.country == "NL" and p.posted_at is None
+    assert p.description == "We welcome you & your team."
+
+
+async def test_broken_item_link_is_rebuilt_from_the_feed_url(http, respx_mock):
+    broken = "https://cms.ku.dkObvius::Document=HASH(0x55b0f15de528)?show=170888"
+    respx_mock.get("https://employment.ku.dk/all-vacancies/?get_rss=1").mock(return_value=httpx.Response(200, content=feed(
+        f"<item><title>PhD fellowship in ecology</title><link>{broken}</link><guid>{broken}</guid>"
+        "<description>x</description></item>")))
+    [p] = await UniversityRss().fetch(http, "employment.ku.dk/all-vacancies/?get_rss=1")
+    assert p.url == "https://employment.ku.dk/all-vacancies/?show=170888" and p.job_id == "170888"
+
+
+async def test_rss_1_0_feed(http, respx_mock):
+    rdf = b"""<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns="http://purl.org/rss/1.0/">
+  <channel rdf:about="https://utwentecareers.nl/en/vacancies/"><title>Vacancies</title></channel>
+  <item rdf:about="https://utwentecareers.nl/en/vacancies/#2640">
+    <title>PhD Position on Soft Robotics</title>
+    <link>https://utwentecareers.nl/en/vacancies/2640/phd-position-soft-robotics/</link>
+    <description>Join our lab.</description><dc:date>Mon, 19 Oct 2026 22:00:00 GMT</dc:date>
+  </item>
+</rdf:RDF>"""
+    respx_mock.get("https://utwentecareers.nl/en/vacancies/rss/").mock(return_value=httpx.Response(200, content=rdf))
+    [p] = await UniversityRss().fetch(http, "utwentecareers.nl/en/vacancies/rss/")
+    assert (p.title, p.country, p.posted_at, p.description) == ("PhD Position on Soft Robotics", "NL", "2026-10-19", "Join our lab.")
+    assert p.url.endswith("/2640/phd-position-soft-robotics/")

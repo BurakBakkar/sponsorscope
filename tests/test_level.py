@@ -27,6 +27,16 @@ from sponsorscope.classify.level import detect_level
     ("Master Data Analyst", None, None),
     ("Project 4: soil carbon under cover crops", "Studentships", "phd"),
     ("Backend Engineer", "Engineering", None),
+    ("Doktorand i datavetenskap", None, "phd"),
+    ("MSc Thesis: reinforcement learning for grid control", None, "masters"),
+    ("Afstudeeropdracht WO: digital twin", None, "masters"),
+    ("Master student afstudeerstage AI", None, "masters"),
+    ("Postdoktor i kemi med inriktning mot organisk kemi", None, None),
+    ("Postdoktorand i molekylärbiologi", None, None),
+    ("Assistant Editor (PhD Graduates)", None, None),
+    ("Assistant Editor (Master's/PhD holder) - Healthcare", None, None),
+    ("Afstudeerstage marketing", None, None),
+    ("Kieferorthopäde / Zahnarzt M.Sc. Kieferorthopädie (m/w/d)", None, None),
 ])
 def test_detect_level(title, category, expected):
     assert detect_level(title, category) == expected

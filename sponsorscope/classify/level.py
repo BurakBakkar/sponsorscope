@@ -8,16 +8,18 @@ _PHD = re.compile(
     r"|doctoral (?:\w+ ){0,2}(?:candidate|researcher|student|position|network|award|fellow)",
     re.I,
 )
+# A degree name only counts next to an offer word: "M.Sc." alone is usually a qualification the hire holds.
 _MASTERS = re.compile(
-    r"\bmaster'?s? ?(?:thesis|student|studentship|project|internship|position)|masterarbeit|\bm\.?sc\b|\bmres\b"
-    r"|afstudeer|graduation (?:internship|assignment|project)",
+    r"\b(?:master'?s?|m\.?sc\.?) ?(?:thesis|student|studentship|project|internship|position|assignment)"
+    r"|masterarbeit|\bmres\b|graduation (?:internship|assignment|project)"
+    r"|afstudeer\w*.*\b(?:master|wo|msc)\b|\b(?:master|wo|msc)\b.*afstudeer",  # afstudeer- alone is often HBO
     re.I,
 )
-# Staff roles that merely mention doctoral programmes, postdocs, internal-only calls, and internships/jobs for
-# people who already hold a PhD.
+# Staff roles that merely mention doctoral programmes, postdocs (incl. Swedish postdoktor), internal-only calls,
+# and jobs/internships for people who already hold the degree.
 _NOT_AN_OFFER = re.compile(
-    r"post-?\s?doc|manager|officer|administrator|coordinator|director|lecturer|professor"
-    r"|\bintern\b|preferred|required|staff only",
+    r"post-?\s?do[ck]|manager|officer|administrator|coordinator|director|lecturer|professor"
+    r"|\bintern\b|preferred|required|staff only|holders?\b|graduates\b",
     re.I,
 )
 

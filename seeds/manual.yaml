@@ -7,6 +7,18 @@
 - {ats: greenhouse, slug: deliveroo, name: Deliveroo}
 - {ats: lever, slug: palantir, name: Palantir Technologies}
 - {ats: lever, slug: spotify, name: Spotify}
+# Employers and institutes that post English master's thesis / PhD offers (verified 2026-10-24).
+- {ats: smartrecruiters, slug: boschgroup, name: Bosch Group}
+- {ats: smartrecruiters, slug: afry, name: AFRY}
+- {ats: smartrecruiters, slug: densointernationaleurope, name: DENSO}
+- {ats: smartrecruiters, slug: deloittenordic, name: Deloitte}
+- {ats: smartrecruiters, slug: CERN, name: CERN}
+- {ats: recruitee, slug: lumc11, name: Leids Universitair Medisch Centrum}
+- {ats: recruitee, slug: werkenbijnlr, name: Royal Netherlands Aerospace Centre (NLR)}
+- {ats: recruitee, slug: antonivanleeuwenhoek, name: Antoni van Leeuwenhoek}
+- {ats: recruitee, slug: quantumsystemsgmbh, name: Quantum-Systems GmbH}
+- {ats: recruitee, slug: caesar, name: Caesar Groep}
+- {ats: recruitee, slug: insait, name: INSAIT}
 
 # University vacancy RSS feeds (shared UK hiring platform, /rss/rss.aspx = all vacancies).
 # The rss adapter keeps only PhD/master's offers; slug = feed URL without https://.
@@ -42,3 +54,31 @@
 - {ats: rss, slug: jobs.uwl.ac.uk/rss/rss.aspx, name: University of West London}
 - {ats: rss, slug: jobs.wrexham.ac.uk/rss/rss.aspx, name: Wrexham University}
 - {ats: rss, slug: jobs.yorksj.ac.uk/rss/rss.aspx, name: York St John University}
+# Other UK platforms (Stonefish, Hireserve /rss.xml, Volcanic and SuccessFactors /jobs.xml); several have no
+# degree offers today but are cheap to keep.
+- {ats: rss, slug: "www.jobs.cam.ac.uk/job/?format=rss", name: University of Cambridge}
+- {ats: rss, slug: jobs.cranfield.ac.uk/rss.xml, name: Cranfield University}
+- {ats: rss, slug: hr-jobs.lancs.ac.uk/rss/rss.aspx, name: Lancaster University}
+- {ats: rss, slug: jobs.bishopg.ac.uk/rss/rss.aspx, name: Lincoln Bishop University}
+- {ats: rss, slug: jobs.ljmu.ac.uk/rss.xml, name: Liverpool John Moores University}
+- {ats: rss, slug: jobs.ncl.ac.uk/jobs.xml, name: Newcastle University}
+- {ats: rss, slug: jobs.ravensbourne.ac.uk/rss/rss.aspx, name: Ravensbourne University London}
+- {ats: rss, slug: jobs.open.ac.uk/jobs.xml, name: The Open University}
+- {ats: rss, slug: www.jobs.gla.ac.uk/jobs.xml, name: University of Glasgow}
+- {ats: rss, slug: jobs.wlv.ac.uk/rss.xml, name: University of Wolverhampton}
+- {ats: rss, slug: jobs.worcester.ac.uk/rss/rss.aspx, name: University of Worcester}
+- {ats: rss, slug: jobs.york.ac.uk/rss.xml, name: University of York}
+# NL, DK, FI universities. Varbi feeds live on varbi.com, so their country comes from the #country= fragment.
+# (Swedish Varbi feeds are left out: they are served in Swedish only, so the English filter drops every ad.)
+- {ats: rss, slug: careers.tudelft.nl/jobs.xml, name: Delft University of Technology}
+- {ats: rss, slug: "tue.varbi.com/en/what:rssfeed/#country=NL", name: Eindhoven University of Technology}
+- {ats: rss, slug: careers.universiteitleiden.nl/jobs.xml, name: Leiden University}
+- {ats: rss, slug: "ru.varbi.com/en/what:rssfeed/#country=NL", name: Radboud University}
+- {ats: rss, slug: "werkenbij.rug.nl/feed/?post_type=vacature", name: University of Groningen}
+- {ats: rss, slug: utwentecareers.nl/en/vacancies/rss/, name: University of Twente}
+- {ats: rss, slug: "aau.varbi.com/en/what:rssfeed/#country=DK", name: Aalborg University}
+- {ats: rss, slug: "employment.ku.dk/all-vacancies/?get_rss=1", name: University of Copenhagen}
+- {ats: rss, slug: "uef.varbi.com/en/what:rssfeed/#country=FI", name: University of Eastern Finland}
+- {ats: rss, slug: jobs.helsinki.fi/jobs.xml, name: University of Helsinki}
+- {ats: rss, slug: "oulunyliopisto.varbi.com/en/what:rssfeed/#country=FI", name: University of Oulu}
+- {ats: rss, slug: "taiy.varbi.com/en/what:rssfeed/#country=FI", name: University of the Arts Helsinki}

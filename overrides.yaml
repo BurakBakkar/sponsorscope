@@ -8,6 +8,23 @@ match:
   - {company: University of Greater Manchester, sponsor: University of Bolton}  # renamed 2024
   - {company: University of Leeds, sponsor: University of Leeds (Human Resources)}
   - {company: University of West London, sponsor: The University of West London}
+  - {company: University of Worcester, sponsor: The University of Worcester}
+  - {company: Delft University of Technology, sponsor: Technische Universiteit Delft}
+  - {company: Eindhoven University of Technology, sponsor: Technische Universiteit Eindhoven}
+  - {company: Leiden University, sponsor: Universiteit Leiden}
+  - {company: University of Groningen, sponsor: Rijksuniversiteit Groningen}
+  - {company: University of Twente, sponsor: Universiteit Twente}
+  - {company: Radboud University, sponsor: Radboud Universiteit Nijmegen}
+  - {company: University of Copenhagen, sponsor: Københavns Universitet}
+  - {company: Aalborg University, sponsor: Aalborg Universitet}
+  # research hospitals and companies whose board name differs from the registered entity
+  - {company: Leids Universitair Medisch Centrum, sponsor: Leids Universitair Medisch Centrum (LUMC)}
+  - {company: Antoni van Leeuwenhoek, sponsor: Stichting Het Nederlands Kanker Instituut-Antoni van Leeuwenhoek Ziekenhuis}
+  - {company: Bosch Group, sponsor: Robert Bosch B.V.}
+  - {company: Bosch Group, sponsor: Robert Bosch Ltd}
+  - {company: AFRY, sponsor: AFRY Netherlands B.V.}
+  - {company: AFRY, sponsor: AFRY Denmark A/S}
+  - {company: AFRY, sponsor: AFRY Management Consulting Limited}
 #  - {company: Deliveroo, sponsor: Roofoods Ltd}
 forbid: []
 #  - {company: Apple, sponsor: Apple Ltd}

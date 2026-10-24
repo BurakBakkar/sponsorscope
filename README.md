@@ -8,8 +8,8 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
   SmartRecruiters, Recruitee and Personio.
-- **PhD and master's offers:** university vacancy RSS feeds listed in `seeds/manual.yaml`
-  (only the degree offers are kept), plus any ATS posting whose title reads like one
+- **PhD and master's offers:** university vacancy feeds (RSS 2.0 / 1.0) listed in `seeds/manual.yaml`
+  (only the degree offers are kept; feeds on generic hosts like varbi.com take a `#country=XX` suffix), plus any ATS posting whose title reads like one
   (studentship, doctoral candidate, master thesis, …). The site's *Position* filter picks them out.
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
@@ -27,9 +27,9 @@ nightly on GitHub Actions:
 - The page in `site/` is deployed to GitHub Pages.
 - Design: `docs/superpowers/specs/2026-10-13-sponsorscope-design.md`
 - `weekly-discover` finds new boards. It probes public slug lists
-  ([Feashliaa/job-board-aggregator](https://github.com/Feashliaa/job-board-aggregator)
-  and [ConorsCode/open-jobs-data](https://github.com/ConorsCode/open-jobs-data),
-  both MIT) and guesses slugs from sponsor names. Misses back off from 1 week
+  ([Riley-Dorrington/job-board-aggregator](https://github.com/Riley-Dorrington/job-board-aggregator),
+  [ConorsCode/open-jobs-data](https://github.com/ConorsCode/open-jobs-data) and
+  [datascry/openroles](https://github.com/datascry/openroles), all MIT) and guesses slugs from sponsor names. Misses back off from 1 week
   to 4 weeks to 12 weeks.
 - `smoke` (run manually) hits one real board per ATS, to catch upstream API
   changes.
