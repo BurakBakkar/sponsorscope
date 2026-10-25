@@ -60,3 +60,11 @@ async def test_detail_404_gives_empty_description(http, respx_mock):
     respx_mock.get(f"{API}/7").mock(return_value=httpx.Response(404, json={"code": "RESOURCE_NOT_FOUND"}))
     [p] = await SmartRecruiters().fetch(http, "Acme")
     assert p.description == ""
+
+
+async def test_detail_budget_defers_new_postings(http, respx_mock):
+    respx_mock.get(API).mock(return_value=httpx.Response(200, json={"totalFound": 2, "content": [item("1", "R1"), item("2", "R2")]}))
+    detail_route = respx_mock.get(url__regex=rf"{API}/\d+$").mock(return_value=httpx.Response(200, json=detail("Build")))
+    postings = await SmartRecruiters(detail_budget=1).fetch(http, "Acme")
+    assert [(p.job_id, p.description is None) for p in postings] == [("1", False), ("2", True)]
+    assert detail_route.call_count == 1

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sponsorscope.ats.base import BoardNotFound, ProbeResult, infer_remote
+from sponsorscope.ats.base import BoardNotFound, DetailBudget, ProbeResult, infer_remote
 from sponsorscope.geo.country import country_code
 from sponsorscope.http import Http
 from sponsorscope.models import RawPosting
@@ -9,6 +9,7 @@ from sponsorscope.text import html_to_text
 API = "/hcmRestApi/resources/latest"
 PAGE_SIZE = 100
 SECTIONS = ("ExternalDescriptionStr", "ExternalResponsibilitiesStr", "ExternalQualificationsStr")
+DETAIL_BUDGET = 10_000  # new-posting detail calls per run, so a big first crawl spans nights
 
 
 def _split(slug: str) -> tuple[str, str]:
@@ -27,6 +28,9 @@ class OracleRecruiting:
     name = "oracle"
     provides_name = False
 
+    def __init__(self, detail_budget: int = DETAIL_BUDGET) -> None:
+        self._budget = DetailBudget(detail_budget)
+
     async def fetch(self, http: Http, slug: str, known_ids: frozenset[str] = frozenset()) -> list[RawPosting]:
         host, site = _split(slug)
         listing = await self._list(http, host, site)
@@ -35,7 +39,7 @@ class OracleRecruiting:
         postings = []
         for it in listing:
             rid = str(it["Id"])
-            new = f"{self.name}:{slug}:{rid}" not in known_ids
+            new = f"{self.name}:{slug}:{rid}" not in known_ids and self._budget.take()
             postings.append(RawPosting(
                 ats=self.name, slug=slug, job_id=rid, title=(it.get("Title") or "").strip(),
                 url=f"https://{host}/hcmUI/CandidateExperience/en/sites/{site}/job/{rid}",

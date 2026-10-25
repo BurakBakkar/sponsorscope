@@ -115,55 +115,59 @@ async def run_crawl(conn: sqlite3.Connection, http: Http, adapters: Mapping[str,
     for board in db.boards_to_crawl(conn):
         by_ats[board["ats"]].append(board)
 
-    for ats_name, boards in by_ats.items():
-        adapter = adapters.get(ats_name)
-        if adapter is None:
-            continue
+    # ATSes run side by side: each has its own hosts and rate limiters, and every board's writes happen
+    # between awaits, so their transactions never interleave.
+    await asyncio.gather(*(_crawl_ats(conn, http, name, adapters[name], boards, classifier, report, now, cities, detect)
+                           for name, boards in by_ats.items() if name in adapters))
 
-        async def fetch(board: sqlite3.Row, adapter: ATS = adapter):
+
+async def _crawl_ats(conn: sqlite3.Connection, http: Http, ats_name: str, adapter: ATS, boards: list[sqlite3.Row],
+                     classifier: Classifier, report: RunReport, now: str, cities: Mapping[str, str] | None,
+                     detect: Callable[[str], bool]) -> None:
+    async def fetch(board: sqlite3.Row):
+        try:
+            known = db.active_posting_ids(conn, ats_name, board["slug"], classifier.version)
+            return board, "ok", await adapter.fetch(http, board["slug"], known_ids=known)
+        except BoardNotFound:
+            return board, "not_found", None
+        except Exception as exc:
+            return board, "failed", exc
+
+    outcomes: Counter[str] = Counter()
+    seen: dict[str, set[str]] = {}
+    not_found: list[str] = []
+    errors: list[str] = []
+    postings = 0
+    for next_done in asyncio.as_completed([fetch(b) for b in boards]):
+        board, outcome, result = await next_done
+        if outcome == "ok":
             try:
-                known = db.active_posting_ids(conn, ats_name, board["slug"], classifier.version)
-                return board, "ok", await adapter.fetch(http, board["slug"], known_ids=known)
-            except BoardNotFound:
-                return board, "not_found", None
-            except Exception as exc:
-                return board, "failed", exc
+                for p in result:
+                    _process_posting(conn, p, board["company_id"], classifier, now, cities, detect)
+                conn.commit()
+            except Exception as exc:  # a bad posting fails its board, not the night
+                conn.rollback()
+                outcome, result = "failed", exc
+        outcomes[outcome] += 1
+        if outcome == "ok":
+            seen[board["slug"]] = {p.id for p in result}
+            postings += len(result)
+        elif outcome == "not_found":
+            not_found.append(board["slug"])
+        else:
+            errors.append(f"{board['slug']}: {type(result).__name__}: {result}"[:200])
 
-        outcomes: Counter[str] = Counter()
-        seen: dict[str, set[str]] = {}
-        not_found: list[str] = []
-        errors: list[str] = []
-        postings = 0
-        for next_done in asyncio.as_completed([fetch(b) for b in boards]):
-            board, outcome, result = await next_done
-            if outcome == "ok":
-                try:
-                    for p in result:
-                        _process_posting(conn, p, board["company_id"], classifier, now, cities, detect)
-                    conn.commit()
-                except Exception as exc:  # a bad posting fails its board, not the night
-                    conn.rollback()
-                    outcome, result = "failed", exc
-            outcomes[outcome] += 1
-            if outcome == "ok":
-                seen[board["slug"]] = {p.id for p in result}
-                postings += len(result)
-            elif outcome == "not_found":
-                not_found.append(board["slug"])
-            else:
-                errors.append(f"{board['slug']}: {type(result).__name__}: {result}"[:200])
-
-        unhealthy = outcomes["failed"] + outcomes["not_found"]
-        outage = len(boards) >= OUTAGE_MIN_BOARDS and unhealthy / len(boards) > OUTAGE_RATIO
-        if not outage:
-            for slug, ids in seen.items():
-                db.record_board_result(conn, ats_name, slug, "ok")
-                db.deactivate_missing(conn, ats_name, slug, ids)
-            for slug in not_found:
-                db.record_board_result(conn, ats_name, slug, "not_found")
-        conn.commit()
-        report.board_summary(ats_name, boards=len(boards), ok=outcomes["ok"], not_found=outcomes["not_found"],
-                             failed=outcomes["failed"], postings=postings, outage=outage, errors=errors[:5])
+    unhealthy = outcomes["failed"] + outcomes["not_found"]
+    outage = len(boards) >= OUTAGE_MIN_BOARDS and unhealthy / len(boards) > OUTAGE_RATIO
+    if not outage:
+        for slug, ids in seen.items():
+            db.record_board_result(conn, ats_name, slug, "ok")
+            db.deactivate_missing(conn, ats_name, slug, ids)
+        for slug in not_found:
+            db.record_board_result(conn, ats_name, slug, "not_found")
+    conn.commit()
+    report.board_summary(ats_name, boards=len(boards), ok=outcomes["ok"], not_found=outcomes["not_found"],
+                         failed=outcomes["failed"], postings=postings, outage=outage, errors=errors[:5])
 
 
 async def nightly(conn: sqlite3.Connection, http: Http, *, registers: Sequence[Register],

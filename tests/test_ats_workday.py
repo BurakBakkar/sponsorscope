@@ -70,7 +70,8 @@ async def test_detail_budget_defers_new_postings_to_a_later_run(http, respx_mock
     detail = respx_mock.get(url__startswith=f"https://{HOST}/wday/cxs/embl/embl/job/").mock(
         return_value=httpx.Response(200, json={"jobPostingInfo": {"jobDescription": "<p>Hi</p>"}}))
     postings = await Workday(detail_budget=1).fetch(http, SLUG, known_ids=frozenset({f"workday:{SLUG}:R3"}))
-    assert [p.job_id for p in postings] == ["R1", "R3"] and detail.call_count == 1
+    assert [(p.job_id, p.description) for p in postings] == [("R1", "Hi"), ("R2", None), ("R3", None)]
+    assert detail.call_count == 1
 
 
 async def test_probe_respects_robots(http, respx_mock):

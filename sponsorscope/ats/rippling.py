@@ -55,10 +55,8 @@ class Rippling:
                 job["locations"].append(label)
         postings = []
         for uuid, job in jobs.items():
-            known = f"{self.name}:{slug}:{uuid}" in known_ids
-            if not known and not self._budget.take():
-                continue
-            info = {} if known else await self._detail(http, api, uuid)
+            skip = f"{self.name}:{slug}:{uuid}" in known_ids or not self._budget.take()
+            info = {} if skip else await self._detail(http, api, uuid)
             locations = [loc for loc in info.get("workLocations") or [] if loc] or job["locations"]
             countries = {_country(loc) for loc in locations}
             desc = info.get("description") or {}
@@ -67,7 +65,7 @@ class Rippling:
             postings.append(RawPosting(
                 ats=self.name, slug=slug, job_id=uuid, title=(job.get("name") or info.get("name") or "").strip(),
                 url=url if url.startswith(f"{BOARD}/") else f"{BOARD}/{quote(slug, safe='')}/jobs/{quote(uuid, safe='')}",
-                description=None if known else "\n".join(
+                description=None if skip else "\n".join(
                     t for t in (html_to_text(desc.get("company")), html_to_text(desc.get("role"))) if t),
                 location_raw="; ".join(locations) or None,
                 country=countries.pop() if len(countries) == 1 else None,

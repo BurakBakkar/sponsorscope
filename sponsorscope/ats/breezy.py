@@ -52,9 +52,7 @@ class Breezy:
             pid = str(p.get("id") or p.get("_id") or "")
             if not pid:
                 continue
-            new = f"{self.name}:{slug}:{pid}" not in known_ids
-            if new and not self._budget.take():
-                continue
+            new = f"{self.name}:{slug}:{pid}" not in known_ids and self._budget.take()
             loc = p.get("location") if isinstance(p.get("location"), dict) else {}
             remote = infer_remote((loc.get("remote_details") or {}).get("value")) or (
                 "remote" if loc.get("is_remote") or p.get("is_remote") else None)

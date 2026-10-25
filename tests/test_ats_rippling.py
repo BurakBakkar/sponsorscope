@@ -79,4 +79,4 @@ async def test_detail_budget_defers_new_postings(http, respx_mock):
     respx_mock.get(API).mock(return_value=httpx.Response(200, json=LISTING))
     respx_mock.get(f"{API}/{A}").mock(return_value=httpx.Response(200, json=detail(A, ["New York, NY"])))
     postings = await Rippling(detail_budget=1).fetch(http, "consulting-careers", known_ids=frozenset({f"rippling:consulting-careers:{C}"}))
-    assert [p.job_id for p in postings] == [A, C]
+    assert [(p.job_id, p.description is None) for p in postings] == [(A, False), (B, True), (C, True)]

@@ -38,7 +38,8 @@ class ATS(Protocol):
 class DetailBudget:
     """Caps per-posting detail calls per run, so a big first crawl spreads over several nights.
 
-    Postings left without a detail call are simply not returned; the next run picks them up as new.
+    Postings over the cap come back with description=None: a stored posting is just touched (and stays active),
+    a new one is not stored, so the next run fetches it.
     """
 
     def __init__(self, limit: int) -> None:

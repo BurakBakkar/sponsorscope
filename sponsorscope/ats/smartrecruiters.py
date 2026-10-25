@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sponsorscope.ats.base import BoardNotFound, ProbeResult
+from sponsorscope.ats.base import BoardNotFound, DetailBudget, ProbeResult
 from sponsorscope.geo.country import country_code
 from sponsorscope.http import Http
 from sponsorscope.models import RawPosting
@@ -11,6 +11,7 @@ CAREERS = "https://careers.smartrecruiters.com"
 JOBS = "https://jobs.smartrecruiters.com"
 PAGE_SIZE = 100
 SECTIONS = ("companyDescription", "jobDescription", "qualifications", "additionalInformation")
+DETAIL_BUDGET = 20_000  # new-posting detail calls per run (one API host); a big first crawl spans nights
 
 
 def _dedupe_languages(items: list[dict]) -> list[dict]:
@@ -30,6 +31,9 @@ class SmartRecruiters:
     name = "smartrecruiters"
     provides_name = False
 
+    def __init__(self, detail_budget: int = DETAIL_BUDGET) -> None:
+        self._budget = DetailBudget(detail_budget)
+
     async def fetch(self, http: Http, slug: str, known_ids: frozenset[str] = frozenset()) -> list[RawPosting]:
         listing = await self._list(http, slug)
         if not listing and not (await self.probe(http, slug)).exists:
@@ -37,7 +41,7 @@ class SmartRecruiters:
         postings = []
         for it in _dedupe_languages(listing):
             pid = str(it["id"])
-            new = f"{self.name}:{slug}:{pid}" not in known_ids
+            new = f"{self.name}:{slug}:{pid}" not in known_ids and self._budget.take()
             loc = it.get("location") or {}
             released = it.get("releasedDate")
             postings.append(RawPosting(

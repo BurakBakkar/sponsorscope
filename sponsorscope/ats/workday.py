@@ -45,14 +45,12 @@ class Workday:
         for it in await self._list(http, api, slug):
             path = it.get("externalPath") or ""
             req_id = (it.get("bulletFields") or [None])[0] or path.rsplit("_", 1)[-1]
-            known = f"{self.name}:{slug}:{req_id}" in known_ids
-            if not known and not self._budget.take():
-                continue
-            info = {} if known else await self._detail(http, api, path)
+            detail = f"{self.name}:{slug}:{req_id}" not in known_ids and self._budget.take()
+            info = await self._detail(http, api, path) if detail else {}
             postings.append(RawPosting(
                 ats=self.name, slug=slug, job_id=req_id, title=(it.get("title") or "").strip(),
                 url=info.get("externalUrl") or f"https://{host}/{site}{path}",
-                description=None if known else html_to_text(info.get("jobDescription")),
+                description=html_to_text(info.get("jobDescription")) if detail else None,
                 location_raw=it.get("locationsText") or info.get("location"),
                 country=country_code((info.get("country") or {}).get("descriptor")),
                 remote=infer_remote(info.get("remoteType")), posted_at=info.get("startDate"),

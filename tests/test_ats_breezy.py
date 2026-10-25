@@ -72,5 +72,5 @@ async def test_probe_existing(http, respx_mock):
 async def test_detail_budget_defers_new_positions(http, respx_mock):
     respx_mock.get(URL).mock(return_value=httpx.Response(200, json=[INTERN, CONTRACTOR]))
     respx_mock.get(P1).mock(return_value=httpx.Response(200, text=JSONLD_PAGE))
-    [p] = await Breezy(detail_budget=1).fetch(http, "soko-glam")
-    assert p.url == P1
+    p1, p2 = await Breezy(detail_budget=1).fetch(http, "soko-glam")
+    assert p1.description and p2.description is None
