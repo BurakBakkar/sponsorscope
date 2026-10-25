@@ -21,6 +21,7 @@ from sponsorscope.ats.recruitee import Recruitee
 from sponsorscope.ats.rippling import Rippling
 from sponsorscope.ats.rss import UniversityRss
 from sponsorscope.ats.smartrecruiters import SmartRecruiters
+from sponsorscope.ats.successfactors import SuccessFactors
 from sponsorscope.ats.teamtailor import Teamtailor
 from sponsorscope.ats.workable import Workable
 from sponsorscope.ats.workday import Workday
@@ -66,7 +67,7 @@ def _adapters():
 
 def _seed_only_adapters():
     """Career sites with host-specific addresses: found in seed lists, never slug-guessed."""
-    return {a.name: a for a in [OracleRecruiting(), Workday()]}
+    return {a.name: a for a in [OracleRecruiting(), Workday(), SuccessFactors()]}
 
 
 def _crawl_adapters():

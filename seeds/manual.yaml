@@ -351,3 +351,34 @@
 - {ats: ashby, slug: spearbio, name: Spear Bio}
 - {ats: lever, slug: bioagilytix, name: BioAgilytix}
 - {ats: lever, slug: seranbio, name: Serán Bioscience}
+
+# ===== SAP SuccessFactors career sites (slug = the site's host; verified 2026-10-25 with the successfactors adapter) =====
+# Pharma and biotech
+- {ats: successfactors, slug: careers.novonordisk.com, name: Novo Nordisk}
+- {ats: successfactors, slug: jobs.bayer.com, name: Bayer}
+- {ats: successfactors, slug: jobs.biontech.com, name: BioNTech}
+- {ats: successfactors, slug: careers.astellas.com, name: Astellas Pharma}
+- {ats: successfactors, slug: jobs.servier.com, name: Servier}
+- {ats: successfactors, slug: careers.chiesi.com, name: Chiesi}
+- {ats: successfactors, slug: jobs.leo-pharma.com, name: LEO Pharma}
+- {ats: successfactors, slug: careers.recordati.com, name: Recordati}
+- {ats: successfactors, slug: careers.grunenthal.com, name: Grünenthal}
+- {ats: successfactors, slug: careers.gedeonrichter.com, name: Gedeon Richter}
+- {ats: successfactors, slug: careers.idorsia.com, name: Idorsia}
+- {ats: successfactors, slug: careers.dompe.com, name: Dompé}
+- {ats: successfactors, slug: careers.esteve.com, name: Esteve}
+- {ats: successfactors, slug: careers.pharming.com, name: Pharming}
+- {ats: successfactors, slug: careers.oxb.com, name: Oxford Biomedica}
+- {ats: successfactors, slug: careers.octapharma.com, name: Octapharma}
+- {ats: successfactors, slug: careers.perrigo.com, name: Perrigo}
+- {ats: successfactors, slug: careers.sunpharma.com, name: Sun Pharma}
+- {ats: successfactors, slug: careers.lupin.com, name: Lupin}
+- {ats: successfactors, slug: careers.cipla.com, name: Cipla}
+# CRO / CDMO, lab tools and medtech
+- {ats: successfactors, slug: careers.criver.com, name: Charles River Laboratories}
+- {ats: successfactors, slug: careers.bachem.com, name: Bachem}
+- {ats: successfactors, slug: careers.tecan.com, name: Tecan}
+- {ats: successfactors, slug: careers.coloplast.com, name: Coloplast}
+- {ats: successfactors, slug: careers.getinge.com, name: Getinge}
+- {ats: successfactors, slug: careers.demant.com, name: Demant}
+- {ats: successfactors, slug: jobs.ottobock.com, name: Ottobock}

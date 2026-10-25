@@ -8,8 +8,9 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
   SmartRecruiters, Recruitee, Personio, Pinpoint, Rippling, Breezy and Teamtailor, plus Workday
-  and Oracle Recruiting Cloud career sites from the seed lists (one Workday site per company;
-  sites disallowed in their robots.txt are never fetched). Adapters that need one request per
+  and Oracle Recruiting Cloud career sites from the seed lists (one Workday site per company), and
+  SAP SuccessFactors career sites (`jobs.<company>.com`, read through their search and job pages) listed in
+  `seeds/manual.yaml`. Sites disallowed in their robots.txt are never fetched. Adapters that need one request per
   posting cap those requests per night, so a large new batch of boards fills in over several nights.
 - **PhD and master's offers:** university vacancy feeds (RSS 2.0 / 1.0) listed in `seeds/manual.yaml`
   (only the degree offers are kept; feeds on generic hosts like varbi.com take a `#country=XX` suffix), plus any ATS posting whose title reads like one
