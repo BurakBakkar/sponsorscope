@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-10-24T16:47:05+00:00",
-  "finished_at": "2026-10-24T18:39:23+00:00",
+  "started_at": "2026-10-25T08:06:02+00:00",
+  "finished_at": "2026-10-25T09:01:32+00:00",
   "sources": {
     "gb": {
       "status": "unchanged",
@@ -33,20 +33,20 @@
   },
   "ats": {
     "ashby": {
-      "boards": 2414,
+      "boards": 2411,
       "ok": 2410,
-      "not_found": 4,
+      "not_found": 1,
       "failed": 0,
-      "postings": 44373,
+      "postings": 44366,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5136,
-      "ok": 5127,
-      "not_found": 9,
+      "boards": 5131,
+      "ok": 5125,
+      "not_found": 6,
       "failed": 0,
-      "postings": 134630,
+      "postings": 134628,
       "outage": false,
       "errors": []
     },
@@ -55,7 +55,7 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 116,
+      "postings": 115,
       "outage": false,
       "errors": []
     },
@@ -64,7 +64,7 @@
       "ok": 1919,
       "not_found": 0,
       "failed": 0,
-      "postings": 57603,
+      "postings": 57411,
       "outage": false,
       "errors": []
     },
@@ -73,7 +73,7 @@
       "ok": 4,
       "not_found": 0,
       "failed": 0,
-      "postings": 333,
+      "postings": 331,
       "outage": false,
       "errors": []
     },
@@ -91,7 +91,7 @@
       "ok": 15,
       "not_found": 0,
       "failed": 0,
-      "postings": 455,
+      "postings": 454,
       "outage": false,
       "errors": []
     },
@@ -109,7 +109,7 @@
       "ok": 461,
       "not_found": 0,
       "failed": 0,
-      "postings": 9694,
+      "postings": 9688,
       "outage": false,
       "errors": []
     },
@@ -124,14 +124,12 @@
     },
     "workday": {
       "boards": 17,
-      "ok": 16,
+      "ok": 17,
       "not_found": 0,
-      "failed": 1,
-      "postings": 7354,
+      "failed": 0,
+      "postings": 8573,
       "outage": false,
-      "errors": [
-        "maersk.wd3.myworkdayjobs.com/maersk_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
-      ]
+      "errors": []
     }
   }
 }
