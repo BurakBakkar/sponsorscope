@@ -19,7 +19,7 @@ def _split(slug: str) -> tuple[str, str, str]:
     match = _HOST.fullmatch(host)
     if not match or not site or "/" in site:
         raise BoardNotFound(f"workday:{slug} (expected <tenant>.wdN.myworkdayjobs.com/<site>)")
-    return host, match["tenant"], site
+    return host, match["tenant"].replace("-", "_"), site  # tenant ids use "_", which hostnames cannot (vhr_jazz)
 
 
 class Workday:

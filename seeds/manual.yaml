@@ -224,3 +224,130 @@
 
 # --- Research charity ---
 - {ats: workday, slug: cancerresearchuk.wd3.myworkdayjobs.com/external_careers, name: Cancer Research UK}
+
+# ===== Biotech & pharma, US and Canada (verified 2026-10-25 the same way; companies already listed above are not repeated) =====
+
+# --- Big pharma (US arms / North American hiring) ---
+- {ats: smartrecruiters, slug: AbbVie, name: AbbVie}
+- {ats: workday, slug: vhr-jazz.wd1.myworkdayjobs.com/jazzpharmaceuticals, name: Jazz Pharmaceuticals}
+- {ats: workday, slug: sumitomopharma.wd5.myworkdayjobs.com/smpa, name: Sumitomo Pharma America}
+- {ats: workday, slug: mallinckrodt.wd5.myworkdayjobs.com/mallinckrodtcareers, name: Mallinckrodt Pharmaceuticals}
+
+# --- Biotech (commercial and clinical-stage) ---
+- {ats: workday, slug: intelliatx.wd1.myworkdayjobs.com/intelliatxcareers, name: Intellia Therapeutics}
+- {ats: workday, slug: exelixis.wd1.myworkdayjobs.com/exel, name: Exelixis}
+- {ats: workday, slug: halozyme.wd115.myworkdayjobs.com/halozymecareers, name: Halozyme Therapeutics}
+- {ats: workday, slug: neurocrine.wd5.myworkdayjobs.com/neurocrinecareers, name: Neurocrine Biosciences}
+- {ats: workday, slug: sarepta.wd5.myworkdayjobs.com/sarepta_external, name: Sarepta Therapeutics}
+- {ats: workday, slug: madrigalpharma.wd501.myworkdayjobs.com/madrigal, name: Madrigal Pharmaceuticals}
+- {ats: workday, slug: ptcbio.wd5.myworkdayjobs.com/ptc_careers, name: PTC Therapeutics}
+- {ats: workday, slug: cytokinetics.wd1.myworkdayjobs.com/cytokinetics, name: Cytokinetics}
+- {ats: workday, slug: biocryst.wd501.myworkdayjobs.com/external, name: BioCryst Pharmaceuticals}
+- {ats: workday, slug: nant.wd5.myworkdayjobs.com/immunitybio, name: ImmunityBio}
+- {ats: workday, slug: tempus.wd5.myworkdayjobs.com/tempus_careers, name: Tempus AI}
+- {ats: workday, slug: carislifesciences.wd12.myworkdayjobs.com/cls, name: Caris Life Sciences}
+- {ats: oracle, slug: ekgn.fa.us6.oraclecloud.com/CX_2001, name: Myriad Genetics}
+- {ats: rippling, slug: zymeworks-careers, name: Zymeworks}
+- {ats: ashby, slug: xenon, name: Xenon Pharmaceuticals}
+- {ats: greenhouse, slug: abcellera, name: AbCellera Biologics}
+- {ats: greenhouse, slug: aspectbiosystems, name: Aspect Biosystems}
+- {ats: greenhouse, slug: natera, name: Natera}
+- {ats: greenhouse, slug: revolutionmedicines, name: Revolution Medicines}
+- {ats: greenhouse, slug: praxisprecisionmedicines, name: Praxis Precision Medicines}
+- {ats: greenhouse, slug: axsometherapeutics, name: Axsome Therapeutics}
+- {ats: greenhouse, slug: summittherapeutics, name: Summit Therapeutics}
+- {ats: greenhouse, slug: corcepttherapeutics, name: Corcept Therapeutics}
+- {ats: greenhouse, slug: bridgebio, name: BridgeBio Pharma}
+- {ats: greenhouse, slug: mirumpharmaceuticals, name: Mirum Pharmaceuticals}
+- {ats: greenhouse, slug: immunomeinc, name: Immunome}
+- {ats: greenhouse, slug: caredxinc, name: CareDx}
+- {ats: greenhouse, slug: beamtherapeutics, name: Beam Therapeutics}
+- {ats: greenhouse, slug: acadiapharmaceuticals, name: Acadia Pharmaceuticals}
+- {ats: greenhouse, slug: mineralystherapeutics, name: Mineralys Therapeutics}
+- {ats: greenhouse, slug: dynetherapeutics, name: Dyne Therapeutics}
+- {ats: greenhouse, slug: iovancebiotherapeutics, name: Iovance Biotherapeutics}
+- {ats: greenhouse, slug: freenome, name: Freenome}
+- {ats: greenhouse, slug: eikontherapeutics, name: Eikon Therapeutics}
+- {ats: greenhouse, slug: kymeratherapeutics, name: Kymera Therapeutics}
+- {ats: greenhouse, slug: adaptivebiotechnologies, name: Adaptive Biotechnologies}
+- {ats: greenhouse, slug: stoketherapeutics, name: Stoke Therapeutics}
+- {ats: greenhouse, slug: tangotherapeutics, name: Tango Therapeutics}
+- {ats: greenhouse, slug: cogentbiosciences, name: Cogent Biosciences}
+- {ats: greenhouse, slug: rapporttherapeutics, name: Rapport Therapeutics}
+- {ats: greenhouse, slug: definiumtherapeutics, name: Definium Therapeutics}
+- {ats: greenhouse, slug: relaytherapeutics, name: Relay Therapeutics}
+- {ats: greenhouse, slug: elevatebio, name: ElevateBio}
+- {ats: greenhouse, slug: genedx, name: GeneDx}
+- {ats: greenhouse, slug: discmedicine, name: Disc Medicine}
+- {ats: greenhouse, slug: mazetherapeutics, name: Maze Therapeutics}
+- {ats: greenhouse, slug: virbiotechnologyinc, name: Vir Biotechnology}
+- {ats: greenhouse, slug: 4dmoleculartherapeutics, name: 4D Molecular Therapeutics}
+- {ats: greenhouse, slug: roivantsciences, name: Roivant Sciences}
+- {ats: greenhouse, slug: primemedicine, name: Prime Medicine}
+- {ats: greenhouse, slug: sanabiotech, name: Sana Biotechnology}
+- {ats: greenhouse, slug: lyellimmunopharma, name: Lyell Immunopharma}
+- {ats: greenhouse, slug: tesseratherapeutics, name: Tessera Therapeutics}
+- {ats: greenhouse, slug: nuvalent, name: Nuvalent}
+- {ats: greenhouse, slug: ultragenyxpharmaceutical, name: Ultragenyx Pharmaceutical}
+- {ats: ashby, slug: alector, name: Alector}
+- {ats: ashby, slug: replimune, name: Replimune}
+- {ats: lever, slug: regenxbio, name: REGENXBIO}
+- {ats: lever, slug: fatetherapeutics, name: Fate Therapeutics}
+- {ats: lever, slug: januxrx, name: Janux Therapeutics}
+- {ats: lever, slug: orcabiosystems, name: Orca Bio}
+- {ats: lever, slug: egenesisbio, name: eGenesis}
+- {ats: lever, slug: grailbio, name: GRAIL}
+- {ats: lever, slug: kariusdx, name: Karius}
+- {ats: lever, slug: arsenalbio, name: Arsenal Biosciences}
+- {ats: lever, slug: retro, name: Retro Biosciences}
+
+# --- AI-bio / computational drug discovery / research institutes ---
+- {ats: ashby, slug: insitro, name: insitro}
+- {ats: greenhouse, slug: generatebiomedicines, name: Generate Biomedicines}
+- {ats: ashby, slug: absci, name: Absci}
+- {ats: greenhouse, slug: xairatherapeutics, name: Xaira Therapeutics}
+- {ats: greenhouse, slug: dynotherapeutics, name: Dyno Therapeutics}
+- {ats: greenhouse, slug: lilasciences, name: Lila Sciences}
+- {ats: greenhouse, slug: formationbio, name: Formation Bio}
+- {ats: greenhouse, slug: profluent, name: Profluent Bio}
+- {ats: greenhouse, slug: inceptive, name: Inceptive}
+- {ats: greenhouse, slug: manifoldbio, name: Manifold Bio}
+- {ats: greenhouse, slug: cellarity, name: Cellarity}
+- {ats: greenhouse, slug: proteinqureinc, name: ProteinQure}
+- {ats: greenhouse, slug: altoslabs, name: Altos Labs}
+- {ats: greenhouse, slug: calicolabs, name: Calico Life Sciences}
+- {ats: greenhouse, slug: newlimit, name: NewLimit}
+- {ats: greenhouse, slug: arcinstitute, name: Arc Institute}
+- {ats: greenhouse, slug: biohub, name: Chan Zuckerberg Biohub}
+- {ats: ashby, slug: iambic-therapeutics, name: Iambic Therapeutics}
+- {ats: ashby, slug: chaidiscovery, name: Chai Discovery}
+- {ats: ashby, slug: genesis-molecular-ai, name: Genesis Therapeutics}
+- {ats: ashby, slug: inductive-bio, name: Inductive Bio}
+- {ats: ashby, slug: axiombio, name: Axiom Bio}
+- {ats: ashby, slug: asimov, name: Asimov}
+- {ats: pinpoint, slug: bighatbiosciences, name: BigHat Biosciences}
+- {ats: lever, slug: deepgenomics, name: Deep Genomics}
+- {ats: lever, slug: enveda, name: Enveda Biosciences}
+
+# --- Tools, diagnostics, CRO / CDMO ---
+- {ats: workday, slug: danaher.wd1.myworkdayjobs.com/danaherjobs, name: Danaher}
+- {ats: workday, slug: repligen.wd108.myworkdayjobs.com/repligen_careers, name: Repligen}
+- {ats: workday, slug: pacbio.wd12.myworkdayjobs.com/pacbio-, name: Pacific Biosciences}
+- {ats: workday, slug: neb.wd5.myworkdayjobs.com/neb_careers, name: New England Biolabs}
+- {ats: workday, slug: altasciences.wd1.myworkdayjobs.com/careers, name: Altasciences}
+- {ats: workday, slug: propharmagroup.wd1.myworkdayjobs.com/ppgcareers, name: ProPharma Group}
+- {ats: workday, slug: fujifilm.wd3.myworkdayjobs.com/flb_cs, name: FUJIFILM Biotechnologies}
+- {ats: workday, slug: jsrglobal.wd1.myworkdayjobs.com/kbi_biopharma, name: KBI Biopharma}
+- {ats: smartrecruiters, slug: Eurofins, name: Eurofins Scientific}
+- {ats: smartrecruiters, slug: PSICRO, name: PSI CRO}
+- {ats: greenhouse, slug: twistbioscience, name: Twist Bioscience}
+- {ats: greenhouse, slug: ginkgobioworks, name: Ginkgo Bioworks}
+- {ats: greenhouse, slug: alamarbiosciences, name: Alamar Biosciences}
+- {ats: greenhouse, slug: ultimagenomics, name: Ultima Genomics}
+- {ats: greenhouse, slug: elementbiosciences, name: Element Biosciences}
+- {ats: greenhouse, slug: maravailifesciences, name: Maravai LifeSciences}
+- {ats: greenhouse, slug: cellsignalingtechnology79, name: Cell Signaling Technology}
+- {ats: greenhouse, slug: parsebiosciences, name: Parse Biosciences}
+- {ats: ashby, slug: spearbio, name: Spear Bio}
+- {ats: lever, slug: bioagilytix, name: BioAgilytix}
+- {ats: lever, slug: seranbio, name: Serán Bioscience}

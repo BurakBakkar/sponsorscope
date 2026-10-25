@@ -80,3 +80,12 @@ async def test_probe_respects_robots(http, respx_mock):
     jobs = respx_mock.post("https://asml.wd3.myworkdayjobs.com/wday/cxs/asml/asmlext1/jobs")
     assert (await Workday().probe(http, "asml.wd3.myworkdayjobs.com/asmlext1")).exists is False
     assert not jobs.called
+
+
+async def test_hyphen_in_host_is_underscore_in_tenant(http, respx_mock):
+    host = "vhr-jazz.wd1.myworkdayjobs.com"
+    respx_mock.get(f"https://{host}/robots.txt").mock(return_value=httpx.Response(404))
+    jobs = respx_mock.post(f"https://{host}/wday/cxs/vhr_jazz/jazzpharmaceuticals/jobs").mock(
+        return_value=httpx.Response(200, json={"total": 0, "jobPostings": []}))
+    assert await Workday().fetch(http, f"{host}/jazzpharmaceuticals") == []
+    assert jobs.called
