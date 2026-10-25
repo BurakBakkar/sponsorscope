@@ -124,3 +124,21 @@ def test_industry_from_text_label_and_from_us_naics(conn, tmp_path):
     assert rows["greenhouse:acme:2"]["industry"] is None
     assert (rows["greenhouse:acme:3"]["industry"], rows["greenhouse:acme:3"]["industry_evidence"]) == (
         "biotech", ["a clinical-stage biotech company"])
+
+
+def test_company_with_mostly_biotech_postings_tags_its_other_postings(conn, tmp_path):
+    bio_label = Label("unknown", False, (), (), industry="biotech", industry_evidence=("biologics",))
+    plain = Label("unknown", False, (), ())
+    lab = db.get_or_create_company(conn, "Latent Labs")
+    mixed = db.get_or_create_company(conn, "Big Consultancy")
+    for job_id, label in [("1", bio_label), ("2", bio_label), ("3", plain)]:
+        add_posting(conn, lab, job_id, "GB", label=label)
+    for job_id, label in [("4", bio_label), ("5", bio_label), ("6", plain), ("7", plain), ("8", plain)]:
+        add_posting(conn, mixed, job_id, "GB", label=label)
+    export_site(conn, tmp_path / "site", "rules-1", T1)
+    rows = {r[0]: dict(zip(FIELDS, r)) for r in read_shard(tmp_path / "site", "gb")}
+    assert rows["greenhouse:acme:3"]["industry"] == "biotech"
+    assert rows["greenhouse:acme:3"]["industry_evidence"] == [
+        "2 of this employer's 3 open postings describe biotech / pharma work"]
+    assert rows["greenhouse:acme:6"]["industry"] is None  # 2 of 5 is not most
+    assert rows["greenhouse:acme:4"]["industry"] == "biotech"

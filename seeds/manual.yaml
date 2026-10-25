@@ -110,3 +110,117 @@
 # Sweden's public employment service (CC0): doctoral occupation group plus thesis/PhD searches, degree offers only;
 # each ad is credited to its own employer.
 - {ats: jobtech, slug: "occupation-group=NNK9_F1o_pK5|q=thesis|q=PhD", name: Arbetsförmedlingen (JobTech)}
+
+# ===== Biotech & pharma, Europe (verified 2026-10-25: each board fetched with its adapter, >=1 posting) =====
+# --- Big pharma (EU-headquartered, or global with large UK/IE/NL/DK/CH/DE sites) ---
+- {ats: workday, slug: gsk.wd5.myworkdayjobs.com/gskcareers, name: GSK}
+- {ats: workday, slug: gsknch.wd3.myworkdayjobs.com/gskcareers, name: Haleon}
+- {ats: workday, slug: novartis.wd3.myworkdayjobs.com/novartis_careers, name: Novartis}
+- {ats: workday, slug: sandoz.wd103.myworkdayjobs.com/sandoz_careers, name: Sandoz}
+- {ats: workday, slug: roche.wd3.myworkdayjobs.com/roche-ext, name: Roche}
+- {ats: workday, slug: sanofi.wd3.myworkdayjobs.com/sanoficareers, name: Sanofi}
+- {ats: workday, slug: ipsen.wd103.myworkdayjobs.com/ipsen_careers, name: Ipsen}
+- {ats: workday, slug: pierrefabre.wd3.myworkdayjobs.com/external_career_site, name: Pierre Fabre}
+- {ats: workday, slug: lfb.wd3.myworkdayjobs.com/lfb_external_careers, name: LFB}
+- {ats: workday, slug: almirall.wd3.myworkdayjobs.com/external, name: Almirall}
+- {ats: workday, slug: ferring.wd3.myworkdayjobs.com/ferring, name: Ferring Pharmaceuticals}
+- {ats: workday, slug: galderma.wd3.myworkdayjobs.com/external, name: Galderma}
+- {ats: workday, slug: freseniusglobal.wd3.myworkdayjobs.com/fk_careers, name: Fresenius Kabi}
+- {ats: workday, slug: medac.wd103.myworkdayjobs.com/medac_group, name: medac}
+- {ats: workday, slug: zentiva.wd3.myworkdayjobs.com/zentiva, name: Zentiva}
+- {ats: workday, slug: mundipharma.wd3.myworkdayjobs.com/external, name: Mundipharma}
+- {ats: workday, slug: indivior.wd3.myworkdayjobs.com/indivior, name: Indivior}
+- {ats: workday, slug: csl.wd1.myworkdayjobs.com/csl_external, name: CSL}
+- {ats: workday, slug: takeda.wd502.myworkdayjobs.com/external, name: Takeda}
+- {ats: workday, slug: eisai.wd5.myworkdayjobs.com/eisai, name: Eisai}
+- {ats: workday, slug: pfizer.wd1.myworkdayjobs.com/pfizercareers, name: Pfizer}
+- {ats: workday, slug: msd.wd5.myworkdayjobs.com/searchjobs, name: MSD}
+- {ats: workday, slug: organon.wd5.myworkdayjobs.com/searchjobs, name: Organon}
+- {ats: workday, slug: lilly.wd115.myworkdayjobs.com/lly, name: Eli Lilly}
+- {ats: workday, slug: jj.wd5.myworkdayjobs.com/jj, name: Johnson & Johnson}
+- {ats: workday, slug: amgen.wd1.myworkdayjobs.com/careers, name: Amgen}
+- {ats: workday, slug: bristolmyerssquibb.wd5.myworkdayjobs.com/bms, name: Bristol Myers Squibb}
+- {ats: workday, slug: gilead.wd1.myworkdayjobs.com/gileadcareers, name: Gilead Sciences}
+- {ats: workday, slug: biibhr.wd3.myworkdayjobs.com/external, name: Biogen}
+- {ats: workday, slug: regeneron.wd1.myworkdayjobs.com/careers, name: Regeneron}
+- {ats: workday, slug: vrtx.wd501.myworkdayjobs.com/vertex_careers, name: Vertex Pharmaceuticals}
+- {ats: workday, slug: modernatx.wd1.myworkdayjobs.com/m_tx, name: Moderna}
+- {ats: workday, slug: beigene.wd5.myworkdayjobs.com/beigene, name: BeOne Medicines}
+- {ats: workday, slug: viatris.wd5.myworkdayjobs.com/external, name: Viatris}
+- {ats: workday, slug: zoetis.wd5.myworkdayjobs.com/zoetis, name: Zoetis}
+- {ats: workday, slug: elanco.wd5.myworkdayjobs.com/external_career, name: Elanco}
+- {ats: recruitee, slug: otsukapharmagmbh, name: Otsuka Pharma GmbH}
+- {ats: personio, slug: hameln-pharma, name: hameln pharma}
+
+# --- Biotech ---
+- {ats: workday, slug: argenx.wd3.myworkdayjobs.com/external_careers, name: argenx}
+- {ats: workday, slug: bavariannordic.wd103.myworkdayjobs.com/bavariannordic, name: Bavarian Nordic}
+- {ats: workday, slug: zealandpharma.wd3.myworkdayjobs.com/external, name: Zealand Pharma}
+- {ats: workday, slug: evotecgroup.wd3.myworkdayjobs.com/evotec_career_site, name: Evotec}
+- {ats: workday, slug: autolus.wd103.myworkdayjobs.com/external, name: Autolus Therapeutics}
+- {ats: workday, slug: crisprtx.wd12.myworkdayjobs.com/careers, name: CRISPR Therapeutics}
+- {ats: workday, slug: novavax.wd1.myworkdayjobs.com/careers, name: Novavax}
+- {ats: oracle, slug: fa-etsl-saasfaprod1.fa.ocs.oraclecloud.com/CX_1, name: Cellectis}
+- {ats: workable, slug: ascendis-pharma, name: Ascendis Pharma}
+- {ats: teamtailor, slug: alk, name: ALK-Abelló}
+- {ats: teamtailor, slug: hansabiopharma, name: Hansa Biopharma}
+- {ats: teamtailor, slug: bioarctic, name: BioArctic}
+- {ats: teamtailor, slug: enarabio, name: Enara Bio}
+- {ats: smartrecruiters, slug: BicycleTherapeutics, name: Bicycle Therapeutics}
+- {ats: greenhouse, slug: centessapharmaceuticalsinc, name: Centessa Pharmaceuticals}
+- {ats: greenhouse, slug: quotient, name: Quotient Therapeutics}
+- {ats: pinpoint, slug: agomab, name: Agomab Therapeutics}
+- {ats: personio, slug: catalym, name: CatalYm}
+- {ats: personio, slug: iomx, name: iOmx Therapeutics}
+
+# --- Techbio / AI drug discovery ---
+- {ats: greenhouse, slug: isomorphiclabs, name: Isomorphic Labs}
+- {ats: greenhouse, slug: recursionpharmaceuticals, name: Recursion}
+- {ats: ashby, slug: latentlabs, name: Latent Labs}
+- {ats: ashby, slug: basecamp-research, name: Basecamp Research}
+- {ats: ashby, slug: owkin, name: Owkin}
+- {ats: ashby, slug: relationrx, name: Relation Therapeutics}
+- {ats: ashby, slug: cradlebio, name: Cradle}
+- {ats: ashby, slug: lindus, name: Lindus Health}
+- {ats: ashby, slug: benchling, name: Benchling}
+- {ats: lever, slug: healx, name: Healx}
+- {ats: teamtailor, slug: labgenius, name: LabGenius}
+- {ats: teamtailor, slug: aqemia, name: Aqemia}
+- {ats: teamtailor, slug: aignostics, name: Aignostics}
+- {ats: personio, slug: athebio, name: Athebio}
+- {ats: smartrecruiters, slug: genomicsengland, name: Genomics England}
+
+# --- Tools / genomics / diagnostics / CRO / CDMO ---
+- {ats: oracle, slug: ejnh.fa.em2.oraclecloud.com/CX_1, name: Oxford Nanopore Technologies}
+- {ats: workday, slug: illumina.wd1.myworkdayjobs.com/illumina-careers, name: Illumina}
+- {ats: workday, slug: qiagen.wd502.myworkdayjobs.com/qiagen, name: QIAGEN}
+- {ats: workday, slug: sartorius.wd3.myworkdayjobs.com/sartoriuscareers, name: Sartorius}
+- {ats: workday, slug: eppendorf.wd502.myworkdayjobs.com/eppendorf, name: Eppendorf}
+- {ats: workday, slug: agilent.wd5.myworkdayjobs.com/agilent_careers, name: Agilent Technologies}
+- {ats: workday, slug: revvity.wd103.myworkdayjobs.com/external, name: Revvity}
+- {ats: workday, slug: biotechne.wd5.myworkdayjobs.com/biotechne, name: Bio-Techne}
+- {ats: workday, slug: vwr.wd1.myworkdayjobs.com/avantorjobs, name: Avantor}
+- {ats: workday, slug: spectris.wd3.myworkdayjobs.com/malvern_panalytical_careers, name: Malvern Panalytical}
+- {ats: workday, slug: bico.wd103.myworkdayjobs.com/external, name: BICO}
+- {ats: teamtailor, slug: vitrolife, name: Vitrolife Group}
+- {ats: teamtailor, slug: raritybioscience, name: Rarity Bioscience}
+- {ats: teamtailor, slug: automata, name: Automata}
+- {ats: smartrecruiters, slug: lgcgroup, name: LGC Group}
+- {ats: lever, slug: veeva, name: Veeva Systems}
+- {ats: workday, slug: lonza.wd3.myworkdayjobs.com/lonza_careers, name: Lonza}
+- {ats: workday, slug: siegfried.wd103.myworkdayjobs.com/external, name: Siegfried}
+- {ats: workday, slug: rentschler.wd3.myworkdayjobs.com/rentschler_career, name: Rentschler Biopharma}
+- {ats: workday, slug: agcbio.wd5.myworkdayjobs.com/agcbio_careers, name: AGC Biologics}
+- {ats: workday, slug: catalent.wd1.myworkdayjobs.com/external, name: Catalent}
+- {ats: teamtailor, slug: polypeptide, name: PolyPeptide Group}
+- {ats: teamtailor, slug: ardena, name: Ardena}
+- {ats: workday, slug: iqvia.wd1.myworkdayjobs.com/iqvia, name: IQVIA}
+- {ats: workday, slug: parexel.wd1.myworkdayjobs.com/parexel_external_careers, name: Parexel}
+- {ats: workday, slug: syneoshealth.wd12.myworkdayjobs.com/syneos_health_external_site, name: Syneos Health}
+- {ats: workday, slug: labcorp.wd1.myworkdayjobs.com/external, name: Labcorp}
+- {ats: workday, slug: fortrea.wd1.myworkdayjobs.com/fortrea, name: Fortrea}
+- {ats: workday, slug: worldwide.wd1.myworkdayjobs.com/external, name: Worldwide Clinical Trials}
+- {ats: workday, slug: premierresearch.wd12.myworkdayjobs.com/premierresearch, name: Premier Research}
+
+# --- Research charity ---
+- {ats: workday, slug: cancerresearchuk.wd3.myworkdayjobs.com/external_careers, name: Cancer Research UK}

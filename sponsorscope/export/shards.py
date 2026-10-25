@@ -48,6 +48,15 @@ JOIN sponsors s ON s.id = m.sponsor_id
 JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
 WHERE s.naics IS NOT NULL AND m.method != 'unverified'
 """
+_TAGGED_SHARE = """
+SELECT p.company_id, SUM(l.industry IS 'biotech') AS tagged, COUNT(*) AS total
+FROM postings p
+JOIN labels l ON l.posting_id = p.id AND l.content_hash = p.content_hash AND l.classifier_version = ?
+WHERE p.active = 1
+GROUP BY p.company_id
+"""
+COMPANY_MIN_TAGGED = 2  # a company whose open postings are mostly biotech is a biotech company:
+COMPANY_MIN_SHARE = 0.5  # its generic roles (finance, ML engineer, text-less ads) get the tag too
 
 
 def badge_text(source: str, evidence: str, country: str, filings: int | None, period: str | None) -> str:
@@ -65,12 +74,17 @@ def _badges_by_company(conn: sqlite3.Connection) -> dict[int, dict[str, list[lis
     return out
 
 
-def _biotech_companies(conn: sqlite3.Connection) -> dict[int, str]:
-    """company id → why its sponsor-register industry code says biotech / pharma (name coincidences excluded)."""
+def _biotech_companies(conn: sqlite3.Connection, classifier_version: str) -> dict[int, str]:
+    """company id → why the whole company counts as biotech / pharma: its sponsor-register industry code
+    (name coincidences excluded), else most of its open postings being tagged."""
     out: dict[int, str] = {}
     for r in conn.execute(_NAICS):
         if name := biotech_naics(r["naics"]):
             out.setdefault(r["company_id"], f"US H-1B filings list this employer as {name} (NAICS {r['naics']})")
+    for r in conn.execute(_TAGGED_SHARE, (classifier_version,)):
+        if r["tagged"] >= COMPANY_MIN_TAGGED and r["tagged"] >= COMPANY_MIN_SHARE * r["total"]:
+            share = f"{r['tagged']} of this employer's {r['total']} open postings"
+            out.setdefault(r["company_id"], f"{share} describe biotech / pharma work")
     return out
 
 
@@ -91,7 +105,7 @@ def export_site(conn: sqlite3.Connection, site_dir: Path, classifier_version: st
         stale.unlink()
 
     badges = _badges_by_company(conn)
-    biotech = _biotech_companies(conn)
+    biotech = _biotech_companies(conn, classifier_version)
     shards: dict[str, list[list]] = defaultdict(list)
     companies: set[str] = set()
     ats_names: set[str] = set()
