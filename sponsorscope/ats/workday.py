@@ -3,13 +3,14 @@ from __future__ import annotations
 import re
 import urllib.robotparser
 
-from sponsorscope.ats.base import BoardNotFound, ProbeResult, infer_remote
+from sponsorscope.ats.base import BoardNotFound, DetailBudget, ProbeResult, infer_remote
 from sponsorscope.geo.country import country_code
 from sponsorscope.http import USER_AGENT, Http
 from sponsorscope.models import RawPosting
 from sponsorscope.text import html_to_text
 
 PAGE_SIZE = 20  # the CXS API's maximum
+DETAIL_BUDGET = 25_000  # new-posting detail calls per run; ~4k tenants hold ~650k postings, so the backlog takes weeks
 _HOST = re.compile(r"(?P<tenant>[a-z0-9-]+)\.wd\d+\.myworkdayjobs\.com", re.I)
 
 
@@ -31,8 +32,9 @@ class Workday:
     name = "workday"
     provides_name = False
 
-    def __init__(self) -> None:
+    def __init__(self, detail_budget: int = DETAIL_BUDGET) -> None:
         self._robots: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+        self._budget = DetailBudget(detail_budget)
 
     async def fetch(self, http: Http, slug: str, known_ids: frozenset[str] = frozenset()) -> list[RawPosting]:
         host, tenant, site = _split(slug)
@@ -44,6 +46,8 @@ class Workday:
             path = it.get("externalPath") or ""
             req_id = (it.get("bulletFields") or [None])[0] or path.rsplit("_", 1)[-1]
             known = f"{self.name}:{slug}:{req_id}" in known_ids
+            if not known and not self._budget.take():
+                continue
             info = {} if known else await self._detail(http, api, path)
             postings.append(RawPosting(
                 ats=self.name, slug=slug, job_id=req_id, title=(it.get("title") or "").strip(),
@@ -94,6 +98,8 @@ class Workday:
     async def probe(self, http: Http, slug: str) -> ProbeResult:
         try:
             host, tenant, site = _split(slug)
+            if not await self._allowed(http, host, site):
+                return ProbeResult(False)
             first = await http.post(f"https://{host}/wday/cxs/{tenant}/{site}/jobs",
                                     json={"limit": 1, "offset": 0, "appliedFacets": {}, "searchText": ""})
         except BoardNotFound:

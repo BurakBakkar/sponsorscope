@@ -7,8 +7,10 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
 - **Sponsor data:** UK, NL, DK and FI licence registers, plus US (H-1B LCA), CA (positive LMIA) and IE
   (employment permits) sponsorship history. FI is currently behind a bot challenge and shows as "blocked".
 - **Postings:** public ATS job-board APIs: Greenhouse, Lever, Ashby, Workable,
-  SmartRecruiters, Recruitee and Personio, plus hand-seeded Workday and Oracle Recruiting
-  Cloud career sites (Workday sites disallowed in their robots.txt are never fetched).
+  SmartRecruiters, Recruitee, Personio, Pinpoint, Rippling, Breezy and Teamtailor, plus Workday
+  and Oracle Recruiting Cloud career sites from the seed lists (one Workday site per company;
+  sites disallowed in their robots.txt are never fetched). Adapters that need one request per
+  posting cap those requests per night, so a large new batch of boards fills in over several nights.
 - **PhD and master's offers:** university vacancy feeds (RSS 2.0 / 1.0) listed in `seeds/manual.yaml`
   (only the degree offers are kept; feeds on generic hosts like varbi.com take a `#country=XX` suffix), plus any ATS posting whose title reads like one
   (studentship, doctoral candidate, master thesis, …), plus doctoral and thesis ads from Sweden's
@@ -32,7 +34,8 @@ nightly on GitHub Actions:
 - `weekly-discover` finds new boards. It probes public slug lists
   ([Riley-Dorrington/job-board-aggregator](https://github.com/Riley-Dorrington/job-board-aggregator),
   [ConorsCode/open-jobs-data](https://github.com/ConorsCode/open-jobs-data) and
-  [datascry/openroles](https://github.com/datascry/openroles), all MIT) and guesses slugs from sponsor names. Misses back off from 1 week
+  [datascry/openroles](https://github.com/datascry/openroles), all MIT; Workday and Oracle sites come only
+  from these lists) and guesses slugs from sponsor names. Misses back off from 1 week
   to 4 weeks to 12 weeks.
 - `smoke` (run manually) hits one real board per ATS, to catch upstream API
   changes.

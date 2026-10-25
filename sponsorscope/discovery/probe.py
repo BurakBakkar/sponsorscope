@@ -4,7 +4,7 @@ import asyncio
 import re
 import sqlite3
 from collections import Counter
-from collections.abc import Iterable, Mapping
+from collections.abc import Collection, Iterable, Mapping
 
 BROKEN_ERROR_RATIO = 0.5  # an ATS erroring on more than half its probes this run is treated as down
 BROKEN_MIN_PROBES = 3
@@ -33,7 +33,9 @@ def _slug_display(slug: str) -> str:
 
 
 async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[str, ATS], *,
-                        seeds: Iterable[Seed], now: str, budget: int) -> dict[str, int]:
+                        seeds: Iterable[Seed], now: str, budget: int,
+                        guess_ats: Collection[str] | None = None) -> dict[str, int]:
+    """guess_ats: adapters whose slugs can be guessed from a name (default all); the others only probe seeds."""
     summary: Counter[str] = Counter()
 
     for seed in seeds:
@@ -61,9 +63,10 @@ async def run_discovery(conn: sqlite3.Connection, http: Http, adapters: Mapping[
     # 2. guesses from unmatched sponsor names, within the remaining budget
     remaining = budget - len(results)
     planned: list[tuple[str, list[tuple[str, str]]]] = []
+    guessable = {ats: a for ats, a in adapters.items() if guess_ats is None or ats in guess_ats}
     for row in db.sponsors_to_guess(conn, now, limit=max(remaining, 0)):
         norm = row["norm_name"]
-        targets = [(ats, slug) for ats, adapter in adapters.items()
+        targets = [(ats, slug) for ats, adapter in guessable.items()
                    for slug in candidates(norm, verifiable=adapter.provides_name)
                    if not db.board_exists(conn, ats, slug)]
         if not targets:

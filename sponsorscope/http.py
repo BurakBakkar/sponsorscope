@@ -13,14 +13,19 @@ import httpx
 USER_AGENT = "sponsorscope/0.1 (+https://github.com/BurakBakkar/sponsorscope)"
 RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 MAX_RETRY_AFTER = 300.0
+SHARDED_DOMAINS = frozenset({"myworkdayjobs.com"})  # {tenant}.wdN.myworkdayjobs.com: each wdN is its own cluster
 
 Sleep = Callable[[float], Awaitable[None]]
 
 
 def rate_key(host: str) -> str:
-    """Hosts sharing a registrable domain share one limiter ({slug}.recruitee.com → recruitee.com)."""
+    """Hosts sharing a registrable domain share one limiter ({slug}.recruitee.com → recruitee.com).
+
+    Sharded domains keep the shard label (acme.wd3.myworkdayjobs.com → wd3.myworkdayjobs.com).
+    """
     parts = host.split(".")
-    return ".".join(parts[-2:]) if len(parts) > 2 else host
+    keep = 3 if ".".join(parts[-2:]) in SHARDED_DOMAINS else 2
+    return ".".join(parts[-keep:]) if len(parts) > keep else host
 
 
 class _HostLimiter:

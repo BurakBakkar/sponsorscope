@@ -35,6 +35,22 @@ class ATS(Protocol):
     async def probe(self, http: Http, slug: str) -> ProbeResult: ...
 
 
+class DetailBudget:
+    """Caps per-posting detail calls per run, so a big first crawl spreads over several nights.
+
+    Postings left without a detail call are simply not returned; the next run picks them up as new.
+    """
+
+    def __init__(self, limit: int) -> None:
+        self.left = limit
+
+    def take(self) -> bool:
+        if self.left <= 0:
+            return False
+        self.left -= 1
+        return True
+
+
 def infer_remote(text: str | None) -> str | None:
     low = (text or "").lower()
     if "hybrid" in low:

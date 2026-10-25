@@ -62,3 +62,20 @@ async def test_unknown_site_and_bad_slug(http, respx_mock, allowed):
         await Workday().fetch(http, SLUG)
     with pytest.raises(BoardNotFound):
         await Workday().fetch(http, "example.com/embl")
+
+
+async def test_detail_budget_defers_new_postings_to_a_later_run(http, respx_mock, allowed):
+    respx_mock.post(JOBS).mock(return_value=httpx.Response(200, json={
+        "total": 3, "jobPostings": [posting(1, "Job 1"), posting(2, "Job 2"), posting(3, "Job 3")]}))
+    detail = respx_mock.get(url__startswith=f"https://{HOST}/wday/cxs/embl/embl/job/").mock(
+        return_value=httpx.Response(200, json={"jobPostingInfo": {"jobDescription": "<p>Hi</p>"}}))
+    postings = await Workday(detail_budget=1).fetch(http, SLUG, known_ids=frozenset({f"workday:{SLUG}:R3"}))
+    assert [p.job_id for p in postings] == ["R1", "R3"] and detail.call_count == 1
+
+
+async def test_probe_respects_robots(http, respx_mock):
+    respx_mock.get("https://asml.wd3.myworkdayjobs.com/robots.txt").mock(
+        return_value=httpx.Response(200, text="User-agent: *\nDisallow: /ASMLEXT1/\n"))
+    jobs = respx_mock.post("https://asml.wd3.myworkdayjobs.com/wday/cxs/asml/asmlext1/jobs")
+    assert (await Workday().probe(http, "asml.wd3.myworkdayjobs.com/asmlext1")).exists is False
+    assert not jobs.called

@@ -10,19 +10,23 @@ import typer
 
 from sponsorscope import pipeline
 from sponsorscope.ats.ashby import Ashby
+from sponsorscope.ats.breezy import Breezy
 from sponsorscope.ats.greenhouse import Greenhouse
 from sponsorscope.ats.jobtech import JobTech
 from sponsorscope.ats.lever import Lever
 from sponsorscope.ats.oracle import OracleRecruiting
 from sponsorscope.ats.personio import Personio
+from sponsorscope.ats.pinpoint import Pinpoint
 from sponsorscope.ats.recruitee import Recruitee
+from sponsorscope.ats.rippling import Rippling
 from sponsorscope.ats.rss import UniversityRss
 from sponsorscope.ats.smartrecruiters import SmartRecruiters
+from sponsorscope.ats.teamtailor import Teamtailor
 from sponsorscope.ats.workable import Workable
 from sponsorscope.ats.workday import Workday
 from sponsorscope.classify.rules import RulesClassifier
 from sponsorscope.discovery.probe import run_discovery
-from sponsorscope.discovery.seeds import fetch_remote_seeds, load_manual
+from sponsorscope.discovery.seeds import fetch_remote_seeds, load_manual, one_site_per_tenant
 from sponsorscope.export.shards import export_site
 from sponsorscope.http import Http
 from sponsorscope.matching.names import Overrides
@@ -55,14 +59,20 @@ def _registers():
 
 
 def _adapters():
-    adapters = [Greenhouse(), Lever(), Ashby(), Workable(), SmartRecruiters(), Recruitee(), Personio()]
+    adapters = [Greenhouse(), Lever(), Ashby(), Workable(), SmartRecruiters(), Recruitee(), Personio(), Pinpoint(),
+                Rippling(), Breezy(), Teamtailor()]
     return {a.name: a for a in adapters}
 
 
+def _seed_only_adapters():
+    """Career sites with host-specific addresses: found in seed lists, never slug-guessed."""
+    return {a.name: a for a in [OracleRecruiting(), Workday()]}
+
+
 def _crawl_adapters():
-    """Discovery adapters plus sources whose boards are only ever seeded by hand (never slug-guessed)."""
-    manual = [UniversityRss(), OracleRecruiting(), Workday(), JobTech()]
-    return {**_adapters(), **{a.name: a for a in manual}}
+    """Discovery adapters plus sources whose boards are only ever seeded (by hand or from public lists)."""
+    manual = [UniversityRss(), JobTech()]
+    return {**_adapters(), **_seed_only_adapters(), **{a.name: a for a in manual}}
 
 
 def _run_with_http(make_coro):
@@ -136,7 +146,9 @@ def nightly(db: Db = Path("sponsorscope.db"), site: Site = Path("site"),
 
 
 SMOKE_BOARDS = {"greenhouse": "airbnb", "lever": "palantir", "ashby": "notion", "workable": "huggingface",
-                "smartrecruiters": "Ubisoft2", "recruitee": "bunq", "personio": "tado"}
+                "smartrecruiters": "Ubisoft2", "recruitee": "bunq", "personio": "tado", "pinpoint": "twiningsovocareers",
+                "rippling": "bamboo-health-careers", "breezy": "soko-glam",
+                "teamtailor": "hirschbednerassociates"}
 
 
 @app.command()
@@ -147,7 +159,7 @@ def discover(db: Db = Path("sponsorscope.db"), seeds: Seeds = Path("seeds/manual
     """Weekly: refresh registers, probe seed/known boards, guess slugs for unmatched sponsors."""
     conn, now = connect(db), _now()
     report = RunReport(started_at=now)
-    adapters = _adapters()
+    adapters = {**_adapters(), **_seed_only_adapters()}
 
     async def run(http):
         await pipeline.run_registers(conn, http, _registers(), report, now)
@@ -157,7 +169,8 @@ def discover(db: Db = Path("sponsorscope.db"), seeds: Seeds = Path("seeds/manual
         if remote_seeds:
             remote, errors = await fetch_remote_seeds(http, set(adapters))
             all_seeds += remote
-        summary = await run_discovery(conn, http, adapters, seeds=all_seeds, now=now, budget=budget)
+        summary = await run_discovery(conn, http, adapters, seeds=one_site_per_tenant(all_seeds), now=now,
+                                      budget=budget, guess_ats=set(_adapters()))
         pipeline.run_match(conn, Overrides.load(overrides))
         return summary, errors
 

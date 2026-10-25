@@ -86,6 +86,8 @@ def test_rate_key_groups_subdomains():
     assert rate_key("tado.jobs.personio.de") == "personio.de"
     assert rate_key("api.eu.lever.co") == rate_key("api.lever.co") == "lever.co"
     assert rate_key("localhost") == "localhost"
+    assert rate_key("acme.wd3.myworkdayjobs.com") == rate_key("embl.wd3.myworkdayjobs.com") == "wd3.myworkdayjobs.com"
+    assert rate_key("acme.wd5.myworkdayjobs.com") == "wd5.myworkdayjobs.com"
 
 
 async def test_subdomains_share_one_limiter(http):
