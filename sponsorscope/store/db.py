@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from collections.abc import Iterable
 from pathlib import Path
 
+from sponsorscope.classify.industry import BIOTECH_NAICS
 from sponsorscope.matching.names import normalize
 from sponsorscope.models import Label, RawPosting, SponsorRecord
 
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS sponsors (
   city TEXT,
   route TEXT NOT NULL DEFAULT '',
   filings INTEGER,
+  naics TEXT,  -- US LCA: the employer's most common NAICS industry code
   period TEXT,
   first_seen TEXT NOT NULL,
   last_seen TEXT NOT NULL,
@@ -60,6 +62,7 @@ CREATE TABLE IF NOT EXISTS labels (
   posting_id TEXT NOT NULL, content_hash TEXT NOT NULL, classifier_version TEXT NOT NULL,
   sponsorship TEXT NOT NULL, mixed INTEGER NOT NULL DEFAULT 0,
   languages_required TEXT NOT NULL, evidence TEXT NOT NULL,
+  industry TEXT, industry_evidence TEXT NOT NULL DEFAULT '[]',
   PRIMARY KEY (posting_id, content_hash, classifier_version)
 );
 CREATE TABLE IF NOT EXISTS discovery_progress (
@@ -71,6 +74,9 @@ CREATE TABLE IF NOT EXISTS discovery_progress (
 _MIGRATIONS = [  # (table, column, DDL) for columns added after the first deploy
     ("companies", "name_verified", "ALTER TABLE companies ADD COLUMN name_verified INTEGER NOT NULL DEFAULT 1"),
     ("postings", "level", "ALTER TABLE postings ADD COLUMN level TEXT"),
+    ("labels", "industry", "ALTER TABLE labels ADD COLUMN industry TEXT"),
+    ("labels", "industry_evidence", "ALTER TABLE labels ADD COLUMN industry_evidence TEXT NOT NULL DEFAULT '[]'"),
+    ("sponsors", "naics", "ALTER TABLE sponsors ADD COLUMN naics TEXT"),
 ]
 
 
@@ -104,17 +110,17 @@ def upsert_sponsors(conn: sqlite3.Connection, source: str, records: Iterable[Spo
     conn.executemany(
         """
         INSERT INTO sponsors (country, source, evidence, legal_name, norm_name, registry_id, city,
-                              route, filings, period, first_seen, last_seen)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                              route, filings, period, naics, first_seen, last_seen)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT (source, norm_name, route) DO UPDATE SET
           country = excluded.country, evidence = excluded.evidence,
           legal_name = excluded.legal_name, registry_id = excluded.registry_id,
-          city = excluded.city, filings = excluded.filings, period = excluded.period,
+          city = excluded.city, filings = excluded.filings, period = excluded.period, naics = excluded.naics,
           last_seen = excluded.last_seen
         """,
         [
             (r.country, source, r.evidence, r.legal_name, norm, r.registry_id, r.city, route,
-             r.filings, r.period, now, now)
+             r.filings, r.period, r.naics, now, now)
             for (norm, route), r in rows.items()
         ],
     )
@@ -233,11 +239,12 @@ def save_label(conn: sqlite3.Connection, posting_id: str, content_hash: str, ver
     conn.execute(
         """
         INSERT OR REPLACE INTO labels (posting_id, content_hash, classifier_version, sponsorship,
-                                       mixed, languages_required, evidence)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+                                       mixed, languages_required, evidence, industry, industry_evidence)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (posting_id, content_hash, version, label.sponsorship, int(label.mixed),
-         json.dumps(list(label.languages_required)), json.dumps(list(label.evidence), ensure_ascii=False)),
+         json.dumps(list(label.languages_required)), json.dumps(list(label.evidence), ensure_ascii=False),
+         label.industry, json.dumps(list(label.industry_evidence), ensure_ascii=False)),
     )
 
 
@@ -339,18 +346,22 @@ def record_probe(conn: sqlite3.Connection, ats: str, slug: str, *, exists: bool,
     )
 
 
+_BIOTECH_NAICS_SQL = " OR ".join(f"s.naics LIKE '{code}%'" for code in BIOTECH_NAICS)
+
+
 def sponsors_to_guess(conn: sqlite3.Connection, now: str, limit: int) -> list[sqlite3.Row]:
-    """Active, unmatched sponsor names due for slug guessing; heavy sponsors first, UK-only last."""
+    """Active, unmatched sponsor names due for slug guessing; biotech first, then heavy sponsors, UK-only last."""
     return conn.execute(
-        """
-        SELECT s.norm_name, MAX(COALESCE(s.filings, 0)) AS weight, MIN(s.source = 'gb') AS uk_only
+        f"""
+        SELECT s.norm_name, MAX(COALESCE(s.filings, 0)) AS weight, MIN(s.source = 'gb') AS uk_only,
+               MAX(COALESCE({_BIOTECH_NAICS_SQL}, 0)) AS biotech
         FROM sponsors s
         JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
         LEFT JOIN discovery_progress d ON d.sponsor_norm = s.norm_name
         WHERE (d.next_try_at IS NULL OR d.next_try_at <= ?)
           AND NOT EXISTS (SELECT 1 FROM sponsor_matches m WHERE m.sponsor_id = s.id)
         GROUP BY s.norm_name
-        ORDER BY weight DESC, uk_only ASC, s.norm_name
+        ORDER BY biotech DESC, weight DESC, uk_only ASC, s.norm_name
         LIMIT ?
         """,
         (now, limit),

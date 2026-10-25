@@ -5,9 +5,9 @@ import {
 } from "./filters.js";
 
 const FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
-  "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level"];
+  "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level", "industry"];
 const ROWS = toObjects(FIELDS, [
-  ["greenhouse:a:1", "Backend Engineer", "Acme", "https://x/1", "GB", "remote", "2026-10-10", "2026-10-10T03:00:00+00:00", "yes", false, [], ["We offer visa sponsorship"], [["licence", "Licensed sponsor (UK)"]], "greenhouse", "phd"],
+  ["greenhouse:a:1", "Backend Engineer", "Acme", "https://x/1", "GB", "remote", "2026-10-10", "2026-10-10T03:00:00+00:00", "yes", false, [], ["We offer visa sponsorship"], [["licence", "Licensed sponsor (UK)"]], "greenhouse", "phd", "biotech"],
   ["greenhouse:a:2", "Data Analyst", "Acme", "https://x/2", "GB", null, "2026-09-01", "2026-09-01T03:00:00+00:00", "no", false, [], [], [["licence", "Licensed sponsor (UK)"]], "greenhouse", null],
   ["lever:b:3", "Product Designer", "Beta", "https://x/3", "NL", "hybrid", null, "2026-10-12T03:00:00+00:00", "unknown", true, ["nl"], [], [], "lever", "masters"],
   ["lever:b:4", "Support Agent", "Beta", "https://x/4", null, "onsite", "2026-10-11", "2026-10-11T03:00:00+00:00", "unknown", false, [], [], [], "lever", null],
@@ -120,4 +120,10 @@ test("chipLabel summarises the selection", () => {
   assert.equal(chipLabel("Country", []), "Country");
   assert.equal(chipLabel("Country", ["Netherlands"]), "Country: Netherlands");
   assert.equal(chipLabel("Country", ["Netherlands", "Denmark", "Finland"]), "Country: Netherlands +2");
+});
+
+test("industry filter: rows without an industry count as other", () => {
+  assert.deepEqual(run({ industries: ["biotech"] }), ["greenhouse:a:1"]);
+  assert.deepEqual(run({ industries: ["other"] }), ["lever:b:3", "lever:b:4"]);
+  assert.deepEqual(parseState("?industries=biotech").industries, ["biotech"]);
 });

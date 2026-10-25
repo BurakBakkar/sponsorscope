@@ -1,5 +1,5 @@
 import {
-  DEFAULT_STATE, LANG_LABELS, LEVEL_LABELS, chipLabel, countryName, evidenceParts, filterRows, hueFor, initials,
+  DEFAULT_STATE, INDUSTRY_LABELS, LANG_LABELS, LEVEL_LABELS, chipLabel, countryName, evidenceParts, filterRows, hueFor, initials,
   parseState, relativeDate, safeUrl, serializeState, shardsFor, sourceLine, toObjects,
 } from "./filters.js";
 
@@ -115,6 +115,8 @@ function buildFilters() {
   const names = Object.fromEntries(countries().map(([cc, name]) => [cc, name]));
   $("#chips").replaceChildren(
     chip("Position", checkboxList("levels", Object.entries(LEVEL_LABELS)), () => labelled("levels", LEVEL_LABELS)),
+    chip("Industry", checkboxList("industries", Object.entries(INDUSTRY_LABELS)),
+      () => labelled("industries", INDUSTRY_LABELS)),
     chip("Country", checkboxList("countries", countries(), { searchable: true }), () => labelled("countries", names)),
     chip("Sponsor register", checkboxList("badges", Object.entries(BADGE_TEXT)), () => labelled("badges", BADGE_TEXT)),
     chip("Sponsorship", checkboxList("sponsorship", Object.entries(SPONSORSHIP_TEXT)),
@@ -140,7 +142,7 @@ function buildFilters() {
 function activeTags() {
   const tags = [];
   const names = Object.fromEntries(countries().map(([cc, name]) => [cc, name]));
-  const lists = { levels: LEVEL_LABELS, countries: names, badges: BADGE_TEXT, sponsorship: SPONSORSHIP_TEXT,
+  const lists = { levels: LEVEL_LABELS, industries: INDUSTRY_LABELS, countries: names, badges: BADGE_TEXT, sponsorship: SPONSORSHIP_TEXT,
     langs: LANG_LABELS, remote: REMOTE_TEXT, ats: ATS_TEXT };
   for (const [key, texts] of Object.entries(lists)) {
     if (isDefault(key)) continue;
@@ -192,6 +194,13 @@ function evidence(r) {
   return [quote, more];
 }
 
+function industryEvidence(r) {
+  if (r.industry !== "biotech" || !r.industry_evidence?.length) return [];
+  return [el("details", { class: "more-evidence" },
+    el("summary", { text: `Why “${INDUSTRY_LABELS.biotech}”` }),
+    ...r.industry_evidence.map((e) => el("blockquote", { class: "evidence" }, ...quoteParts(e))))];
+}
+
 function renderRow(r) {
   const href = safeUrl(r.url);
   const title = href
@@ -199,6 +208,7 @@ function renderRow(r) {
     : el("span", { text: r.title });
   const pills = el("div", { class: "pills" });
   if (r.level) pills.append(pill(`level ${r.level}`, LEVEL_LABELS[r.level] ?? r.level));
+  if (r.industry === "biotech") pills.append(pill("industry", INDUSTRY_LABELS.biotech));
   for (const [type, text, weak] of r.badges) pills.append(pill(`badge ${type}${weak ? " weak" : ""}`, text));
   pills.append(pill(`label ${r.sponsorship}`, SPONSORSHIP_TEXT[r.sponsorship]));
   if (r.mixed) pills.append(pill("label mixed", "Mixed signals"));
@@ -208,7 +218,7 @@ function renderRow(r) {
   const logo = el("div", { class: "logo", "aria-hidden": "true", text: initials(r.company) });
   logo.style.setProperty("--hue", hueFor(r.company));
   return el("li", { class: "card" }, logo, el("div", { class: "body" },
-    el("h2", {}, title), el("p", { class: "meta", text: meta.filter(Boolean).join(" · ") }), pills, ...evidence(r)));
+    el("h2", {}, title), el("p", { class: "meta", text: meta.filter(Boolean).join(" · ") }), pills, ...evidence(r), ...industryEvidence(r)));
 }
 
 function render() {

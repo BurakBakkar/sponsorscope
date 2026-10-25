@@ -199,3 +199,10 @@ def test_touch_keeps_the_stored_posted_date_when_the_listing_has_none(conn):
     from dataclasses import replace
     db.touch_posting(conn, replace(posting("1"), posted_at=None), company_id=cid, country="GB", now=T2)
     assert conn.execute("SELECT posted_at FROM postings").fetchone()[0] == "2026-10-01"
+
+
+def test_sponsors_to_guess_puts_biotech_first(conn):
+    db.upsert_sponsors(conn, "us", [SponsorRecord("US", "us", "history", "Big Filer Inc", filings=500, naics="541511"),
+                                    SponsorRecord("US", "us", "history", "Tiny Bio Inc", filings=2, naics="325414")],
+                       "v1", T1)
+    assert [r["norm_name"] for r in db.sponsors_to_guess(conn, T1, 10)] == ["tiny bio", "big filer"]

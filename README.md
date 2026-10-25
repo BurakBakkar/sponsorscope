@@ -19,6 +19,11 @@ A nightly-updated, filterable list of job postings that may offer **visa sponsor
 - **Labels:** each English posting is labelled by text rules for sponsorship
   (yes / no / unknown, plus "mixed signals") and for required languages.
   Every label shows the phrases that triggered it.
+- **Industry:** a posting is tagged *Biotech & pharma* when its text reads like biotech work
+  (weighted phrases such as "clinical-stage", "drug discovery", "biologics", "GMP"; one passing
+  mention is not enough), or when its company matches a US H-1B employer filed under a pharma or
+  biotech-R&D NAICS code (3254, 541714, 541711). The site's *Industry* filter picks them out, and
+  slug guessing tries biotech sponsors first.
 
 **Not legal advice.** A sponsor licence does not guarantee that a given role is
 sponsored.
@@ -57,8 +62,8 @@ python3 -m http.server -d site 8000
 
 - **Add a board:** add it to `seeds/manual.yaml`.
 - **Fix a wrong company match:** add an entry to `overrides.yaml`.
-- **Change the rules:** after editing `sponsorscope/classify/rules.py`, bump
-  `VERSION` and add cases to `tests/fixtures/labels.yaml`.
+- **Change the rules:** after editing `sponsorscope/classify/rules.py` or `industry.py`, bump
+  `VERSION` and add cases to `tests/fixtures/labels.yaml` or `tests/test_industry.py`.
 
 ## Data licences
 

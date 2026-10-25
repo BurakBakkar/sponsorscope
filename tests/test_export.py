@@ -101,3 +101,26 @@ def test_unverified_match_gives_weak_badge(conn, tmp_path):
     export_site(conn, tmp_path / "site", "rules-1", T1)
     badges = dict(zip(FIELDS, read_shard(tmp_path / "site", "gb")[0]))["badges"]
     assert badges == [["licence", "Name match only: Licensed sponsor (UK)", True]]
+
+
+def test_industry_from_text_label_and_from_us_naics(conn, tmp_path):
+    bio = db.get_or_create_company(conn, "Moderna")
+    lookalike = db.get_or_create_company(conn, "Helix", verified=False)
+    other = db.get_or_create_company(conn, "Shoe Shop")
+    db.upsert_sponsors(conn, "us", [SponsorRecord("US", "us", "history", "Moderna US", route="H-1B", filings=9,
+                                                  period="FY2025", naics="325414"),
+                                    SponsorRecord("US", "us", "history", "Helix", route="H-1B", filings=2,
+                                                  period="FY2025", naics="541714")], "v1", T1)
+    ids = dict(conn.execute("SELECT legal_name, id FROM sponsors").fetchall())
+    db.replace_matches(conn, [(ids["Moderna US"], bio, "exact", 100.0), (ids["Helix"], lookalike, "unverified", 100.0)])
+    add_posting(conn, bio, "1", "US")
+    add_posting(conn, lookalike, "2", "US")  # NAICS via a name coincidence only → not biotech
+    add_posting(conn, other, "3", "US", label=Label("unknown", False, (), (), industry="biotech",
+                                                     industry_evidence=("a clinical-stage biotech company",)))
+    export_site(conn, tmp_path / "site", "rules-1", T1)
+    rows = {r[0]: dict(zip(FIELDS, r)) for r in read_shard(tmp_path / "site", "us")}
+    assert rows["greenhouse:acme:1"]["industry"] == "biotech"
+    assert "NAICS 325414" in rows["greenhouse:acme:1"]["industry_evidence"][0]
+    assert rows["greenhouse:acme:2"]["industry"] is None
+    assert (rows["greenhouse:acme:3"]["industry"], rows["greenhouse:acme:3"]["industry_evidence"]) == (
+        "biotech", ["a clinical-stage biotech company"])

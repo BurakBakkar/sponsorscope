@@ -67,6 +67,16 @@ async def test_latest_and_fetch(http, respx_mock):
         ["I-2", "Certified", "d", "H-1B", "Gamma Inc", ""]])))
     reg = UsRegister()
     version = await reg.latest(http)
-    assert version == f"{Q.format(3)} {Q.format(4)}"
+    assert version == f"{Q.format(3)} {Q.format(4)} #naics"
     [record] = await reg.fetch(http, version)
-    assert (record.legal_name, record.filings, record.period) == ("Gamma Inc", 2, "FY2025")
+    assert (record.legal_name, record.filings, record.period, record.naics) == ("Gamma Inc", 2, "FY2025", None)
+
+
+def test_naics_is_the_employers_most_common_code():
+    header = HEADER + ["NAICS_CODE"]
+    rows = [header, ["I-1", "Certified", "d", "H-1B", "Moderna US", "", 325414],
+            ["I-2", "Certified", "d", "H-1B", "Moderna US", "", "325414"],
+            ["I-3", "Certified", "d", "H-1B", "Moderna US", "", "541714"],
+            ["I-4", "Certified", "d", "H-1B", "Acme", "", ""]]
+    records = {r.legal_name: r.naics for r in parse_lca([make_xlsx(rows)], "FY2025")}
+    assert records == {"Moderna US": "325414", "Acme": None}

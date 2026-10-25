@@ -7,10 +7,12 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
+from sponsorscope.classify.industry import BIOTECH, biotech_naics
+
 log = logging.getLogger(__name__)
 
 FIELDS = ["id", "title", "company", "url", "country", "remote", "posted_at", "first_seen",
-          "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level"]
+          "sponsorship", "mixed", "langs", "evidence", "badges", "ats", "level", "industry", "industry_evidence"]
 UNKNOWN_COUNTRY = "XX"
 SHARD_WARN_BYTES = 5 * 1024 * 1024
 
@@ -23,7 +25,8 @@ HISTORY_TEMPLATES = {
 
 _POSTINGS = """
 SELECT p.id, p.title, c.display_name AS company, p.company_id, p.url, p.country, p.remote,
-       p.posted_at, p.first_seen, p.ats, p.level, l.sponsorship, l.mixed, l.languages_required, l.evidence
+       p.posted_at, p.first_seen, p.ats, p.level, l.sponsorship, l.mixed, l.languages_required, l.evidence,
+       l.industry, l.industry_evidence
 FROM postings p
 JOIN companies c ON c.id = p.company_id
 LEFT JOIN labels l ON l.posting_id = p.id AND l.content_hash = p.content_hash AND l.classifier_version = ?
@@ -37,6 +40,13 @@ FROM sponsor_matches m
 JOIN sponsors s ON s.id = m.sponsor_id
 JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
 GROUP BY m.company_id, s.source, s.evidence, s.country
+"""
+_NAICS = """
+SELECT DISTINCT m.company_id, s.naics
+FROM sponsor_matches m
+JOIN sponsors s ON s.id = m.sponsor_id
+JOIN source_versions v ON v.source = s.source AND v.fetched_at = s.last_seen
+WHERE s.naics IS NOT NULL AND m.method != 'unverified'
 """
 
 
@@ -52,6 +62,15 @@ def _badges_by_company(conn: sqlite3.Connection) -> dict[int, dict[str, list[lis
         text = badge_text(r["source"], r["evidence"], r["country"], r["filings"], r["period"])
         weak = bool(r["weak"])  # every supporting match is a name coincidence only
         out[r["company_id"]][r["country"]].append([r["evidence"], f"Name match only: {text}" if weak else text, weak])
+    return out
+
+
+def _biotech_companies(conn: sqlite3.Connection) -> dict[int, str]:
+    """company id → why its sponsor-register industry code says biotech / pharma (name coincidences excluded)."""
+    out: dict[int, str] = {}
+    for r in conn.execute(_NAICS):
+        if name := biotech_naics(r["naics"]):
+            out.setdefault(r["company_id"], f"US H-1B filings list this employer as {name} (NAICS {r['naics']})")
     return out
 
 
@@ -72,17 +91,22 @@ def export_site(conn: sqlite3.Connection, site_dir: Path, classifier_version: st
         stale.unlink()
 
     badges = _badges_by_company(conn)
+    biotech = _biotech_companies(conn)
     shards: dict[str, list[list]] = defaultdict(list)
     companies: set[str] = set()
     ats_names: set[str] = set()
     for r in conn.execute(_POSTINGS, (classifier_version,)):
         country = r["country"]
         row_badges = badges.get(r["company_id"], {}).get(country, []) if country else []
+        industry_evidence = json.loads(r["industry_evidence"] or "[]")
+        if r["company_id"] in biotech:
+            industry_evidence.insert(0, biotech[r["company_id"]])
         shards[country or UNKNOWN_COUNTRY].append([
             r["id"], r["title"], r["company"], r["url"], country, r["remote"], r["posted_at"],
             r["first_seen"], r["sponsorship"] or "unknown", bool(r["mixed"]),
             json.loads(r["languages_required"] or "[]"), json.loads(r["evidence"] or "[]"),
             row_badges, r["ats"], r["level"],
+            BIOTECH if r["industry"] == BIOTECH or r["company_id"] in biotech else None, industry_evidence,
         ])
         companies.add(r["company"])
         ats_names.add(r["ats"])

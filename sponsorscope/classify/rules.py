@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import re
 
+from sponsorscope.classify.industry import detect_industry
 from sponsorscope.models import Label
 
-VERSION = "rules-2"  # bump whenever rules change: the next run re-labels every posting
+VERSION = "rules-3"  # bump whenever rules change: the next run re-labels every posting
 EVIDENCE_WIDTH = 160
 NEGATION_WINDOW = 30
 
@@ -105,5 +106,7 @@ class RulesClassifier:
                 if any(not _OPTIONAL.search(_clause(text, m.start(), m.end())) for m in rx.finditer(text)):
                     langs.append(code)
                     break
+        industry, industry_hits = detect_industry(text)
         return Label(sponsorship=sponsorship, mixed=mixed, languages_required=tuple(langs),
-                     evidence=tuple(evidence))
+                     evidence=tuple(evidence), industry=industry,
+                     industry_evidence=tuple(dict.fromkeys(_context(text, m.start(), m.end()) for m in industry_hits)))

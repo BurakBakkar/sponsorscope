@@ -7,6 +7,7 @@
   --ok-bg: #dcfce7; --ok: #166534; --warn-bg: #fef3c7; --warn: #92400e;
   --no-bg: #fee2e2; --no: #991b1b; --neutral-bg: #f3f4f6; --neutral: #4b5563;
   --lang-bg: #fff7ed; --lang: #9a3412; --quote-bg: #eef2ff; --quote-bar: #a5b4fc;
+  --bio-bg: #ccfbf1; --bio: #115e59;
   --logo-l: 42%;
   --shadow: 0 1px 2px rgb(0 0 0 / .05);
 }
@@ -19,6 +20,7 @@
     --ok-bg: #12351f; --ok: #bbf7d0; --warn-bg: #3d2a07; --warn: #fde68a;
     --no-bg: #3f1414; --no: #fecaca; --neutral-bg: #252a3d; --neutral: #d1d5db;
     --lang-bg: #3a2210; --lang: #fed7aa; --quote-bg: #1e2444; --quote-bar: #6366f1;
+    --bio-bg: #0d3b37; --bio: #99f6e4;
     --logo-l: 36%;
     --shadow: none;
   }
@@ -96,6 +98,7 @@ a { color: var(--link); }
 .label.no { background: var(--no-bg); color: var(--no); }
 .label.mixed { background: var(--warn-bg); color: var(--warn); }
 .lang { background: var(--lang-bg); color: var(--lang); }
+.industry { background: var(--bio-bg); color: var(--bio); }
 .evidence { margin: .55rem 0 0; padding: .3rem .7rem; font-size: .86rem; color: var(--muted); background: var(--quote-bg);
   border-left: 3px solid var(--quote-bar); border-radius: 0 .4rem .4rem 0; }
 .evidence strong { color: var(--text); }

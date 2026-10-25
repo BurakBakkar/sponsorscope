@@ -18,6 +18,7 @@ class SponsorRecord:
     route: str | None = None  # e.g. "Skilled Worker", "H-1B"
     filings: int | None = None  # history sources: certified filings / permits
     period: str | None = None  # history sources: e.g. "FY2026", "2026 Q1"
+    naics: str | None = None  # industry code, where the source has one (US LCA)
 
 
 @dataclass(frozen=True)
@@ -48,6 +49,8 @@ class Label:
     mixed: bool  # True when yes- and no-rules both matched
     languages_required: tuple[str, ...]  # ISO-639-1 codes
     evidence: tuple[str, ...]  # matched phrases with context
+    industry: str | None = None  # "biotech" when the text reads like biotech / pharma work
+    industry_evidence: tuple[str, ...] = ()
 
 
 def content_hash(text: str) -> str:

@@ -16,6 +16,8 @@ from sponsorscope.registers.xlsx import cell_str, sheet_rows
 PAGE = "https://www.dol.gov/agencies/eta/foreign-labor/performance"
 _FILE = re.compile(r"LCA_Disclosure_Data_FY(\d{4})_Q(\d)\.xlsx$", re.IGNORECASE)  # match hrefs: link text has typos
 _REQUIRED = ("CASE_NUMBER", "CASE_STATUS", "VISA_CLASS", "EMPLOYER_NAME")
+NAICS = "NAICS_CODE"  # optional column
+PARSER_REV = "#naics"  # appended to the version: changing it makes the next run re-read the year's files
 
 
 def _url_period(url: str) -> str:
@@ -44,7 +46,10 @@ def pick_files(html: str) -> tuple[list[str], str]:
     return [files[key] for key in sorted(k for k in files if k[0] == year)], f"FY{year}"
 
 
-def _collect_cases(data: bytes, cases: dict[str, tuple[bool, str]]) -> None:
+Case = tuple[bool, str, str]  # (counted, employer name, NAICS code)
+
+
+def _collect_cases(data: bytes, cases: dict[str, Case]) -> None:
     rows = sheet_rows(data)
     header = [cell_str(h) for h in next(rows, [])]
     idx = {h: i for i, h in enumerate(header)}
@@ -52,33 +57,39 @@ def _collect_cases(data: bytes, cases: dict[str, tuple[bool, str]]) -> None:
     if missing:
         raise RegisterFormatError(f"US LCA: missing columns {missing}")
     case_i, status_i, visa_i, name_i = (idx[c] for c in _REQUIRED)
+    naics_i = idx.get(NAICS)
     width = max(case_i, status_i, visa_i, name_i)
     for row in rows:
         if len(row) <= width:
             continue
         counted = cell_str(row[status_i]) == "Certified" and cell_str(row[visa_i]) == "H-1B"
-        cases[cell_str(row[case_i])] = (counted, cell_str(row[name_i]))  # later files win
+        naics = cell_str(row[naics_i]) if naics_i is not None and naics_i < len(row) else ""
+        cases[cell_str(row[case_i])] = (counted, cell_str(row[name_i]), naics.split(".")[0])  # later files win
 
 
-def _aggregate(cases: dict[str, tuple[bool, str]], period: str) -> list[SponsorRecord]:
+def _aggregate(cases: dict[str, Case], period: str) -> list[SponsorRecord]:
     filings: Counter[str] = Counter()
     spellings: dict[str, Counter[str]] = {}
-    for counted, raw in cases.values():
+    codes: dict[str, Counter[str]] = {}
+    for counted, raw, naics in cases.values():
         norm = normalize(raw) if counted else ""
         if not norm:
             continue
         filings[norm] += 1
         spellings.setdefault(norm, Counter())[raw] += 1
+        if naics:
+            codes.setdefault(norm, Counter())[naics] += 1
     return [
         SponsorRecord(country="US", source="us", evidence="history", legal_name=spellings[n].most_common(1)[0][0],
-                      route="H-1B", filings=count, period=period)
+                      route="H-1B", filings=count, period=period,
+                      naics=codes[n].most_common(1)[0][0] if n in codes else None)
         for n, count in filings.items()
     ]
 
 
 def parse_lca(files: Iterable[bytes], period: str) -> list[SponsorRecord]:
     """Certified H-1B LCAs per normalised employer; a case number seen again in a later file wins."""
-    cases: dict[str, tuple[bool, str]] = {}
+    cases: dict[str, Case] = {}
     for data in files:
         _collect_cases(data, cases)
     return _aggregate(cases, period)
@@ -93,11 +104,11 @@ class UsRegister:
     async def latest(self, http: Http) -> str:
         resp = await http.get(PAGE)
         resp.raise_for_status()
-        return " ".join(pick_files(resp.text)[0])  # version = the year's file URLs
+        return " ".join(pick_files(resp.text)[0]) + f" {PARSER_REV}"  # version = the year's file URLs
 
     async def fetch(self, http: Http, version: str) -> list[SponsorRecord]:
-        urls = version.split()
-        cases: dict[str, tuple[bool, str]] = {}
+        urls = [u for u in version.split() if not u.startswith("#")]
+        cases: dict[str, Case] = {}
         for url in urls:  # one 80–250 MB file in memory at a time; only when the version changes
             resp = await http.get(url)
             resp.raise_for_status()
