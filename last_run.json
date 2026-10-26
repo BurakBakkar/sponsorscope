@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-10-25T08:06:02+00:00",
-  "finished_at": "2026-10-25T09:01:32+00:00",
+  "started_at": "2026-10-26T08:31:04+00:00",
+  "finished_at": "2026-10-26T11:02:47+00:00",
   "sources": {
     "gb": {
       "status": "unchanged",
@@ -19,8 +19,9 @@
       "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
     },
     "us": {
-      "status": "unchanged",
-      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx"
+      "status": "ok",
+      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics",
+      "rows": 60475
     },
     "ca": {
       "status": "unchanged",
@@ -32,21 +33,30 @@
     }
   },
   "ats": {
-    "ashby": {
-      "boards": 2411,
-      "ok": 2410,
-      "not_found": 1,
+    "pinpoint": {
+      "boards": 2,
+      "ok": 2,
+      "not_found": 0,
       "failed": 0,
-      "postings": 44366,
+      "postings": 19,
       "outage": false,
       "errors": []
     },
-    "greenhouse": {
-      "boards": 5131,
-      "ok": 5125,
-      "not_found": 6,
+    "rippling": {
+      "boards": 1,
+      "ok": 1,
+      "not_found": 0,
       "failed": 0,
-      "postings": 134628,
+      "postings": 4,
+      "outage": false,
+      "errors": []
+    },
+    "teamtailor": {
+      "boards": 12,
+      "ok": 12,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 134,
       "outage": false,
       "errors": []
     },
@@ -55,43 +65,7 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 115,
-      "outage": false,
-      "errors": []
-    },
-    "lever": {
-      "boards": 1919,
-      "ok": 1919,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 57411,
-      "outage": false,
-      "errors": []
-    },
-    "oracle": {
-      "boards": 4,
-      "ok": 4,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 331,
-      "outage": false,
-      "errors": []
-    },
-    "personio": {
-      "boards": 7,
-      "ok": 7,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 23,
-      "outage": false,
-      "errors": []
-    },
-    "recruitee": {
-      "boards": 15,
-      "ok": 15,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 454,
+      "postings": 116,
       "outage": false,
       "errors": []
     },
@@ -100,34 +74,108 @@
       "ok": 56,
       "not_found": 0,
       "failed": 0,
-      "postings": 208,
+      "postings": 200,
       "outage": false,
       "errors": []
     },
-    "smartrecruiters": {
-      "boards": 461,
-      "ok": 461,
+    "oracle": {
+      "boards": 7,
+      "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 9688,
+      "postings": 372,
       "outage": false,
       "errors": []
     },
     "workable": {
-      "boards": 38,
-      "ok": 38,
+      "boards": 1497,
+      "ok": 1497,
       "not_found": 0,
       "failed": 0,
-      "postings": 56,
+      "postings": 25282,
+      "outage": false,
+      "errors": []
+    },
+    "personio": {
+      "boards": 1558,
+      "ok": 1558,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 12733,
+      "outage": false,
+      "errors": []
+    },
+    "recruitee": {
+      "boards": 2590,
+      "ok": 2586,
+      "not_found": 2,
+      "failed": 2,
+      "postings": 33901,
+      "outage": false,
+      "errors": [
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "ashby": {
+      "boards": 3506,
+      "ok": 3506,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 58904,
+      "outage": false,
+      "errors": []
+    },
+    "successfactors": {
+      "boards": 27,
+      "ok": 26,
+      "not_found": 0,
+      "failed": 1,
+      "postings": 3650,
+      "outage": false,
+      "errors": [
+        "careers.demant.com: HTTPStatusError: Client error '408 Request Time-out' for url 'https://careers.demant.com/DemantPoland/job/Mierzyn-Global-Customs-Compliance-Officer-zach-72-006/1444608333/'\nFor mor"
+      ]
+    },
+    "lever": {
+      "boards": 2101,
+      "ok": 2099,
+      "not_found": 2,
+      "failed": 0,
+      "postings": 60283,
+      "outage": false,
+      "errors": []
+    },
+    "greenhouse": {
+      "boards": 5903,
+      "ok": 5899,
+      "not_found": 4,
+      "failed": 0,
+      "postings": 142924,
       "outage": false,
       "errors": []
     },
     "workday": {
-      "boards": 17,
-      "ok": 17,
+      "boards": 106,
+      "ok": 84,
+      "not_found": 0,
+      "failed": 22,
+      "postings": 16647,
+      "outage": false,
+      "errors": [
+        "revvity.wd103.myworkdayjobs.com/external: HTTPStatusError: Client error '403 Forbidden' for url 'https://revvity.wd103.myworkdayjobs.com/wday/cxs/revvity/external/job/Krakow/Financial-Accountant_JR-04",
+        "fortrea.wd1.myworkdayjobs.com/fortrea: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "nxp.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "msd.wd5.myworkdayjobs.com/searchjobs: HTTPStatusError: Client error '403 Forbidden' for url 'https://msd.wd5.myworkdayjobs.com/wday/cxs/msd/searchjobs/job/ESP---Madrid---Madrid-Josefa-Valcarcel/Delega",
+        "pierrefabre.wd3.myworkdayjobs.com/external_career_site: HTTPStatusError: Client error '403 Forbidden' for url 'https://pierrefabre.wd3.myworkdayjobs.com/wday/cxs/pierrefabre/external_career_site/job/T"
+      ]
+    },
+    "smartrecruiters": {
+      "boards": 2330,
+      "ok": 2330,
       "not_found": 0,
       "failed": 0,
-      "postings": 8573,
+      "postings": 116520,
       "outage": false,
       "errors": []
     }
