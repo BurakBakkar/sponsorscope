@@ -1,27 +1,27 @@
 {
-  "started_at": "2026-10-26T08:31:04+00:00",
-  "finished_at": "2026-10-26T11:02:47+00:00",
+  "started_at": "2026-10-27T08:38:28+00:00",
+  "finished_at": "2026-10-27T10:26:37+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6adb1b5ab62d80a107bc5c29/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-23.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6adf10d9d798ae11e9bc5c97/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-26.csv",
+      "rows": 141100
     },
     "nl": {
       "status": "unchanged",
       "version": "5 October 2026"
     },
     "dk": {
-      "status": "unchanged",
-      "version": "21-10-2026"
+      "status": "failed",
+      "error": "ConnectTimeout: "
     },
     "fi": {
       "status": "blocked",
       "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
     },
     "us": {
-      "status": "ok",
-      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics",
-      "rows": 60475
+      "status": "unchanged",
+      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics"
     },
     "ca": {
       "status": "unchanged",
@@ -33,15 +33,6 @@
     }
   },
   "ats": {
-    "pinpoint": {
-      "boards": 2,
-      "ok": 2,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 19,
-      "outage": false,
-      "errors": []
-    },
     "rippling": {
       "boards": 1,
       "ok": 1,
@@ -51,30 +42,21 @@
       "outage": false,
       "errors": []
     },
+    "pinpoint": {
+      "boards": 2,
+      "ok": 2,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 17,
+      "outage": false,
+      "errors": []
+    },
     "teamtailor": {
       "boards": 12,
       "ok": 12,
       "not_found": 0,
       "failed": 0,
-      "postings": 134,
-      "outage": false,
-      "errors": []
-    },
-    "jobtech": {
-      "boards": 1,
-      "ok": 1,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 116,
-      "outage": false,
-      "errors": []
-    },
-    "rss": {
-      "boards": 56,
-      "ok": 56,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 200,
+      "postings": 132,
       "outage": false,
       "errors": []
     },
@@ -83,91 +65,116 @@
       "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 372,
+      "postings": 380,
       "outage": false,
       "errors": []
     },
-    "workable": {
-      "boards": 1497,
-      "ok": 1497,
+    "jobtech": {
+      "boards": 1,
+      "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 25282,
+      "postings": 117,
       "outage": false,
       "errors": []
+    },
+    "rss": {
+      "boards": 56,
+      "ok": 54,
+      "not_found": 0,
+      "failed": 2,
+      "postings": 179,
+      "outage": false,
+      "errors": [
+        "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
+        "employment.ku.dk/all-vacancies/?get_rss=1: ConnectTimeout: "
+      ]
     },
     "personio": {
       "boards": 1558,
       "ok": 1558,
       "not_found": 0,
       "failed": 0,
-      "postings": 12733,
+      "postings": 12701,
       "outage": false,
       "errors": []
+    },
+    "successfactors": {
+      "boards": 27,
+      "ok": 27,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 3994,
+      "outage": false,
+      "errors": []
+    },
+    "workable": {
+      "boards": 1497,
+      "ok": 1422,
+      "not_found": 0,
+      "failed": 75,
+      "postings": 24655,
+      "outage": false,
+      "errors": [
+        "inventyou-ab: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/inventyou-ab?details=true'\nFor more information check: https://developer.",
+        "sezane-3: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/sezane-3?details=true'\nFor more information check: https://developer.mozilla.",
+        "iowa-community-health-centers: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/iowa-community-health-centers?details=true'\nFor more inf",
+        "anvilogic-inc: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/anvilogic-inc?details=true'\nFor more information check: https://develope",
+        "irpi: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/irpi?details=true'\nFor more information check: https://developer.mozilla.org/en-U"
+      ]
     },
     "recruitee": {
       "boards": 2590,
       "ok": 2586,
       "not_found": 2,
       "failed": 2,
-      "postings": 33901,
+      "postings": 33851,
       "outage": false,
       "errors": [
-        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
     "ashby": {
       "boards": 3506,
-      "ok": 3506,
-      "not_found": 0,
+      "ok": 3503,
+      "not_found": 3,
       "failed": 0,
-      "postings": 58904,
+      "postings": 58930,
       "outage": false,
       "errors": []
     },
-    "successfactors": {
-      "boards": 27,
-      "ok": 26,
-      "not_found": 0,
-      "failed": 1,
-      "postings": 3650,
-      "outage": false,
-      "errors": [
-        "careers.demant.com: HTTPStatusError: Client error '408 Request Time-out' for url 'https://careers.demant.com/DemantPoland/job/Mierzyn-Global-Customs-Compliance-Officer-zach-72-006/1444608333/'\nFor mor"
-      ]
-    },
     "lever": {
       "boards": 2101,
-      "ok": 2099,
-      "not_found": 2,
+      "ok": 2098,
+      "not_found": 3,
       "failed": 0,
-      "postings": 60283,
+      "postings": 60146,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5903,
-      "ok": 5899,
-      "not_found": 4,
+      "boards": 5902,
+      "ok": 5895,
+      "not_found": 7,
       "failed": 0,
-      "postings": 142924,
+      "postings": 142439,
       "outage": false,
       "errors": []
     },
     "workday": {
       "boards": 106,
-      "ok": 84,
+      "ok": 100,
       "not_found": 0,
-      "failed": 22,
-      "postings": 16647,
+      "failed": 6,
+      "postings": 31893,
       "outage": false,
       "errors": [
-        "revvity.wd103.myworkdayjobs.com/external: HTTPStatusError: Client error '403 Forbidden' for url 'https://revvity.wd103.myworkdayjobs.com/wday/cxs/revvity/external/job/Krakow/Financial-Accountant_JR-04",
-        "fortrea.wd1.myworkdayjobs.com/fortrea: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "nxp.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "msd.wd5.myworkdayjobs.com/searchjobs: HTTPStatusError: Client error '403 Forbidden' for url 'https://msd.wd5.myworkdayjobs.com/wday/cxs/msd/searchjobs/job/ESP---Madrid---Madrid-Josefa-Valcarcel/Delega",
-        "pierrefabre.wd3.myworkdayjobs.com/external_career_site: HTTPStatusError: Client error '403 Forbidden' for url 'https://pierrefabre.wd3.myworkdayjobs.com/wday/cxs/pierrefabre/external_career_site/job/T"
+        "beigene.wd5.myworkdayjobs.com/beigene: HTTPStatusError: Client error '403 Forbidden' for url 'https://beigene.wd5.myworkdayjobs.com/wday/cxs/beigene/beigene/job/Milan/Manager--Corporate-Affairs---Ital",
+        "sanofi.wd3.myworkdayjobs.com/sanoficareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "relx.wd3.myworkdayjobs.com/elsevierjobs: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "iqvia.wd1.myworkdayjobs.com/iqvia: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "roche.wd3.myworkdayjobs.com/roche-ext: HTTPStatusError: Client error '403 Forbidden' for url 'https://roche.wd3.myworkdayjobs.com/wday/cxs/roche/roche-ext/job/Madrid/Global-Technology-Vendor-Managemen"
       ]
     },
     "smartrecruiters": {
@@ -175,7 +182,7 @@
       "ok": 2330,
       "not_found": 0,
       "failed": 0,
-      "postings": 116520,
+      "postings": 114480,
       "outage": false,
       "errors": []
     }
