@@ -1,11 +1,11 @@
 {
-  "started_at": "2026-10-28T09:18:19+00:00",
-  "finished_at": "2026-10-28T10:58:44+00:00",
+  "started_at": "2026-10-29T09:19:38+00:00",
+  "finished_at": "2026-10-29T10:56:37+00:00",
   "sources": {
     "gb": {
       "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6ae1b8b3779378370fd80aab/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-28.csv",
-      "rows": 141117
+      "version": "https://assets.publishing.service.gov.uk/media/6ae304e8976f73ef5cfb67aa/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-29.csv",
+      "rows": 141141
     },
     "nl": {
       "status": "unchanged",
@@ -38,7 +38,7 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 4,
+      "postings": 5,
       "outage": false,
       "errors": []
     },
@@ -56,7 +56,7 @@
       "ok": 12,
       "not_found": 0,
       "failed": 0,
-      "postings": 129,
+      "postings": 135,
       "outage": false,
       "errors": []
     },
@@ -65,7 +65,7 @@
       "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 393,
+      "postings": 399,
       "outage": false,
       "errors": []
     },
@@ -83,7 +83,7 @@
       "ok": 27,
       "not_found": 0,
       "failed": 0,
-      "postings": 4012,
+      "postings": 4055,
       "outage": false,
       "errors": []
     },
@@ -92,7 +92,7 @@
       "ok": 54,
       "not_found": 0,
       "failed": 2,
-      "postings": 184,
+      "postings": 187,
       "outage": false,
       "errors": [
         "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
@@ -104,90 +104,84 @@
       "ok": 1557,
       "not_found": 1,
       "failed": 0,
-      "postings": 12675,
+      "postings": 12673,
       "outage": false,
       "errors": []
     },
     "recruitee": {
-      "boards": 2590,
+      "boards": 2588,
       "ok": 2584,
-      "not_found": 4,
+      "not_found": 2,
       "failed": 2,
       "postings": 33774,
       "outage": false,
       "errors": [
-        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
-    "workable": {
-      "boards": 1497,
-      "ok": 1319,
-      "not_found": 0,
-      "failed": 178,
-      "postings": 23676,
+    "lever": {
+      "boards": 2099,
+      "ok": 2096,
+      "not_found": 3,
+      "failed": 0,
+      "postings": 60424,
       "outage": false,
-      "errors": [
-        "antler-1: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/antler-1?details=true'\nFor more information check: https://developer.mozilla.",
-        "sheehan-family-companies: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/sheehan-family-companies?details=true'\nFor more information c",
-        "iprally: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/iprally?details=true'\nFor more information check: https://developer.mozilla.or",
-        "irth-solutions: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/irth-solutions?details=true'\nFor more information check: https://develo",
-        "isrd: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/isrd?details=true'\nFor more information check: https://developer.mozilla.org/en-U"
-      ]
+      "errors": []
     },
     "ashby": {
       "boards": 3506,
-      "ok": 3502,
-      "not_found": 4,
+      "ok": 3497,
+      "not_found": 9,
       "failed": 0,
-      "postings": 59432,
+      "postings": 58831,
       "outage": false,
       "errors": []
     },
-    "lever": {
-      "boards": 2101,
-      "ok": 2097,
-      "not_found": 4,
-      "failed": 0,
-      "postings": 60104,
+    "workable": {
+      "boards": 1497,
+      "ok": 1212,
+      "not_found": 0,
+      "failed": 285,
+      "postings": 21148,
       "outage": false,
-      "errors": []
+      "errors": [
+        "skilllab: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skilllab?details=true'\nFor more information check: https://developer.mozilla.",
+        "arpu-telecommunication-services: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/arpu-telecommunication-services?details=true'\nFor more",
+        "laba: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/laba?details=true'\nFor more information check: https://developer.mozilla.org/en-U",
+        "skinanalytics: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skinanalytics?details=true'\nFor more information check: https://develope",
+        "skinandme: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skinandme?details=true'\nFor more information check: https://developer.mozill"
+      ]
     },
     "greenhouse": {
-      "boards": 5900,
-      "ok": 5893,
-      "not_found": 7,
+      "boards": 5899,
+      "ok": 5887,
+      "not_found": 12,
       "failed": 0,
-      "postings": 142553,
+      "postings": 142270,
       "outage": false,
       "errors": []
     },
     "workday": {
       "boards": 106,
-      "ok": 98,
+      "ok": 104,
       "not_found": 0,
-      "failed": 8,
-      "postings": 32383,
+      "failed": 2,
+      "postings": 36327,
       "outage": false,
       "errors": [
-        "premierresearch.wd12.myworkdayjobs.com/premierresearch: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "illumina.wd1.myworkdayjobs.com/illumina-careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
         "accenture.wd103.myworkdayjobs.com/avanadecareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "beigene.wd5.myworkdayjobs.com/beigene: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "gsk.wd5.myworkdayjobs.com/gskcareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+        "maersk.wd3.myworkdayjobs.com/maersk_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
     "smartrecruiters": {
       "boards": 2330,
-      "ok": 2328,
-      "not_found": 0,
-      "failed": 2,
-      "postings": 114252,
+      "ok": 2329,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 115554,
       "outage": false,
-      "errors": [
-        "siloamcareers: HTTPStatusError: Client error '400 Bad Request' for url 'https://api.smartrecruiters.com/v1/companies/siloamcareers/postings/6000000001129491'\nFor more information check: https://develo",
-        "junioradventuresgroup: HTTPStatusError: Client error '400 Bad Request' for url 'https://api.smartrecruiters.com/v1/companies/junioradventuresgroup/postings/6000000001408656'\nFor more information check"
-      ]
+      "errors": []
     }
   }
 }
