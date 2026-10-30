@@ -1,11 +1,10 @@
 {
-  "started_at": "2026-10-29T09:19:38+00:00",
-  "finished_at": "2026-10-29T10:56:37+00:00",
+  "started_at": "2026-10-30T09:35:49+00:00",
+  "finished_at": "2026-10-30T11:15:22+00:00",
   "sources": {
     "gb": {
-      "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6ae304e8976f73ef5cfb67aa/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-29.csv",
-      "rows": 141141
+      "status": "unchanged",
+      "version": "https://assets.publishing.service.gov.uk/media/6ae304e8976f73ef5cfb67aa/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-29.csv"
     },
     "nl": {
       "status": "unchanged",
@@ -60,21 +59,21 @@
       "outage": false,
       "errors": []
     },
-    "oracle": {
-      "boards": 7,
-      "ok": 7,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 399,
-      "outage": false,
-      "errors": []
-    },
     "jobtech": {
       "boards": 1,
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 116,
+      "postings": 118,
+      "outage": false,
+      "errors": []
+    },
+    "oracle": {
+      "boards": 7,
+      "ok": 7,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 416,
       "outage": false,
       "errors": []
     },
@@ -83,103 +82,107 @@
       "ok": 27,
       "not_found": 0,
       "failed": 0,
-      "postings": 4055,
+      "postings": 4070,
       "outage": false,
       "errors": []
     },
     "rss": {
       "boards": 56,
-      "ok": 54,
+      "ok": 53,
       "not_found": 0,
-      "failed": 2,
+      "failed": 3,
       "postings": 187,
       "outage": false,
       "errors": [
         "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
+        "jobs.lshtm.ac.uk/rss/rss.aspx: ParseError: undefined entity: line 16, column 0",
         "employment.ku.dk/all-vacancies/?get_rss=1: ConnectTimeout: "
       ]
     },
     "personio": {
       "boards": 1558,
-      "ok": 1557,
-      "not_found": 1,
+      "ok": 1556,
+      "not_found": 2,
       "failed": 0,
-      "postings": 12673,
+      "postings": 12627,
       "outage": false,
       "errors": []
     },
+    "workday": {
+      "boards": 106,
+      "ok": 101,
+      "not_found": 0,
+      "failed": 5,
+      "postings": 33741,
+      "outage": false,
+      "errors": [
+        "tempus.wd5.myworkdayjobs.com/tempus_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "accenture.wd103.myworkdayjobs.com/avanadecareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "nxp.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "astrazeneca.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "maersk.wd3.myworkdayjobs.com/maersk_careers: HTTPStatusError: Client error '403 Forbidden' for url 'https://maersk.wd3.myworkdayjobs.com/wday/cxs/maersk/maersk_careers/job/Denmark-Copenhagen-2100/Grou"
+      ]
+    },
+    "workable": {
+      "boards": 1497,
+      "ok": 1283,
+      "not_found": 0,
+      "failed": 214,
+      "postings": 21385,
+      "outage": false,
+      "errors": [
+        "phasorengineering: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/phasorengineering?details=true'\nFor more information check: https://",
+        "huawei-telekomunikasyon-dis-ticaret-ltd: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huawei-telekomunikasyon-dis-ticaret-ltd?detail",
+        "almabase: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/almabase?details=true'\nFor more information check: https://developer.mozilla.",
+        "huboo: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huboo?details=true'\nFor more information check: https://developer.mozilla.org/en",
+        "huggingface: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huggingface?details=true'\nFor more information check: https://developer.mo"
+      ]
+    },
     "recruitee": {
       "boards": 2588,
-      "ok": 2584,
-      "not_found": 2,
+      "ok": 2580,
+      "not_found": 6,
       "failed": 2,
-      "postings": 33774,
+      "postings": 33693,
       "outage": false,
       "errors": [
         "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
         "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
-    "lever": {
-      "boards": 2099,
-      "ok": 2096,
-      "not_found": 3,
-      "failed": 0,
-      "postings": 60424,
-      "outage": false,
-      "errors": []
-    },
     "ashby": {
-      "boards": 3506,
-      "ok": 3497,
+      "boards": 3503,
+      "ok": 3494,
       "not_found": 9,
       "failed": 0,
-      "postings": 58831,
+      "postings": 58894,
       "outage": false,
       "errors": []
     },
-    "workable": {
-      "boards": 1497,
-      "ok": 1212,
-      "not_found": 0,
-      "failed": 285,
-      "postings": 21148,
+    "lever": {
+      "boards": 2098,
+      "ok": 2095,
+      "not_found": 3,
+      "failed": 0,
+      "postings": 60573,
       "outage": false,
-      "errors": [
-        "skilllab: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skilllab?details=true'\nFor more information check: https://developer.mozilla.",
-        "arpu-telecommunication-services: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/arpu-telecommunication-services?details=true'\nFor more",
-        "laba: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/laba?details=true'\nFor more information check: https://developer.mozilla.org/en-U",
-        "skinanalytics: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skinanalytics?details=true'\nFor more information check: https://develope",
-        "skinandme: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/skinandme?details=true'\nFor more information check: https://developer.mozill"
-      ]
+      "errors": []
     },
     "greenhouse": {
-      "boards": 5899,
-      "ok": 5887,
-      "not_found": 12,
+      "boards": 5896,
+      "ok": 5880,
+      "not_found": 16,
       "failed": 0,
-      "postings": 142270,
+      "postings": 142130,
       "outage": false,
       "errors": []
-    },
-    "workday": {
-      "boards": 106,
-      "ok": 104,
-      "not_found": 0,
-      "failed": 2,
-      "postings": 36327,
-      "outage": false,
-      "errors": [
-        "accenture.wd103.myworkdayjobs.com/avanadecareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "maersk.wd3.myworkdayjobs.com/maersk_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
-      ]
     },
     "smartrecruiters": {
       "boards": 2330,
       "ok": 2329,
       "not_found": 1,
       "failed": 0,
-      "postings": 115554,
+      "postings": 115729,
       "outage": false,
       "errors": []
     }
