@@ -1,10 +1,11 @@
 {
-  "started_at": "2026-10-30T09:35:49+00:00",
-  "finished_at": "2026-10-30T11:15:22+00:00",
+  "started_at": "2026-10-31T09:17:05+00:00",
+  "finished_at": "2026-10-31T10:16:35+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6ae304e8976f73ef5cfb67aa/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-29.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6ae46c20976f73ef5cfb68ac/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-30.csv",
+      "rows": 141134
     },
     "nl": {
       "status": "unchanged",
@@ -23,8 +24,9 @@
       "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics"
     },
     "ca": {
-      "status": "unchanged",
-      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/4ee7a4e0-ffc3-47af-94e7-30929d1eeb67/download/tfwp_2026q1_pos_en.xlsx"
+      "status": "ok",
+      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/2b94f80d-fa27-4d2e-9b90-6f67fe69bf50/download/tfwp_2026q2_pos_en.xlsx",
+      "rows": 6501
     },
     "ie": {
       "status": "unchanged",
@@ -46,7 +48,7 @@
       "ok": 2,
       "not_found": 0,
       "failed": 0,
-      "postings": 19,
+      "postings": 20,
       "outage": false,
       "errors": []
     },
@@ -55,16 +57,7 @@
       "ok": 12,
       "not_found": 0,
       "failed": 0,
-      "postings": 135,
-      "outage": false,
-      "errors": []
-    },
-    "jobtech": {
-      "boards": 1,
-      "ok": 1,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 118,
+      "postings": 138,
       "outage": false,
       "errors": []
     },
@@ -73,118 +66,124 @@
       "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 416,
+      "postings": 413,
+      "outage": false,
+      "errors": []
+    },
+    "jobtech": {
+      "boards": 1,
+      "ok": 1,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 120,
       "outage": false,
       "errors": []
     },
     "successfactors": {
       "boards": 27,
-      "ok": 27,
+      "ok": 26,
       "not_found": 0,
-      "failed": 0,
-      "postings": 4070,
+      "failed": 1,
+      "postings": 3860,
       "outage": false,
-      "errors": []
+      "errors": [
+        "careers.lupin.com: ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1081)"
+      ]
     },
     "rss": {
       "boards": 56,
-      "ok": 53,
+      "ok": 54,
       "not_found": 0,
-      "failed": 3,
-      "postings": 187,
+      "failed": 2,
+      "postings": 184,
       "outage": false,
       "errors": [
         "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
-        "jobs.lshtm.ac.uk/rss/rss.aspx: ParseError: undefined entity: line 16, column 0",
         "employment.ku.dk/all-vacancies/?get_rss=1: ConnectTimeout: "
       ]
     },
     "personio": {
-      "boards": 1558,
+      "boards": 1557,
       "ok": 1556,
-      "not_found": 2,
+      "not_found": 1,
       "failed": 0,
-      "postings": 12627,
+      "postings": 12657,
       "outage": false,
       "errors": []
     },
-    "workday": {
-      "boards": 106,
-      "ok": 101,
-      "not_found": 0,
-      "failed": 5,
-      "postings": 33741,
+    "recruitee": {
+      "boards": 2586,
+      "ok": 2578,
+      "not_found": 6,
+      "failed": 2,
+      "postings": 33803,
       "outage": false,
       "errors": [
-        "tempus.wd5.myworkdayjobs.com/tempus_careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "accenture.wd103.myworkdayjobs.com/avanadecareers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "nxp.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "astrazeneca.wd3.myworkdayjobs.com/careers: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "maersk.wd3.myworkdayjobs.com/maersk_careers: HTTPStatusError: Client error '403 Forbidden' for url 'https://maersk.wd3.myworkdayjobs.com/wday/cxs/maersk/maersk_careers/job/Denmark-Copenhagen-2100/Grou"
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
+    },
+    "lever": {
+      "boards": 2097,
+      "ok": 2095,
+      "not_found": 2,
+      "failed": 0,
+      "postings": 60184,
+      "outage": false,
+      "errors": []
+    },
+    "ashby": {
+      "boards": 3502,
+      "ok": 3488,
+      "not_found": 14,
+      "failed": 0,
+      "postings": 58923,
+      "outage": false,
+      "errors": []
     },
     "workable": {
       "boards": 1497,
-      "ok": 1283,
+      "ok": 1234,
       "not_found": 0,
-      "failed": 214,
-      "postings": 21385,
+      "failed": 263,
+      "postings": 20809,
       "outage": false,
       "errors": [
-        "phasorengineering: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/phasorengineering?details=true'\nFor more information check: https://",
-        "huawei-telekomunikasyon-dis-ticaret-ltd: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huawei-telekomunikasyon-dis-ticaret-ltd?detail",
-        "almabase: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/almabase?details=true'\nFor more information check: https://developer.mozilla.",
-        "huboo: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huboo?details=true'\nFor more information check: https://developer.mozilla.org/en",
-        "huggingface: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/huggingface?details=true'\nFor more information check: https://developer.mo"
+        "tradegecko: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/tradegecko?details=true'\nFor more information check: https://developer.mozi",
+        "accordia: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/accordia?details=true'\nFor more information check: https://developer.mozilla.",
+        "graph-one: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/graph-one?details=true'\nFor more information check: https://developer.mozill",
+        "xodus-group: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/xodus-group?details=true'\nFor more information check: https://developer.mo",
+        "grasp-tech: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/grasp-tech?details=true'\nFor more information check: https://developer.mozi"
       ]
     },
-    "recruitee": {
-      "boards": 2588,
-      "ok": 2580,
-      "not_found": 6,
-      "failed": 2,
-      "postings": 33693,
-      "outage": false,
-      "errors": [
-        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
-      ]
-    },
-    "ashby": {
-      "boards": 3503,
-      "ok": 3494,
-      "not_found": 9,
+    "workday": {
+      "boards": 106,
+      "ok": 106,
+      "not_found": 0,
       "failed": 0,
-      "postings": 58894,
-      "outage": false,
-      "errors": []
-    },
-    "lever": {
-      "boards": 2098,
-      "ok": 2095,
-      "not_found": 3,
-      "failed": 0,
-      "postings": 60573,
+      "postings": 37324,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5896,
-      "ok": 5880,
-      "not_found": 16,
+      "boards": 5894,
+      "ok": 5876,
+      "not_found": 18,
       "failed": 0,
-      "postings": 142130,
+      "postings": 142044,
       "outage": false,
       "errors": []
     },
     "smartrecruiters": {
       "boards": 2330,
-      "ok": 2329,
-      "not_found": 1,
-      "failed": 0,
-      "postings": 115729,
+      "ok": 2325,
+      "not_found": 4,
+      "failed": 1,
+      "postings": 92899,
       "outage": false,
-      "errors": []
+      "errors": [
+        "dominos: HTTPStatusError: Client error '400 Bad Request' for url 'https://api.smartrecruiters.com/v1/companies/dominos/postings/744000157648859'\nFor more information check: https://developer.mozilla.o"
+      ]
     }
   }
 }
