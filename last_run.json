@@ -1,11 +1,10 @@
 {
-  "started_at": "2026-10-31T09:17:05+00:00",
-  "finished_at": "2026-10-31T10:16:35+00:00",
+  "started_at": "2026-11-01T10:04:09+00:00",
+  "finished_at": "2026-11-01T12:42:06+00:00",
   "sources": {
     "gb": {
-      "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6ae46c20976f73ef5cfb68ac/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-30.csv",
-      "rows": 141134
+      "status": "unchanged",
+      "version": "https://assets.publishing.service.gov.uk/media/6ae46c20976f73ef5cfb68ac/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-30.csv"
     },
     "nl": {
       "status": "unchanged",
@@ -24,9 +23,8 @@
       "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics"
     },
     "ca": {
-      "status": "ok",
-      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/2b94f80d-fa27-4d2e-9b90-6f67fe69bf50/download/tfwp_2026q2_pos_en.xlsx",
-      "rows": 6501
+      "status": "unchanged",
+      "version": "https://open.canada.ca/data/dataset/90fed587-1364-4f33-a9ee-208181dc0b97/resource/2b94f80d-fa27-4d2e-9b90-6f67fe69bf50/download/tfwp_2026q2_pos_en.xlsx"
     },
     "ie": {
       "status": "unchanged",
@@ -57,7 +55,7 @@
       "ok": 12,
       "not_found": 0,
       "failed": 0,
-      "postings": 138,
+      "postings": 134,
       "outage": false,
       "errors": []
     },
@@ -66,7 +64,7 @@
       "ok": 7,
       "not_found": 0,
       "failed": 0,
-      "postings": 413,
+      "postings": 399,
       "outage": false,
       "errors": []
     },
@@ -75,85 +73,29 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 120,
+      "postings": 107,
       "outage": false,
       "errors": []
     },
     "successfactors": {
       "boards": 27,
-      "ok": 26,
+      "ok": 27,
       "not_found": 0,
-      "failed": 1,
-      "postings": 3860,
+      "failed": 0,
+      "postings": 3775,
       "outage": false,
-      "errors": [
-        "careers.lupin.com: ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1081)"
-      ]
+      "errors": []
     },
     "rss": {
       "boards": 56,
       "ok": 54,
       "not_found": 0,
       "failed": 2,
-      "postings": 184,
+      "postings": 176,
       "outage": false,
       "errors": [
         "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
         "employment.ku.dk/all-vacancies/?get_rss=1: ConnectTimeout: "
-      ]
-    },
-    "personio": {
-      "boards": 1557,
-      "ok": 1556,
-      "not_found": 1,
-      "failed": 0,
-      "postings": 12657,
-      "outage": false,
-      "errors": []
-    },
-    "recruitee": {
-      "boards": 2586,
-      "ok": 2578,
-      "not_found": 6,
-      "failed": 2,
-      "postings": 33803,
-      "outage": false,
-      "errors": [
-        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
-      ]
-    },
-    "lever": {
-      "boards": 2097,
-      "ok": 2095,
-      "not_found": 2,
-      "failed": 0,
-      "postings": 60184,
-      "outage": false,
-      "errors": []
-    },
-    "ashby": {
-      "boards": 3502,
-      "ok": 3488,
-      "not_found": 14,
-      "failed": 0,
-      "postings": 58923,
-      "outage": false,
-      "errors": []
-    },
-    "workable": {
-      "boards": 1497,
-      "ok": 1234,
-      "not_found": 0,
-      "failed": 263,
-      "postings": 20809,
-      "outage": false,
-      "errors": [
-        "tradegecko: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/tradegecko?details=true'\nFor more information check: https://developer.mozi",
-        "accordia: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/accordia?details=true'\nFor more information check: https://developer.mozilla.",
-        "graph-one: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/graph-one?details=true'\nFor more information check: https://developer.mozill",
-        "xodus-group: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/xodus-group?details=true'\nFor more information check: https://developer.mo",
-        "grasp-tech: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/grasp-tech?details=true'\nFor more information check: https://developer.mozi"
       ]
     },
     "workday": {
@@ -161,29 +103,81 @@
       "ok": 106,
       "not_found": 0,
       "failed": 0,
-      "postings": 37324,
+      "postings": 37112,
+      "outage": false,
+      "errors": []
+    },
+    "personio": {
+      "boards": 1557,
+      "ok": 1555,
+      "not_found": 2,
+      "failed": 0,
+      "postings": 12656,
+      "outage": false,
+      "errors": []
+    },
+    "lever": {
+      "boards": 2096,
+      "ok": 2095,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 59982,
+      "outage": false,
+      "errors": []
+    },
+    "recruitee": {
+      "boards": 2586,
+      "ok": 2577,
+      "not_found": 7,
+      "failed": 2,
+      "postings": 33744,
+      "outage": false,
+      "errors": [
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+      ]
+    },
+    "workable": {
+      "boards": 1497,
+      "ok": 1309,
+      "not_found": 0,
+      "failed": 188,
+      "postings": 21494,
+      "outage": false,
+      "errors": [
+        "machercareers: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/machercareers?details=true'\nFor more information check: https://develope",
+        "toyota-tsusho-systems: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/toyota-tsusho-systems?details=true'\nFor more information check: ",
+        "tra-2: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/tra-2?details=true'\nFor more information check: https://developer.mozilla.org/en",
+        "mactay: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/mactay?details=true'\nFor more information check: https://developer.mozilla.org/",
+        "bmgt: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/bmgt?details=true'\nFor more information check: https://developer.mozilla.org/en-U"
+      ]
+    },
+    "ashby": {
+      "boards": 3497,
+      "ok": 3487,
+      "not_found": 10,
+      "failed": 0,
+      "postings": 58908,
       "outage": false,
       "errors": []
     },
     "greenhouse": {
-      "boards": 5894,
-      "ok": 5876,
-      "not_found": 18,
+      "boards": 5890,
+      "ok": 5870,
+      "not_found": 20,
       "failed": 0,
-      "postings": 142044,
+      "postings": 141972,
       "outage": false,
       "errors": []
     },
     "smartrecruiters": {
-      "boards": 2330,
-      "ok": 2325,
-      "not_found": 4,
-      "failed": 1,
-      "postings": 92899,
+      "boards": 2329,
+      "ok": 2326,
+      "not_found": 3,
+      "failed": 0,
+      "postings": 116639,
       "outage": false,
-      "errors": [
-        "dominos: HTTPStatusError: Client error '400 Bad Request' for url 'https://api.smartrecruiters.com/v1/companies/dominos/postings/744000157648859'\nFor more information check: https://developer.mozilla.o"
-      ]
+      "errors": []
     }
   }
 }
