@@ -1,14 +1,15 @@
 {
-  "started_at": "2026-11-01T10:04:09+00:00",
-  "finished_at": "2026-11-01T12:42:06+00:00",
+  "started_at": "2026-11-14T09:48:52+00:00",
+  "finished_at": "2026-11-14T13:36:08+00:00",
   "sources": {
     "gb": {
-      "status": "unchanged",
-      "version": "https://assets.publishing.service.gov.uk/media/6ae46c20976f73ef5cfb68ac/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-10-30.csv"
+      "status": "ok",
+      "version": "https://assets.publishing.service.gov.uk/media/6af59528cc0dbfec767a5080/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-11-12.csv",
+      "rows": 140983
     },
     "nl": {
       "status": "unchanged",
-      "version": "5 October 2026"
+      "version": "3 November 2026"
     },
     "dk": {
       "status": "unchanged",
@@ -32,48 +33,30 @@
     }
   },
   "ats": {
-    "rippling": {
-      "boards": 1,
-      "ok": 1,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 5,
-      "outage": false,
-      "errors": []
-    },
-    "pinpoint": {
-      "boards": 2,
-      "ok": 2,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 20,
-      "outage": false,
-      "errors": []
-    },
-    "teamtailor": {
-      "boards": 12,
-      "ok": 12,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 134,
-      "outage": false,
-      "errors": []
-    },
-    "oracle": {
-      "boards": 7,
-      "ok": 7,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 399,
-      "outage": false,
-      "errors": []
-    },
     "jobtech": {
       "boards": 1,
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 107,
+      "postings": 130,
+      "outage": false,
+      "errors": []
+    },
+    "rss": {
+      "boards": 56,
+      "ok": 56,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 189,
+      "outage": false,
+      "errors": []
+    },
+    "pinpoint": {
+      "boards": 562,
+      "ok": 562,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 12063,
       "outage": false,
       "errors": []
     },
@@ -82,100 +65,124 @@
       "ok": 27,
       "not_found": 0,
       "failed": 0,
-      "postings": 3775,
+      "postings": 3799,
       "outage": false,
       "errors": []
     },
-    "rss": {
-      "boards": 56,
-      "ok": 54,
-      "not_found": 0,
-      "failed": 2,
-      "postings": 176,
-      "outage": false,
-      "errors": [
-        "jobs.york.ac.uk/rss.xml: ParseError: not well-formed (invalid token): line 83, column 73",
-        "employment.ku.dk/all-vacancies/?get_rss=1: ConnectTimeout: "
-      ]
-    },
-    "workday": {
-      "boards": 106,
-      "ok": 106,
-      "not_found": 0,
+    "teamtailor": {
+      "boards": 1659,
+      "ok": 1651,
+      "not_found": 8,
       "failed": 0,
-      "postings": 37112,
+      "postings": 18054,
       "outage": false,
       "errors": []
     },
     "personio": {
-      "boards": 1557,
-      "ok": 1555,
-      "not_found": 2,
+      "boards": 1560,
+      "ok": 1554,
+      "not_found": 6,
       "failed": 0,
-      "postings": 12656,
+      "postings": 12570,
+      "outage": false,
+      "errors": []
+    },
+    "workable": {
+      "boards": 1818,
+      "ok": 1817,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 34123,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 2096,
-      "ok": 2095,
-      "not_found": 1,
+      "boards": 2098,
+      "ok": 2071,
+      "not_found": 27,
       "failed": 0,
-      "postings": 59982,
+      "postings": 58699,
+      "outage": false,
+      "errors": []
+    },
+    "ashby": {
+      "boards": 3500,
+      "ok": 3461,
+      "not_found": 39,
+      "failed": 0,
+      "postings": 59331,
       "outage": false,
       "errors": []
     },
     "recruitee": {
-      "boards": 2586,
-      "ok": 2577,
-      "not_found": 7,
+      "boards": 3292,
+      "ok": 3093,
+      "not_found": 197,
       "failed": 2,
-      "postings": 33744,
+      "postings": 41272,
       "outage": false,
       "errors": [
-        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
-        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
+        "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+        "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
-    "workable": {
-      "boards": 1497,
-      "ok": 1309,
-      "not_found": 0,
-      "failed": 188,
-      "postings": 21494,
-      "outage": false,
-      "errors": [
-        "machercareers: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/machercareers?details=true'\nFor more information check: https://develope",
-        "toyota-tsusho-systems: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/toyota-tsusho-systems?details=true'\nFor more information check: ",
-        "tra-2: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/tra-2?details=true'\nFor more information check: https://developer.mozilla.org/en",
-        "mactay: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/mactay?details=true'\nFor more information check: https://developer.mozilla.org/",
-        "bmgt: HTTPStatusError: Client error '429 Too Many Requests' for url 'https://apply.workable.com/api/v1/widget/accounts/bmgt?details=true'\nFor more information check: https://developer.mozilla.org/en-U"
-      ]
-    },
-    "ashby": {
-      "boards": 3497,
-      "ok": 3487,
-      "not_found": 10,
+    "greenhouse": {
+      "boards": 5903,
+      "ok": 5845,
+      "not_found": 58,
       "failed": 0,
-      "postings": 58908,
+      "postings": 140101,
       "outage": false,
       "errors": []
     },
-    "greenhouse": {
-      "boards": 5890,
-      "ok": 5870,
-      "not_found": 20,
+    "workday": {
+      "boards": 3429,
+      "ok": 1487,
+      "not_found": 3,
+      "failed": 1939,
+      "postings": 197509,
+      "outage": true,
+      "errors": [
+        "tp.wd107.myworkdayjobs.com/tp-icap: HTTPStatusError: Client error '403 Forbidden' for url 'https://tp.wd107.myworkdayjobs.com/wday/cxs/tp/tp-icap/jobs'\nFor more information check: https://developer.mo",
+        "havenleisureltd.wd107.myworkdayjobs.com/haven: HTTPStatusError: Client error '403 Forbidden' for url 'https://havenleisureltd.wd107.myworkdayjobs.com/wday/cxs/havenleisureltd/haven/jobs'\nFor more info",
+        "jiostar.wd102.myworkdayjobs.com/jiostar: HTTPStatusError: Client error '403 Forbidden' for url 'https://jiostar.wd102.myworkdayjobs.com/wday/cxs/jiostar/jiostar/jobs'\nFor more information check: https",
+        "yanolja.wd102.myworkdayjobs.com/external_dable: HTTPStatusError: Client error '403 Forbidden' for url 'https://yanolja.wd102.myworkdayjobs.com/wday/cxs/yanolja/external_dable/jobs'\nFor more informatio",
+        "rhb.wd102.myworkdayjobs.com/rhbexternalcareersite: HTTPStatusError: Client error '403 Forbidden' for url 'https://rhb.wd102.myworkdayjobs.com/wday/cxs/rhb/rhbexternalcareersite/jobs'\nFor more informat"
+      ]
+    },
+    "oracle": {
+      "boards": 16,
+      "ok": 16,
+      "not_found": 0,
       "failed": 0,
-      "postings": 141972,
+      "postings": 9968,
+      "outage": false,
+      "errors": []
+    },
+    "rippling": {
+      "boards": 1966,
+      "ok": 1965,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 15698,
+      "outage": false,
+      "errors": []
+    },
+    "breezy": {
+      "boards": 3906,
+      "ok": 3863,
+      "not_found": 43,
+      "failed": 0,
+      "postings": 38571,
       "outage": false,
       "errors": []
     },
     "smartrecruiters": {
-      "boards": 2329,
-      "ok": 2326,
-      "not_found": 3,
+      "boards": 2467,
+      "ok": 2466,
+      "not_found": 1,
       "failed": 0,
-      "postings": 116639,
+      "postings": 116512,
       "outage": false,
       "errors": []
     }
