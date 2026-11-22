@@ -1,11 +1,11 @@
 {
-  "started_at": "2026-11-14T09:48:52+00:00",
-  "finished_at": "2026-11-14T13:36:08+00:00",
+  "started_at": "2026-11-22T10:42:04+00:00",
+  "finished_at": "2026-11-22T14:58:19+00:00",
   "sources": {
     "gb": {
       "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6af59528cc0dbfec767a5080/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-11-12.csv",
-      "rows": 140983
+      "version": "https://assets.publishing.service.gov.uk/media/6afed3a5d367b3459e423f65/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-11-19.csv",
+      "rows": 140958
     },
     "nl": {
       "status": "unchanged",
@@ -20,8 +20,9 @@
       "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
     },
     "us": {
-      "status": "unchanged",
-      "version": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q1.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q2.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q3.xlsx https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/LCA_Disclosure_Data_FY2025_Q4.xlsx #naics"
+      "status": "ok",
+      "version": "https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q1.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q2.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q3.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q4.xlsx #naics",
+      "rows": 57665
     },
     "ca": {
       "status": "unchanged",
@@ -38,7 +39,7 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 130,
+      "postings": 171,
       "outage": false,
       "errors": []
     },
@@ -47,79 +48,88 @@
       "ok": 56,
       "not_found": 0,
       "failed": 0,
-      "postings": 189,
+      "postings": 194,
       "outage": false,
       "errors": []
     },
     "pinpoint": {
-      "boards": 562,
-      "ok": 562,
+      "boards": 564,
+      "ok": 564,
       "not_found": 0,
       "failed": 0,
-      "postings": 12063,
+      "postings": 11843,
       "outage": false,
       "errors": []
     },
     "successfactors": {
       "boards": 27,
-      "ok": 27,
-      "not_found": 0,
+      "ok": 26,
+      "not_found": 1,
       "failed": 0,
-      "postings": 3799,
-      "outage": false,
-      "errors": []
-    },
-    "teamtailor": {
-      "boards": 1659,
-      "ok": 1651,
-      "not_found": 8,
-      "failed": 0,
-      "postings": 18054,
+      "postings": 3386,
       "outage": false,
       "errors": []
     },
     "personio": {
-      "boards": 1560,
-      "ok": 1554,
-      "not_found": 6,
+      "boards": 1561,
+      "ok": 1548,
+      "not_found": 13,
       "failed": 0,
-      "postings": 12570,
+      "postings": 12333,
       "outage": false,
       "errors": []
     },
     "workable": {
-      "boards": 1818,
-      "ok": 1817,
+      "boards": 1830,
+      "ok": 1829,
       "not_found": 1,
       "failed": 0,
-      "postings": 34123,
+      "postings": 32450,
+      "outage": false,
+      "errors": []
+    },
+    "oracle": {
+      "boards": 16,
+      "ok": 16,
+      "not_found": 0,
+      "failed": 0,
+      "postings": 9946,
+      "outage": false,
+      "errors": []
+    },
+    "teamtailor": {
+      "boards": 2510,
+      "ok": 2499,
+      "not_found": 11,
+      "failed": 0,
+      "postings": 27436,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 2098,
-      "ok": 2071,
-      "not_found": 27,
+      "boards": 2099,
+      "ok": 2053,
+      "not_found": 46,
       "failed": 0,
-      "postings": 58699,
+      "postings": 58109,
       "outage": false,
       "errors": []
     },
     "ashby": {
-      "boards": 3500,
-      "ok": 3461,
-      "not_found": 39,
+      "boards": 3495,
+      "ok": 3444,
+      "not_found": 51,
       "failed": 0,
-      "postings": 59331,
+      "postings": 57834,
       "outage": false,
       "errors": []
     },
     "recruitee": {
-      "boards": 3292,
-      "ok": 3093,
-      "not_found": 197,
+      "boards": 3320,
+      "ok": 3107,
+      "not_found": 211,
       "failed": 2,
-      "postings": 41272,
+      "postings": 41743,
       "outage": false,
       "errors": [
         "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
@@ -127,62 +137,53 @@
       ]
     },
     "greenhouse": {
-      "boards": 5903,
-      "ok": 5845,
-      "not_found": 58,
+      "boards": 5901,
+      "ok": 5815,
+      "not_found": 86,
       "failed": 0,
-      "postings": 140101,
-      "outage": false,
-      "errors": []
-    },
-    "workday": {
-      "boards": 3429,
-      "ok": 1487,
-      "not_found": 3,
-      "failed": 1939,
-      "postings": 197509,
-      "outage": true,
-      "errors": [
-        "tp.wd107.myworkdayjobs.com/tp-icap: HTTPStatusError: Client error '403 Forbidden' for url 'https://tp.wd107.myworkdayjobs.com/wday/cxs/tp/tp-icap/jobs'\nFor more information check: https://developer.mo",
-        "havenleisureltd.wd107.myworkdayjobs.com/haven: HTTPStatusError: Client error '403 Forbidden' for url 'https://havenleisureltd.wd107.myworkdayjobs.com/wday/cxs/havenleisureltd/haven/jobs'\nFor more info",
-        "jiostar.wd102.myworkdayjobs.com/jiostar: HTTPStatusError: Client error '403 Forbidden' for url 'https://jiostar.wd102.myworkdayjobs.com/wday/cxs/jiostar/jiostar/jobs'\nFor more information check: https",
-        "yanolja.wd102.myworkdayjobs.com/external_dable: HTTPStatusError: Client error '403 Forbidden' for url 'https://yanolja.wd102.myworkdayjobs.com/wday/cxs/yanolja/external_dable/jobs'\nFor more informatio",
-        "rhb.wd102.myworkdayjobs.com/rhbexternalcareersite: HTTPStatusError: Client error '403 Forbidden' for url 'https://rhb.wd102.myworkdayjobs.com/wday/cxs/rhb/rhbexternalcareersite/jobs'\nFor more informat"
-      ]
-    },
-    "oracle": {
-      "boards": 16,
-      "ok": 16,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 9968,
+      "postings": 138812,
       "outage": false,
       "errors": []
     },
     "rippling": {
-      "boards": 1966,
-      "ok": 1965,
-      "not_found": 1,
+      "boards": 1968,
+      "ok": 1964,
+      "not_found": 4,
       "failed": 0,
-      "postings": 15698,
+      "postings": 15675,
       "outage": false,
       "errors": []
     },
     "breezy": {
-      "boards": 3906,
-      "ok": 3863,
-      "not_found": 43,
+      "boards": 3921,
+      "ok": 3860,
+      "not_found": 61,
       "failed": 0,
-      "postings": 38571,
+      "postings": 38182,
       "outage": false,
       "errors": []
     },
+    "workday": {
+      "boards": 3441,
+      "ok": 3423,
+      "not_found": 13,
+      "failed": 5,
+      "postings": 645952,
+      "outage": false,
+      "errors": [
+        "symrise.wd103.myworkdayjobs.com/external_idf: HTTPStatusError: Client error '403 Forbidden' for url 'https://symrise.wd103.myworkdayjobs.com/wday/cxs/symrise/external_idf/jobs'\nFor more information ch",
+        "viterra.wd3.myworkdayjobs.com/external-can: HTTPStatusError: Client error '403 Forbidden' for url 'https://viterra.wd3.myworkdayjobs.com/wday/cxs/viterra/external-can/jobs'\nFor more information check:",
+        "grab.wd3.myworkdayjobs.com/careers: HTTPStatusError: Client error '401 Unauthorized' for url 'https://grab.wd3.myworkdayjobs.com/wday/cxs/grab/careers/jobs'\nFor more information check: https://develop",
+        "23andme.wd5.myworkdayjobs.com/23: HTTPStatusError: Client error '403 Forbidden' for url 'https://23andme.wd5.myworkdayjobs.com/wday/cxs/23andme/23/jobs'\nFor more information check: https://developer.m",
+        "crownholdings.wd501.myworkdayjobs.com/crownholdings: HTTPStatusError: Client error '403 Forbidden' for url 'https://crownholdings.wd501.myworkdayjobs.com/wday/cxs/crownholdings/crownholdings/job/Jedda"
+      ]
+    },
     "smartrecruiters": {
-      "boards": 2467,
-      "ok": 2466,
-      "not_found": 1,
+      "boards": 2575,
+      "ok": 2572,
+      "not_found": 3,
       "failed": 0,
-      "postings": 116512,
+      "postings": 116467,
       "outage": false,
       "errors": []
     }
