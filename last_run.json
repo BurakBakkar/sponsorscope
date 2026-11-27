@@ -1,11 +1,11 @@
 {
-  "started_at": "2026-11-22T10:42:04+00:00",
-  "finished_at": "2026-11-22T14:58:19+00:00",
+  "started_at": "2026-11-27T11:45:43+00:00",
+  "finished_at": "2026-11-27T15:53:21+00:00",
   "sources": {
     "gb": {
       "status": "ok",
-      "version": "https://assets.publishing.service.gov.uk/media/6afed3a5d367b3459e423f65/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-11-19.csv",
-      "rows": 140958
+      "version": "https://assets.publishing.service.gov.uk/media/6b095b82c29db7468056c17e/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-11-27.csv",
+      "rows": 140634
     },
     "nl": {
       "status": "unchanged",
@@ -20,9 +20,8 @@
       "error": "migri.fi serves a bot challenge (HTTP 403); not bypassed"
     },
     "us": {
-      "status": "ok",
-      "version": "https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q1.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q2.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q3.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q4.xlsx #naics",
-      "rows": 57665
+      "status": "unchanged",
+      "version": "https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q1.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q2.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q3.xlsx https://www.dol.gov/media/LCA_Disclosure_Data_FY2026_Q4.xlsx #naics"
     },
     "ca": {
       "status": "unchanged",
@@ -39,7 +38,7 @@
       "ok": 1,
       "not_found": 0,
       "failed": 0,
-      "postings": 171,
+      "postings": 176,
       "outage": false,
       "errors": []
     },
@@ -52,39 +51,12 @@
       "outage": false,
       "errors": []
     },
-    "pinpoint": {
-      "boards": 564,
-      "ok": 564,
-      "not_found": 0,
-      "failed": 0,
-      "postings": 11843,
-      "outage": false,
-      "errors": []
-    },
     "successfactors": {
       "boards": 27,
       "ok": 26,
       "not_found": 1,
       "failed": 0,
-      "postings": 3386,
-      "outage": false,
-      "errors": []
-    },
-    "personio": {
-      "boards": 1561,
-      "ok": 1548,
-      "not_found": 13,
-      "failed": 0,
-      "postings": 12333,
-      "outage": false,
-      "errors": []
-    },
-    "workable": {
-      "boards": 1830,
-      "ok": 1829,
-      "not_found": 1,
-      "failed": 0,
-      "postings": 32450,
+      "postings": 3455,
       "outage": false,
       "errors": []
     },
@@ -93,99 +65,126 @@
       "ok": 16,
       "not_found": 0,
       "failed": 0,
-      "postings": 9946,
+      "postings": 9930,
+      "outage": false,
+      "errors": []
+    },
+    "pinpoint": {
+      "boards": 572,
+      "ok": 571,
+      "not_found": 1,
+      "failed": 0,
+      "postings": 11947,
+      "outage": false,
+      "errors": []
+    },
+    "personio": {
+      "boards": 1555,
+      "ok": 1546,
+      "not_found": 9,
+      "failed": 0,
+      "postings": 12255,
+      "outage": false,
+      "errors": []
+    },
+    "workable": {
+      "boards": 1841,
+      "ok": 1838,
+      "not_found": 3,
+      "failed": 0,
+      "postings": 31863,
+      "outage": false,
+      "errors": []
+    },
+    "rippling": {
+      "boards": 1971,
+      "ok": 1967,
+      "not_found": 4,
+      "failed": 0,
+      "postings": 15696,
       "outage": false,
       "errors": []
     },
     "teamtailor": {
-      "boards": 2510,
-      "ok": 2499,
-      "not_found": 11,
+      "boards": 2502,
+      "ok": 2498,
+      "not_found": 4,
       "failed": 0,
-      "postings": 27436,
+      "postings": 27220,
       "outage": false,
       "errors": []
     },
     "lever": {
-      "boards": 2099,
-      "ok": 2053,
-      "not_found": 46,
+      "boards": 2073,
+      "ok": 2000,
+      "not_found": 73,
       "failed": 0,
-      "postings": 58109,
-      "outage": false,
-      "errors": []
-    },
-    "ashby": {
-      "boards": 3495,
-      "ok": 3444,
-      "not_found": 51,
-      "failed": 0,
-      "postings": 57834,
+      "postings": 58277,
       "outage": false,
       "errors": []
     },
     "recruitee": {
-      "boards": 3320,
-      "ok": 3107,
-      "not_found": 211,
+      "boards": 3141,
+      "ok": 3121,
+      "not_found": 18,
       "failed": 2,
-      "postings": 41743,
+      "postings": 42224,
       "outage": false,
       "errors": [
         "interactive: JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
         "blog: JSONDecodeError: Expecting value: line 1 column 1 (char 0)"
       ]
     },
-    "greenhouse": {
-      "boards": 5901,
-      "ok": 5815,
-      "not_found": 86,
+    "ashby": {
+      "boards": 3468,
+      "ok": 3434,
+      "not_found": 34,
       "failed": 0,
-      "postings": 138812,
+      "postings": 57708,
       "outage": false,
       "errors": []
     },
-    "rippling": {
-      "boards": 1968,
-      "ok": 1964,
-      "not_found": 4,
+    "greenhouse": {
+      "boards": 5864,
+      "ok": 5814,
+      "not_found": 50,
       "failed": 0,
-      "postings": 15675,
+      "postings": 137595,
+      "outage": false,
+      "errors": []
+    },
+    "smartrecruiters": {
+      "boards": 2589,
+      "ok": 2587,
+      "not_found": 2,
+      "failed": 0,
+      "postings": 115623,
       "outage": false,
       "errors": []
     },
     "breezy": {
-      "boards": 3921,
-      "ok": 3860,
-      "not_found": 61,
+      "boards": 3890,
+      "ok": 3855,
+      "not_found": 35,
       "failed": 0,
-      "postings": 38182,
+      "postings": 37972,
       "outage": false,
       "errors": []
     },
     "workday": {
       "boards": 3441,
-      "ok": 3423,
-      "not_found": 13,
-      "failed": 5,
-      "postings": 645952,
+      "ok": 3400,
+      "not_found": 15,
+      "failed": 26,
+      "postings": 633134,
       "outage": false,
       "errors": [
         "symrise.wd103.myworkdayjobs.com/external_idf: HTTPStatusError: Client error '403 Forbidden' for url 'https://symrise.wd103.myworkdayjobs.com/wday/cxs/symrise/external_idf/jobs'\nFor more information ch",
         "viterra.wd3.myworkdayjobs.com/external-can: HTTPStatusError: Client error '403 Forbidden' for url 'https://viterra.wd3.myworkdayjobs.com/wday/cxs/viterra/external-can/jobs'\nFor more information check:",
+        "mii.wd5.myworkdayjobs.com/mitekhotjobs: HTTPStatusError: Client error '401 Unauthorized' for url 'https://mii.wd5.myworkdayjobs.com/wday/cxs/mii/mitekhotjobs/jobs'\nFor more information check: https://",
         "grab.wd3.myworkdayjobs.com/careers: HTTPStatusError: Client error '401 Unauthorized' for url 'https://grab.wd3.myworkdayjobs.com/wday/cxs/grab/careers/jobs'\nFor more information check: https://develop",
-        "23andme.wd5.myworkdayjobs.com/23: HTTPStatusError: Client error '403 Forbidden' for url 'https://23andme.wd5.myworkdayjobs.com/wday/cxs/23andme/23/jobs'\nFor more information check: https://developer.m",
-        "crownholdings.wd501.myworkdayjobs.com/crownholdings: HTTPStatusError: Client error '403 Forbidden' for url 'https://crownholdings.wd501.myworkdayjobs.com/wday/cxs/crownholdings/crownholdings/job/Jedda"
+        "nordstrom.wd501.myworkdayjobs.com/nordstrom_careers: HTTPStatusError: Client error '403 Forbidden' for url 'https://nordstrom.wd501.myworkdayjobs.com/wday/cxs/nordstrom/nordstrom_careers/job/San-Jose-"
       ]
-    },
-    "smartrecruiters": {
-      "boards": 2575,
-      "ok": 2572,
-      "not_found": 3,
-      "failed": 0,
-      "postings": 116467,
-      "outage": false,
-      "errors": []
     }
   }
 }
